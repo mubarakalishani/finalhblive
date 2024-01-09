@@ -47,7 +47,7 @@ class CreateNewUser implements CreatesNewUsers
                 'username' => $input['username'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
-                'unique_user_id' =>  bin2hex(random_bytes(15)),
+                'unique_user_id' =>  bin2hex(random_bytes(7)),
                 'secret_key' => bin2hex(random_bytes(32)),
                 'signup_ip' => request()->ip(),
                 'last_ip' => request()->ip(),
