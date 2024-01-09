@@ -25,7 +25,7 @@ class CustomAuthController extends Controller
         if ($existingUser) {
             Auth::login($existingUser);
         } else {
-            $newUser = new User;
+            $newUser = new User();
             $newUser->email = $user->email;
             $newUser->email_verified_at = now()->format('Y-m-d H:i:s');
             $newUser->unique_user_id =  bin2hex(random_bytes(7));
