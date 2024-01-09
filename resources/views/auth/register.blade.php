@@ -1,4 +1,5 @@
 <x-guest-layout>
+    @include('includes.header-before-login')
     <x-authentication-card>
         <x-slot name="logo">
             <x-authentication-card-logo />
@@ -62,4 +63,5 @@
             </div>
         </form>
     </x-authentication-card>
+    @include('includes.footer-before-login')
 </x-guest-layout>

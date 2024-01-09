@@ -33,7 +33,7 @@
     <header class="header-area">
         <nav class="navbar navbar-expand-lg navbar-light">
           <div class="container-fluid  mx-2">
-              <a href="#" class="navbar-brand">
+              <a href="/" class="navbar-brand">
                   <img src="images/logo.png"  alt="CoolBrand" style="">
                   <!-- <h5><span> <img src="images/logo1.png" height="28" alt="CoolBrand" style="width: 10%;"></span><b> Hand<em>Bucks</em></b></h5> -->
               </a>
@@ -57,7 +57,7 @@
                       </div>
                     </li>
                     <a href="/login" class="nav-item nav-link aut-btn">Login</a>
-                    <a href="/signup" class="nav-item nav-link aut-btn">Sign up</a>
+                    <a href="/register" class="nav-item nav-link aut-btn">Sign up</a>
                   </div>
               </div>
           </div>

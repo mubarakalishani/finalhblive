@@ -20,6 +20,7 @@ use App\Livewire\ReviewTasks;
 use App\Http\Controllers\Admin\AdminTaskCategoryController;
 use App\Http\Controllers\Advertiser\DepositController;
 use App\Http\Controllers\CoinbaseCommerceTestController;
+use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Pages\ContactPageController;
 
@@ -149,6 +150,8 @@ Route::get('/logout', function(){
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
 });
+
+Route::get('/login/google/callback', [CustomAuthController::class, 'handleGoogleCallback']);
 
 Route::get('/test-coinbase-commerce', [CoinbaseCommerceTestController::class, 'index']);
 
