@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Livewire\Advertise\Ptc;
+
+use App\Models\Log;
+use App\Models\PtcAd;
+use App\Models\User;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class PtcCampaignHistory extends Component
+{
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $sortField = 'id';
+    public $sortDirection = 'desc';
+    public $search = '';
+    public $status = '';
+    public $perPage = 10;
+    public $adId;
+
+    public $editBudget = false;
+    public $budgetToAdd = 0;
+
+    protected function rules(){
+        return [
+            'budgetToAdd' => 'required|numeric',
+        ];
+    } 
+
+    public function showEditBudget($id){
+        $this->editBudget = true;
+        $this->adId = $id;
+    }
+
+    public function submitUpdatedBudget(){
+        $ad = PtcAd::find($this->adId);
+        $user = User::find(auth()->user()->id);
+        if (auth()->user()->deposit_balance < $this->budgetToAdd) {
+            return;
+        }
+        else{
+            $this->validate();
+            $user->deductAdvertiserBalance($this->budgetToAdd);
+            $ad->increment('ad_balance', $this->budgetToAdd);
+            $ad->increment('views_needed', $this->budgetToAdd/$ad->reward_per_view);
+            Log::create([
+                'user_id' => auth()->user()->id,
+                'description' => 'modified and added budget to the ptc ad '.$this->adId.' with $'.$this->budgetToAdd,
+            ]);
+            return redirect(url('/advertiser/ptc-campaigns-list'))->with('success', 'The campaign budget is successfully Updated');
+            
+        }
+    }
+
+    public function pauseResume($adId){
+        $ptcAd = PtcAd::find($adId);
+        if($ptcAd->status == 1){
+            $ptcAd->update(['status' => 3]);
+        }elseif($ptcAd->status == 3){
+            $ptcAd->update(['status' => 1]);
+        }
+    }
+    public function render()
+    {
+        return view('livewire.advertise.ptc.ptc-campaign-history', [
+            "ptcAds" => PtcAd::search($this->search)
+            ->where('employer_id', auth()->user()->id)
+            ->when($this->status !== '',function($query){
+                $query->where('status',$this->status);
+            })
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage)
+        ]);
+    }
+}
