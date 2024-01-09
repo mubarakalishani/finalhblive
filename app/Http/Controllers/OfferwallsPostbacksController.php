@@ -1,0 +1,3689 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\OffersAndSurveysLog;
+use App\Models\OfferwallsSetting;
+use App\Models\User;
+use App\Models\Log;
+use Illuminate\Http\Request;
+class OfferwallsPostbacksController extends Controller
+{
+    public function adscendmedia(Request $request)
+    {
+
+
+     /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'adscendmedia_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'adscendmedia_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postbacks/adscendmedia?status=[STS]hash=[HSH=mJuhLk842UjkkzAzAzAzA8888zAzA]user_id[SID]=&payout[PAY]=&reward=[CUR]&transaction_id=[TID]&ip=[IP][/HSH]&offer_name=[ONM]&offer_id=[OID]
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input();
+        
+     /*===================================check the hash security==========================================================*/
+        if(hash_hmac('md5', "user_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, OfferwallsSetting::where( 'name', 'adscendmedia_hash')->value('value')) !== $hash) {
+            echo 0;
+            die();
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'adscendmedia_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'adscendmedia_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'adscendmedia_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'adscendmedia_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adscendmedia_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adscendmedia_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adscendmedia_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'Adscendmedia',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'adscendmedia_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from Adscendmedia',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by Adscendmedia',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by Adscendmedia',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+
+    
+         echo 1;
+       
+
+
+    }
+
+
+
+
+
+
+
+    public function ayetstudios(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        // echo $request->ip();
+        
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'ayetstudios_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'ayetstudios_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/ayetstudios?user_id={external_identifier}&status={is_chargeback}=&payout{payout_usd}=&reward={currency_amount}&transaction_id={transaction_id}&ip={ip}&offer_name={offer_name}&offer_id={offer_id}
+
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        //status 0 conversion, 1 chargeback according to ayetstudios pub docs
+        
+     /*===================================check the hash security==========================================================*/
+        $parameters = $request->all();
+        // Order the parameters alphabetically
+        ksort($parameters);
+        // Concatenate the parameters into a string
+        $parameterString = http_build_query($parameters);
+        $apiKey = config('ayetstudios.api_key');
+        $apiKey = OfferwallsSetting::where('name', 'ayetstudios_api' )->value('value');
+        $computedHash = hash_hmac('sha256', $parameterString, $apiKey);
+        // Get the received hash from the custom header
+        $receivedHash = $request->header('HTTP_X_AYETSTUDIOS_SECURITY_HASH');
+        // Compare the computed hash with the received hash
+        if (hash_equals($computedHash, $receivedHash)){
+            echo 1;
+        }else
+        {
+            return response('Unauthorized', 401);
+            die();
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'ayetstudios_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'ayetstudios_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'ayetstudios_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'ayetstudios_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'ayetstudios_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'ayetstudios_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'ayetstudios_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 0 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 0 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 0 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'ayetstudios',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'ayetstudios_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from ayetstudios',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by ayetstudios',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by ayetstudios',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+         echo 1;
+    }
+
+
+
+
+
+
+
+    public function adbreakmedia(Request $request)
+    {
+     /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'adbreakmedia_whitelisted_ips')->value('value'), true);
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+        if (OfferwallsSetting::where( 'name', 'adbreakmedia_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/ayetstudios?user_id=[YOUR_USER_ID]&status=[STATUS]=&payout=[PAYOUT]=&reward=[REWARD_VALUE]&transaction_id=[TXID]&ip=[USER_IP]&offer_name=[OFFER_NAME]&offer_id=[OFFER_ID]&hash=[HASH]
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        //status = completed, or rejected value according to adbreakmedia docs
+     /*===================================check the hash security==========================================================*/
+        $secret = OfferwallsSetting::where( 'name', 'adbreakmedia_secret')->value('value');
+        $calculated_hash = hash('sha256', $uniqueUserId . $offerId . $transactionId . $secret);
+ 
+        if ($hash === $calculated_hash) {
+            // success
+            http_response_code(200);
+            echo "Approved";
+        } else {
+            http_response_code(400);
+            echo "Unauthorized";
+            return;
+            die();
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'adbreakmedia_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'adbreakmedia_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'adbreakmedia_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'adbreakmedia_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adbreakmedia_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adbreakmedia_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adbreakmedia_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 'completed' && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 'completed' && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 'completed' && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'adbreakmedia',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'adbreakmedia_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from adbreakmedia',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by adbreakmedia',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by adbreakmedia',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }       
+        echo 1;
+        die();
+    }
+
+
+
+
+
+
+
+    public function bitlabs(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'bitlabs_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'bitlabs_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/ayetstudios?user_id=[%UID%]&status=[%TYPE%]&payout=[%RAW%]&reward=[%VAL%]&transaction_id=[%REF%]&ip=[%IP%]&offer_name=[%OFFER_NAME%]&offer_id=[%OFFER_ID%]
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        
+     /*===================================check the hash security==========================================================*/
+        // Get the currently active http protocol
+        $protocol = isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http";
+        // Build the full callback URL
+        // Example: https://url.com?param1=foo&param2=bar&hash=3171f6b78e06cadcec4c9c3b15f858b8400e8738
+        $url = "$protocol://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        // Save all query parameters of the callback into the $params array
+        $url_components = parse_url($url);
+        parse_str($url_components["query"], $params);
+        // Get the callback URL without the "hash" query parameter
+        // Example: https://url.com?param1=foo&param2=bar
+        $url_val = substr($url, 0, -strlen("&hash=$params[hash]"));
+        // Generate a hash from the complete callback URL without the "hash" query parameter
+        $calculatedHash = hash_hmac("sha1", $url_val, OfferwallsSetting::where('name', 'bitlabs_secret' )->value('value'));
+            
+        //Check if the generated hash is the same as the "hash" query parameter
+        if ($calculatedHash === $hash) {
+          echo "valid";
+        } else {
+          echo "invalid";
+          exit(0);
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'bitlabs_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'bitlabs_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'bitlabs_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'bitlabs_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitlabs_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitlabs_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitlabs_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 'RECONCILIATION' && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 'RECONCILIATION' && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 'RECONCILIATION' && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'bitlabs',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'bitlabs_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from bitlabs',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by bitlabs',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by bitlabs',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }    
+    }
+
+
+
+
+
+    public function bitcotasks(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'bitcotasks_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'bitcotasks_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        $uniqueUserId = $request->input('subId');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transId');
+        $ipAddress = $request->has('userIp') ? $request->input('userIp') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('signature');
+        
+         /*===================================check the hash security==========================================================*/
+         $secretKey = OfferwallsSetting::where( 'name', 'bitcotasks_secret')->value('value');
+         if(md5($uniqueUserId.$transactionId.$currencyAmount.$secretKey) != $hash)
+         {
+            echo "ERROR: Signature doesn't match";
+             return;
+         }
+
+        /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'bitcotasks_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'bitcotasks_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'bitcotasks_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'bitcotasks_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitcotasks_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitcotasks_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitcotasks_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+        /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'bitcotasks',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'bitcotasks_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from bitcotasks',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by bitcotasks',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by bitcotasks',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+         echo 1;
+         die();
+    }
+
+
+
+
+    public function cpxresearch(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'cpxsresearch_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'cpxsresearch_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/cpxresearch?user_id={user_id}&status={status}&payout={amount_usd}&reward={amount_local}&transaction_id={trans_id}&ip={ip_click}&hash={secure_hash}
+        $uniqueUserId = $request->input();
+        $payout = $request->input();
+        $currencyAmount = $request->input();
+        $transactionId = $request->input('ip_address');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        
+         /*===================================check the hash security==========================================================*/
+         $secret_key = md5($transactionId.'-' . OfferwallsSetting::where('name', 'cpxsresearch_secret' )->value('value'));
+         if($secret_key !== $hash){
+             echo 0;
+             die();
+         }
+
+        /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'cpxsresearch_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'cpxsresearch_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'cpxsresearch_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'cpxsresearch_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'cpxsresearch_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'cpxsresearch_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'cpxsresearch_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'cpxsresearch',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'cpxsresearch_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from cpxsresearch',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by cpxsresearch',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by cpxsresearch',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+    }
+
+
+
+
+
+
+
+
+
+    public function lootably(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'lootably_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'lootably_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/lootably?user_id={userID}&status={status}&offer_name={offerName}&offer_id={offerID}&payout={revenue}&reward={currencyReward}&transaction_id={transactionID}&ip={ip}&hash={hash}
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        
+     /*===================================check the hash security==========================================================*/
+        $secretKey = OfferwallsSetting::where( 'name', 'lootably_secret')->value('value');
+        $security = hash("sha256", $uniqueUserId . $ipAddress . $payout . $currencyAmount . $secretKey);
+        if($security !== $hash){
+            echo 0;
+            die();
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'lootably_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'lootably_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'lootably_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'lootably_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'lootably_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'lootably_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'lootably_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'lootably',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'lootably_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from lootably',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by lootably',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by lootably',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+        echo 1;
+        die();
+    }
+
+
+
+
+
+    public function offers4crypto(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'offers4crypto_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'offers4crypto_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        $uniqueUserId = $request->input('subId');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transId');
+        $ipAddress = $request->has('userIp') ? $request->input('userIp') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('signature');
+        
+         /*===================================check the hash security==========================================================*/
+         $secretKey = OfferwallsSetting::where( 'name', 'offers4crypto_secret')->value('value');
+         if(md5($uniqueUserId.$transactionId.$currencyAmount.$secretKey) != $hash)
+         {
+            echo "ERROR: Signature doesn't match";
+             return;
+         }
+
+        /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'offers4crypto_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'offers4crypto_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'offers4crypto_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'offers4crypto_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'offers4crypto_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'offers4crypto_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'offers4crypto_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+        /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'offers4crypto',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'offers4crypto_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from offers4crypto',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by offers4crypto',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by offers4crypto',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+         echo 1;
+         die();
+    }
+
+
+
+    public function excentiv(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        // echo $request->ip();
+        
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'excentiv_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'excentiv_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/excentiv?user_id={{userId}}&status={{status}}&payout={{payout}}&reward={{rewardValue}}&transaction_id={{transactionId}}&ip={{userIp}}&hash={{secret}}
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        
+     /*===================================check the hash security==========================================================*/
+     if(md5($uniqueUserId.$transactionId.$currencyAmount.OfferwallsSetting::where('name', 'excentiv_secret' )->value('value')) != $hash)
+     {
+      echo "ERROR: Signature doesn't match";
+      return;
+     }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'excentiv_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'excentiv_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'excentiv_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'excentiv_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'excentiv_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'excentiv_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'excentiv_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'excentiv',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'excentiv_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from excentiv',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by excentiv',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by excentiv',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+    }
+
+
+
+
+
+
+
+
+
+    public function kiwiwall(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'kiwiwall_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'kiwiwall_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        $uniqueUserId = $request->input('sub_id');
+        $payout = $request->input('gross');
+        $currencyAmount = $request->input('amount');
+        $transactionId = $request->input('trans_id');
+        $ipAddress = $request->has('ip_address') ? $request->input('ip_address') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('signature');
+        
+         /*===================================check the hash security==========================================================*/
+         $secret_key = OfferwallsSetting::where( 'name', 'kiwiwall_secret')->value('value');
+         $validation_signature = md5($uniqueUserId . ':' . $currencyAmount . ':' . $secret_key);
+         if ($hash != $validation_signature) {
+            // Signatures not equal - send error code
+            echo 0;
+            die();
+        }
+
+        /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'kiwiwall_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'kiwiwall_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'kiwiwall_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'kiwiwall_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'kiwiwall_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'kiwiwall_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'kiwiwall_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+        /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'kiwiwall',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'kiwiwall_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from kiwiwall',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by kiwiwall',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by kiwiwall',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+    }
+
+
+
+
+
+
+    public function monlix(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'monlix_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'monlix_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/monlix?user_id={{userId}}&status={{status}}&offer_name={{taskName}}&payout={{payout}}&reward={{rewardValue}}&transaction_id={{transactionId}}&ip={{userIp}}&hash={{secretKey}}
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        
+     /*===================================check the hash security==========================================================*/
+        if ($hash != OfferwallsSetting::where( 'name', 'monlix_secret')->value('value')) {
+           echo "ERROR: Signature doesn't match";
+           return;
+        }
+        
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'monlix_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'monlix_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'monlix_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'monlix_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'monlix_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'monlix_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'monlix_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'monlix',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'monlix_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from monlix',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by monlix',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by monlix',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+
+         echo "OK";
+    }
+
+
+
+
+
+
+
+    public function notik(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'notik_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'notik_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('amount');
+        $transactionId = $request->input('txn_id');
+        $ipAddress = $request->has('conversion_ip') ? $request->input('conversion_ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        
+     /*===================================check the hash security==========================================================*/
+        /*Create validation hash and validate hashes*/
+        $secretKey = OfferwallsSetting::where( 'name', 'notik_secret')->value('value'); // This has to be your App's secret key that you can find in you App detail page
+        /*Get the currently active http protocol*/
+        $protocol = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on") ? "https" : "http";
+        /*Build the full callback URL*/
+        /*Example: https://url.com?param1=foo&param2=bar&hash=3171f6b78e06cadcec4c9c3b15f8588400e8738*/
+        $url = "$protocol://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        /*Get the callback URL without the "hash" query parameter*/
+        /*Example: https://url.com?param1=foo&param2=bar*/
+        $urlWithoutHash = substr($url, 0, -strlen("&hash=$hash"));
+        /*Generate a hash from the complete callback URL without the "hash" query parameter*/
+        $generatedHash = hash_hmac("sha1", $urlWithoutHash, $secretKey);
+
+        /*Check if the generated hash is the same as the "hash" query parameter*/
+        if ($generatedHash !== $hash) {
+            echo 0;
+            die();
+        }
+
+        /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'notik_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'notik_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'notik_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'notik_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'notik_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'notik_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'notik_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+        /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'notik',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'notik_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from notik',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by notik',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by notik',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            if( $request->has('rewarded_txn_id') )
+            {
+                $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $request->input('rewarded_txn_id'))->value('id');
+                $offer = OffersAndSurveysLog::find($offerIdToReverse);
+                $offer->update(['status' =>2]);
+            }
+            
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+         echo 1;
+    }
+
+
+
+
+
+
+
+
+    public function revlum(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'revlum_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'revlum_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/revlum?user_id={subId}&status={status}&offer_name={offerName}&offer_id={offerId}&payout={payout}&reward={reward}&transaction_id={transId}&ip={userIp}&hash={signature}
+        $uniqueUserId = $request->input();
+        $payout = $request->input();
+        $currencyAmount = $request->input();
+        $transactionId = $request->input('ip_address');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input('hash');
+        
+     /*===================================check the hash security==========================================================*/
+        $secret = OfferwallsSetting::where( 'name', 'revlum_secret')->value('value');
+        if(md5($uniqueUserId.$transactionId.$currencyAmount.$secret) != $hash)
+        {
+            echo "ERROR: Signature doesn't match";
+           return;
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'revlum_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'revlum_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'revlum_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'revlum_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'revlum_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'revlum_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'revlum_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'revlum',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'revlum_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from revlum',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by revlum',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by revlum',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+         echo 1;
+         die();
+    }
+
+
+
+
+
+
+
+
+    public function timewall(Request $request)
+    {
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'timewall_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'timewall_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        https://handbucks.com/postback/timewall?user_id={userID}&status={type}&payout={revenue}&reward={currencyAmount}&transaction_id={transactionID}&ip={ip}&hash={hash}
+        $uniqueUserId = $request->input();
+        $payout = $request->input();
+        $currencyAmount = $request->input();
+        $transactionId = $request->input('ip_address');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
+        $hash = $request->input();
+        
+     /*===================================check the hash security==========================================================*/
+        $security_key = hash("sha256", $uniqueUserId . $payout . OfferwallsSetting::where( 'name', 'timewall_secret')->value('value'));
+        if ($security_key !== $hash) {
+            exit('fail');
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'timewall_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'timewall_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'timewall_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'timewall_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'timewall_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'timewall_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'timewall_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 'credit' && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 'credit' && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 'credit' && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'timewall',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'timewall_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from timewall',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by timewall',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by timewall',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+        echo 1;
+        die();
+    }
+
+
+
+
+
+
+
+
+
+    public function wannads(Request $request){
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        // echo $request->ip();
+        
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'wannads_whitelisted_ips')->value('value'), true);
+
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
+            
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
+
+        if (OfferwallsSetting::where( 'name', 'wannads_status')->value('value') != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
+        /*===================================Get All common data from the postback==========================================================*/
+        $uniqueUserId = $request->input('subId');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transId');
+        $ipAddress = $request->has('userIp') ? $request->input('userIp') : null;
+        $offerName = $request->has('campaign_name') ? $request->input('campaign_name') : null;
+        $offerId = $request->has('campaign_id') ? $request->input('campaign_id') : null;
+        $hash = $request->input('signature');
+        
+     /*===================================check the hash security==========================================================*/
+        if(md5($uniqueUserId.$transactionId.$currencyAmount.OfferwallsSetting::where( 'name', 'wannads_secret')->value('value')) != $hash)
+        {
+            echo "ERROR: Signature doesn't match";
+            return;
+        }
+
+     /*===================================Do necessary Calculations==========================================================*/
+
+
+        $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+        $user = User::find($userId);
+        $refCommissionPercendtage = OfferwallsSetting::where('name', 'wannads_ref_commission' )->value('value');
+        $offerHold = OfferwallsSetting::where('name', 'wannads_hold' )->value('value');
+        $minHoldAmount = OfferwallsSetting::where('name', 'wannads_min_hold_amount' )->value('value');
+
+        $userLevel = $user->level;
+        $expertCp = OfferwallsSetting::where('name', 'wannads_expert_cp' )->value('value');
+        if ( $userLevel == 0 ) 
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'wannads_starter_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 1 )
+        {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'wannads_advanced_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }elseif ( $userLevel == 2 ) {
+            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'wannads_expert_cp' )->value('value');
+            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+        }else
+        {
+            Log::create([
+                'user_id' => $userId, 
+                'description' => 'user level is not specified',
+            ]);
+        }
+
+        // if the transactionId starts with r- , it is a reverse transaction
+        if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
+            // transactionId starts with "r-", $matches[1] contains the rest of the string
+            $transactionId = $matches[1];
+            $finalStatus = 0; //0=reversed
+        }
+
+
+        if( $request->has('status') ) 
+        {
+            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            {
+                $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
+            }
+            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            {
+                $finalStatus = 0;
+            }
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 2;
+            }
+        }
+        elseif ( $currencyAmount < 0 || $payout < 0)
+        {
+            $finalStatus = 2;
+        }
+        else
+        {
+            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+                $finalStatus = 1;
+            }
+            else
+            {
+                $finalStatus = 0;
+            }
+            
+        }
+
+        //check if user has any upline
+        $uplineId = User::where('id', $userId)->value('upline');
+        if( $uplineId != 0 )
+        {
+            $upline = User::find($uplineId);
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+        } else
+        {
+            $uplineCommision = 0;
+        }
+        
+
+        //check if transaction found in the database
+        $transactionId = $request->input('transactionId');
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+
+     /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
+        //if transaction does not exist, create log
+         if (!$transactionIdExists) 
+         {
+            OffersAndSurveysLog::create([
+                'user_id' => $userId,
+                'provider_name' => 'wannads',
+                'payout' => $payout,
+                'reward' => $finalReward,
+                'added_expert_level' => $addToExpertLevel,
+                'upline_commision' => $uplineCommision,
+                'transaction_id' => $transactionId,
+                'offer_name' => $offerName,
+                'offer_id' => $offerId,
+                'hold_time' => OfferwallsSetting::where('name', 'wannads_hold_time' )->value('value'),
+                'instant_credit' => 0,    // 0 no, 1 yes,
+                'ip_address' => $ipAddress,
+                'status' => $finalStatus,
+            ]);
+
+            /*===================================reward or deduct user and upline==========================================================*/
+            //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
+            if ( $finalStatus == 0 ) 
+            {
+                $user->addWorkerBalance($finalReward);
+                $user->increment('diamond_level_balance', $addToExpertLevel);
+                $user->increment('total_earned', $finalReward);
+                $user->increment('earned_from_offers', $finalReward);
+                $user->increment('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' => 'reward ' . $finalReward . ' added from wannads',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $uplineCommision );
+                    $uplineToReward->increment('earned_from_referrals', $uplineCommision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+            elseif ( $finalStatus == 2 ) 
+            {
+                $user->deductWorkerBalance(abs($finalReward));
+                $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+                $user->decrement('total_earned', abs($finalReward));
+                $user->decrement('earned_from_offers', abs($finalReward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $userId,
+                    'description' =>  $finalReward . ' reversed by wannads',
+                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($uplineCommision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                    ]);
+                }
+            }
+
+         } elseif ( $transactionIdExists && $finalStatus == 2 )
+         {
+            $offerIdToReverse = OffersAndSurveysLog::where('transaction_id', $transactionId)->value('id');
+            $offer = OffersAndSurveysLog::find($offerIdToReverse);
+            $userIdToReverse = $offer->user_id;
+            $user = User::find($userIdToReverse);
+            if( $offer->status == 0 )
+            {
+                $user->deductWorkerBalance(abs($offer->reward));
+                $user->decrement('diamond_level_balance', abs($offer->reward));
+                $user->decrement('total_earned', abs($offer->reward));
+                $user->decrement('earned_from_offers', abs($offer->reward));
+                $user->decrement('total_offers_completed');
+                Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $offer->reward . ' reversed by wannads',
+                ]);
+            }
+
+            if($uplineId != 0)
+            {
+                $uplineToDeduct = User::find($uplineId);
+                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                Log::create([
+                    'user_id' => $uplineId, 
+                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                ]);
+            }
+            $offer->update([ 'status' => 2 ]);
+        }
+         else
+         {
+            $user->deductWorkerBalance(abs($finalReward));
+            $user->decrement('diamond_level_balance', abs($addToExpertLevel));
+            $user->decrement('total_earned', abs($finalReward));
+            $user->decrement('earned_from_offers', abs($finalReward));
+            $user->decrement('total_offers_completed');
+         }
+        echo "OK";
+        die();
+    }
+
+
+
+
+}
