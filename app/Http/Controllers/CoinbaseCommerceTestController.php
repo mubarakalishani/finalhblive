@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 // use CoinbaseCommerce\ApiClient;
 
 class CoinbaseCommerceTestController extends Controller
@@ -26,50 +28,73 @@ class CoinbaseCommerceTestController extends Controller
         //         'customer_id' => auth()->user()->id,
         //     ],
         // ]);
+        // $curl = curl_init();
+
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => 'https://api.commerce.coinbase.com/charges',
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_ENCODING => '',
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 0,
+        //     CURLOPT_FOLLOWLOCATION => true,
+        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => 'POST',
+        //     CURLOPT_POSTFIELDS => '{
+        //         "cancel_url": "https://example.com/cancel",
+        //         "checkout_id": "ABC123",
+        //         "local_price": {
+        //             "amount": "10",
+        //             "currency": "USD"
+        //         },
+        //         "redirect_url": "https://handbucks.com",
+        //         "pricing_type": "fixed_price"
+        //     }',
+        //     CURLOPT_HTTPHEADER => array(
+        //         'Content-Type: application/json',
+        //         'Accept: application/json',
+        //         'X-CC-Api-Key: 5a917e55-0ca0-42ae-a543-67fa9dbd8c28',
+        //         'X-CC-Version: 2018-03-22',
+        //     ),
+        // ));
+        
+        // $result = curl_exec($curl);
+        
+        // curl_close($curl);
+
+        // $response = json_decode($result);
+        // return $response->data->hosted_url;
+
+
+
+
         $curl = curl_init();
+$postFilds=array(
+    'pricing_type'=>'no_price',
+    'metadata'=>array('customer_id'=>10)
+);
+$postFilds=urldecode(http_build_query($postFilds));
+curl_setopt_array($curl, 
+    array(
+        CURLOPT_URL => "https://api.commerce.coinbase.com/charges",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postFilds,
+        CURLOPT_HTTPHEADER => array(
+            "X-CC-Api-Key: 5a917e55-0ca0-42ae-a543-67fa9dbd8c28",
+            "X-CC-Version: 2018-03-22",
+            "content-type: multipart/form-data"
+        ),
+    )
+);
+$response = curl_exec($curl);
+$err = curl_error($curl);
+curl_close($curl);
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.commerce.coinbase.com/charges',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{
-                "cancel_url": "https://example.com/cancel",
-                "checkout_id": "ABC123",
-                "local_price": {
-                    "amount": "10",
-                    "currency": "USD"
-                },
-                "redirect_url": "https://handbucks.com",
-                "pricing_type": "fixed_price"
-            }',
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-                'Accept: application/json',
-                'X-CC-Api-Key: 5a917e55-0ca0-42ae-a543-67fa9dbd8c28',
-                'X-CC-Version: 2018-03-22',
-            ),
-        ));
-        
-        $response = curl_exec($curl);
-        
-        curl_close($curl);
-
-        $responseData = json_decode($response, true);
-
-// Check if the response indicates a redirect
-if (isset($responseData['data']['hosted_url'])) {
-    // Redirect the user to the hosted_url
-    header('Location: ' . $responseData['data']['hosted_url']);
-    exit;
-} else {
-    // Output the entire API response for further inspection
-    echo 'API Response: ' . $response;
-}
+echo $response;
 
         
         
