@@ -19,6 +19,7 @@ return new class extends Migration
             $table->tinyInteger('fee_percentage')->unsigned()->default(0);
             $table->tinyInteger('instant')->unsigned()->default(0);
             $table->tinyInteger('status')->unsigned()->default(0);
+            $table->string('image_path', 200);
             $table->timestamps();
         });
     }

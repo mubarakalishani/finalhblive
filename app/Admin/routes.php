@@ -39,6 +39,9 @@ Route::group([
     $router->resource('faqs', FaqController::class);
     $router->resource('offerwalls', OfferwallController::class);
     $router->resource('faucet-settings', FaucetSettingController::class);
+    $router->resource('pages', PagesController::class);
+
+
 
 
 

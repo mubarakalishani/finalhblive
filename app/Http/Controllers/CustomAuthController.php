@@ -26,8 +26,9 @@ class CustomAuthController extends Controller
         $username = implode('', $nameParts);
         $usernameExists = User::where('username', $username)->first();
         //if username exists, add a 4 char random string next to it
-        if($usernameExists){
-            $username = $username.rand(1000,9999);
+        while ($usernameExists) {
+            $username = $username.rand(100,999);
+            $usernameExists = User::where('username', $username)->exists();
         }
     
         if ($user) {
@@ -37,7 +38,13 @@ class CustomAuthController extends Controller
             $user->name = $data->name;
             $user->email = $data->email;
             $user->email_verified_at = now()->format('Y-m-d H:i:s');
-            $user->unique_user_id =  bin2hex(random_bytes(7));
+            $uniqueId = bin2hex(random_bytes(6));
+            $uniqueIdExists = User::where('unique_user_id', $uniqueId)->exists();
+            while ($uniqueIdExists) {
+                $uniqueId = bin2hex(random_bytes(6));
+                $uniqueId = User::where('unique_user_id', $uniqueId)->exists();
+            }
+            $user->unique_user_id =  $uniqueId;
             $user->secret_key = bin2hex(random_bytes(32));
             $user->signup_ip = request()->ip();
             $user->last_ip = request()->ip();

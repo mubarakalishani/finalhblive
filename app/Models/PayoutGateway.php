@@ -9,6 +9,6 @@ class PayoutGateway extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'min_payout', 'fixed_fee', 'fee_percentage', 'instant', 'status'
+        'name', 'min_payout', 'fixed_fee', 'fee_percentage', 'instant', 'status', 'image_path'
     ];
 }

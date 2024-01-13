@@ -6,17 +6,19 @@ use App\Models\OffersAndSurveysLog;
 use App\Models\OfferwallsSetting;
 use App\Models\User;
 use App\Models\Log;
+use App\Models\Offerwall;
 use Illuminate\Http\Request;
 class OfferwallsPostbacksController extends Controller
 {
+    
     public function adscendmedia(Request $request)
     {
 
-
+        $offerwall = Offerwall::where('name', 'Adscendmedia')->first();
      /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'adscendmedia_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -26,7 +28,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'adscendmedia_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -40,34 +42,30 @@ class OfferwallsPostbacksController extends Controller
         $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
         $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
         $hash = $request->input();
-        
+
      /*===================================check the hash security==========================================================*/
         if(hash_hmac('md5', "user_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, OfferwallsSetting::where( 'name', 'adscendmedia_hash')->value('value')) !== $hash) {
             echo 0;
             die();
         }
-
      /*===================================Do necessary Calculations==========================================================*/
-
-
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'adscendmedia_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'adscendmedia_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'adscendmedia_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'adscendmedia_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adscendmedia_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adscendmedia_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adscendmedia_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -91,11 +89,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -110,7 +108,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -130,8 +128,18 @@ class OfferwallsPostbacksController extends Controller
         {
             $uplineCommision = 0;
         }
-        
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -150,7 +158,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'adscendmedia_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -251,19 +259,13 @@ class OfferwallsPostbacksController extends Controller
     }
 
 
-
-
-
-
-
     public function ayetstudios(Request $request)
     {
-        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
-        // echo $request->ip();
-        
+        $offerwall = Offerwall::where('name', 'Ayetstudios')->first();
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/ 
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'ayetstudios_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -295,7 +297,6 @@ class OfferwallsPostbacksController extends Controller
         ksort($parameters);
         // Concatenate the parameters into a string
         $parameterString = http_build_query($parameters);
-        $apiKey = config('ayetstudios.api_key');
         $apiKey = OfferwallsSetting::where('name', 'ayetstudios_api' )->value('value');
         $computedHash = hash_hmac('sha256', $parameterString, $apiKey);
         // Get the received hash from the custom header
@@ -314,22 +315,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'ayetstudios_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'ayetstudios_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'ayetstudios_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'ayetstudios_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'ayetstudios_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'ayetstudios_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'ayetstudios_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -353,11 +353,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 0 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 0 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 0 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 0 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -372,7 +372,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -394,6 +394,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -412,7 +423,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'ayetstudios_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -509,21 +520,18 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
-
     public function adbreakmedia(Request $request)
     {
-     /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
+        $offerwall = Offerwall::where('name', 'Adbreakmedia')->first();
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'adbreakmedia_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
         if (in_array($ipAddress, $whitelistedIps)) {
             
         } else {
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
-        if (OfferwallsSetting::where( 'name', 'adbreakmedia_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -558,22 +566,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'adbreakmedia_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'adbreakmedia_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'adbreakmedia_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'adbreakmedia_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adbreakmedia_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adbreakmedia_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'adbreakmedia_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -597,11 +604,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 'completed' && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 'completed' && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 'completed' && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 'completed' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -616,7 +623,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -638,6 +645,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -656,7 +674,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'adbreakmedia_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -754,16 +772,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
-
     public function bitlabs(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Bitlabs')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'bitlabs_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -773,7 +788,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'bitlabs_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -816,22 +831,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'bitlabs_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'bitlabs_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'bitlabs_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'bitlabs_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitlabs_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitlabs_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitlabs_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -855,11 +869,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 'RECONCILIATION' && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 'RECONCILIATION' && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 'RECONCILIATION' && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 'RECONCILIATION' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -874,7 +888,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -896,6 +910,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -914,7 +939,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'bitlabs_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -1009,15 +1034,13 @@ class OfferwallsPostbacksController extends Controller
     }
 
 
-
-
-
     public function bitcotasks(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Bitcotasks')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'bitcotasks_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -1027,7 +1050,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'bitcotasks_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -1054,22 +1077,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'bitcotasks_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'bitcotasks_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'bitcotasks_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'bitcotasks_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitcotasks_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitcotasks_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'bitcotasks_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -1093,11 +1115,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -1112,7 +1134,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -1134,6 +1156,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1152,7 +1185,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'bitcotasks_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -1250,14 +1283,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
     public function cpxresearch(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Cpxresearch')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
-        
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'cpxsresearch_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -1267,7 +1299,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'cpxsresearch_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -1294,22 +1326,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'cpxsresearch_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'cpxsresearch_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'cpxsresearch_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'cpxsresearch_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'cpxsresearch_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'cpxsresearch_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'cpxsresearch_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -1333,11 +1364,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -1352,7 +1383,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -1374,6 +1405,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1392,7 +1434,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'cpxsresearch_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -1488,28 +1530,23 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
-
-
-
     public function lootably(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Lootably')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'lootably_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
-        if (in_array($ipAddress, $whitelistedIps)) {
+        // if (in_array($ipAddress, $whitelistedIps)) {
             
-        } else {
-            // IP address is not whitelisted, take appropriate action
-            return "Access Denied! IP address $ipAddress is not whitelisted!";
-        }
+        // } else {
+        //     // IP address is not whitelisted, take appropriate action
+        //     return "Access Denied! IP address $ipAddress is not whitelisted!";
+        // }
 
-        if (OfferwallsSetting::where( 'name', 'lootably_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -1537,22 +1574,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'lootably_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'lootably_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'lootably_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'lootably_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'lootably_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'lootably_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'lootably_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -1576,11 +1612,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -1595,7 +1631,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -1617,6 +1653,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1635,7 +1682,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'lootably_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -1733,14 +1780,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
     public function offers4crypto(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Offers4crypto')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'offers4crypto_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -1750,7 +1796,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'offers4crypto_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -1777,22 +1823,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'offers4crypto_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'offers4crypto_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'offers4crypto_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'offers4crypto_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'offers4crypto_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'offers4crypto_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'offers4crypto_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -1816,11 +1861,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -1835,7 +1880,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -1857,6 +1902,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1875,7 +1931,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'offers4crypto_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -1975,12 +2031,11 @@ class OfferwallsPostbacksController extends Controller
 
     public function excentiv(Request $request)
     {
-        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
-        // echo $request->ip();
-        
+        $offerwall = Offerwall::where('name', 'Excentiv')->first();
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/ 
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'excentiv_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -1990,7 +2045,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'excentiv_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -2017,22 +2072,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'excentiv_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'excentiv_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'excentiv_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'excentiv_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'excentiv_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'excentiv_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'excentiv_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -2056,11 +2110,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -2075,7 +2129,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -2097,6 +2151,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2115,7 +2180,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'excentiv_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -2211,18 +2276,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
-
-
-
     public function kiwiwall(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Kiwiwall')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'kiwiwall_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -2232,7 +2292,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'kiwiwall_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -2260,22 +2320,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'kiwiwall_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'kiwiwall_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'kiwiwall_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'kiwiwall_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'kiwiwall_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'kiwiwall_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'kiwiwall_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -2299,11 +2358,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -2318,7 +2377,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -2340,6 +2399,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2358,7 +2428,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'kiwiwall_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -2454,15 +2524,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
     public function monlix(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Monlix')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'monlix_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -2472,7 +2540,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'monlix_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -2499,22 +2567,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'monlix_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'monlix_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'monlix_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'monlix_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'monlix_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'monlix_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'monlix_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -2538,11 +2605,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -2557,7 +2624,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -2579,6 +2646,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2597,7 +2675,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'monlix_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -2695,16 +2773,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
-
     public function notik(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Notik')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'notik_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -2714,7 +2789,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'notik_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -2753,22 +2828,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'notik_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'notik_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'notik_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'notik_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'notik_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'notik_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'notik_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -2792,11 +2866,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -2811,7 +2885,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -2833,6 +2907,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2851,7 +2936,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'notik_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -2955,17 +3040,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
-
-
     public function revlum(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Revlum')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'revlum_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -2975,7 +3056,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'revlum_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -3003,22 +3084,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'revlum_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'revlum_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'revlum_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'revlum_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'revlum_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'revlum_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'revlum_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -3042,11 +3122,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -3061,7 +3141,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -3083,6 +3163,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -3101,7 +3192,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'revlum_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -3199,17 +3290,13 @@ class OfferwallsPostbacksController extends Controller
 
 
 
-
-
-
-
-
     public function timewall(Request $request)
     {
+        $offerwall = Offerwall::where('name', 'Timewall')->first();
         /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'timewall_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -3219,7 +3306,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'timewall_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -3245,22 +3332,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'timewall_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'timewall_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'timewall_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'timewall_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'timewall_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'timewall_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'timewall_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -3284,11 +3370,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 'credit' && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 'credit' && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 'credit' && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 'credit' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -3303,7 +3389,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -3325,6 +3411,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -3343,7 +3440,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'timewall_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,
@@ -3440,20 +3537,13 @@ class OfferwallsPostbacksController extends Controller
     }
 
 
-
-
-
-
-
-
-
-    public function wannads(Request $request){
-        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
-        // echo $request->ip();
-        
+    public function wannads(Request $request)
+    {
+        $offerwall = Offerwall::where('name', 'Wannads')->first();
+        /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/ 
         $ipAddress = $request->ip();
         // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode(OfferwallsSetting::where('name', 'wannads_whitelisted_ips')->value('value'), true);
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
         if (in_array($ipAddress, $whitelistedIps)) {
@@ -3463,7 +3553,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'wannads_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
@@ -3489,22 +3579,21 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = OfferwallsSetting::where('name', 'wannads_ref_commission' )->value('value');
-        $offerHold = OfferwallsSetting::where('name', 'wannads_hold' )->value('value');
-        $minHoldAmount = OfferwallsSetting::where('name', 'wannads_min_hold_amount' )->value('value');
+        $refCommissionPercendtage = $offerwal->ref_commission;
+        $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
-        $expertCp = OfferwallsSetting::where('name', 'wannads_expert_cp' )->value('value');
+        $expertCp = $offerwall->expert_cp;
         if ( $userLevel == 0 ) 
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'wannads_starter_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 1 )
         {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'wannads_advanced_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }elseif ( $userLevel == 2 ) {
-            $finalReward = ( $payout / 100 ) * OfferwallsSetting::where('name', 'wannads_expert_cp' )->value('value');
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
             $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
         }else
         {
@@ -3528,11 +3617,11 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $minHoldAmount )
+            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $minHoldAmount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
@@ -3547,7 +3636,7 @@ class OfferwallsPostbacksController extends Controller
         }
         else
         {
-            if ( $offerHold == 1 && $finalReward > $minHoldAmount) {
+            if ( $offerHold == 1 && $finalReward > $offerwall->tier1_hold_amount) {
                 $finalStatus = 1;
             }
             else
@@ -3569,6 +3658,17 @@ class OfferwallsPostbacksController extends Controller
         }
         
 
+        //if hold is enabled, calculate the hold time based on the reward
+        if ( $offerwall->hold == 1 ) {
+            if (  $finalReward >= $offerwall->tier1_hold_amount && $finalReward < $offerwall->tier2_hold_amount ) {
+                $offerHoldTime = $offerwall->tier1_hold_time;
+            }elseif ( $finalReward >= $offerwall->tier2_hold_amount && $finalReward < $offerwall->tier3_hold_amount ) {
+                $offerHoldTime = $offerwall->tier2_hold_time;
+            }
+            else{
+                $offerHoldTime = $offerwall->tier3_hold_time;
+            }
+        }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -3587,7 +3687,7 @@ class OfferwallsPostbacksController extends Controller
                 'transaction_id' => $transactionId,
                 'offer_name' => $offerName,
                 'offer_id' => $offerId,
-                'hold_time' => OfferwallsSetting::where('name', 'wannads_hold_time' )->value('value'),
+                'hold_time' => $offerHoldTime,
                 'instant_credit' => 0,    // 0 no, 1 yes,
                 'ip_address' => $ipAddress,
                 'status' => $finalStatus,

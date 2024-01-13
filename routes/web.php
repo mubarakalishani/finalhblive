@@ -22,7 +22,10 @@ use App\Http\Controllers\Advertiser\DepositController;
 use App\Http\Controllers\CoinbaseCommerceTestController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\ContactPageController;
+use App\Http\Controllers\Pages\PrivacyPolicyController;
+use App\Http\Controllers\Pages\TermsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +139,15 @@ Route::middleware([
     Route::get('/jobs/{taskId}', [TaskSubmitController::class, 'showTask']);
     Route::post('/worker/submit-task/{taskId}', [TaskSubmitController::class, 'store'])->name('worker.submit_task');
 
+    //auth profile settings
+    Route::get('/profile/security', function () {
+        return view('worker.profile.profile-security');
+    });
+
+    Route::get('/profile/payout-methods', function () {
+        return view('worker.profile.payment-methods');
+    });
+
 
 });
 
@@ -153,7 +165,7 @@ Route::get('/auth/google', function () {
 
 Route::get('/login/google/callback', [CustomAuthController::class, 'handleGoogleCallback']);
 
-Route::get('/test-coinbase-commerce', [CoinbaseCommerceTestController::class, 'index']);
+Route::get('/test-coinbase-commerce', [CoinbaseCommerceTestController::class, 'charge']);
 
 
 Route::get('/faucetpay/callback', [DepositController::class, 'faucetpaySuccessCallback']);
@@ -171,7 +183,9 @@ Route::get('/faucetpay/callback', [DepositController::class, 'faucetpaySuccessCa
 
 Route::get('/contact', [ContactPageController::class, 'index']);
 Route::post('/contact', [ContactPageController::class, 'store'])->name('contact.submit');
-
+Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+Route::get('/terms', [TermsController::class, 'index'])->name('terms-and-conditions.index');
+Route::get('/privacy-policy', [App\Http\Controllers\Pages\PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
 
 
 Route::post('/jobs/{taskId}', [TaskSubmitController::class, 'store'])->name('worker.submit_task');

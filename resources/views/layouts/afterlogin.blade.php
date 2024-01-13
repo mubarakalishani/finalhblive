@@ -198,7 +198,7 @@
                                 <a href="profile.html" class="sidebar-link"><i class="fa-solid fa-user"></i> Profile</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="profile-security.html" class="sidebar-link"><i class="fa-solid fa-shield-halved"></i> Security</a>
+                                <a href="/profile/security" class="sidebar-link"><i class="fa-solid fa-shield-halved"></i> Security</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="profile-billing.html" class="sidebar-link"><i class="fa-solid fa-wallet"></i> Withdraw</a>
