@@ -68,36 +68,42 @@ class CoinbaseCommerceTestController extends Controller
 
 
         $curl = curl_init();
-$postFilds=array(
-    'pricing_type'=>'no_price',
-    'metadata'=>array('customer_id'=>10)
-);
-$postFilds=urldecode(http_build_query($postFilds));
-curl_setopt_array($curl, 
-    array(
-        CURLOPT_URL => "https://api.commerce.coinbase.com/charges",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => $postFilds,
-        CURLOPT_HTTPHEADER => array(
-            "X-CC-Api-Key: 5a917e55-0ca0-42ae-a543-67fa9dbd8c28",
-            "X-CC-Version: 2018-03-22",
-            "content-type: multipart/form-data"
-        ),
-    )
-);
-$response = curl_exec($curl);
-$err = curl_error($curl);
-curl_close($curl);
-
-echo $response;
-
-        
-        
+        $postFilds=array(
+            'name' => 'Deposit to '.env('APP_NAME'),
+            'redirect_url' => 'https://handbucks.com',
+            'cancel_url' => 'https://handbucks.com',
+            'success_url' => 'https://handbucks.com',
+            'local_price' => [
+                'amount' => 100,
+                'currency' => 'USD',
+            ],
+            'pricing_type'=>'fixed_price',
+            'metadata'=>array('customer_id'=>10)
+        );
+        $postFilds=urldecode(http_build_query($postFilds));
+        curl_setopt_array($curl, 
+            array(
+                CURLOPT_URL => "https://api.commerce.coinbase.com/charges",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $postFilds,
+                CURLOPT_HTTPHEADER => array(
+                    "X-CC-Api-Key: 5a917e55-0ca0-42ae-a543-67fa9dbd8c28",
+                    "X-CC-Version: 2018-03-22",
+                    "content-type: multipart/form-data"
+                ),
+            )
+        );
+        $result = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        $response = json_decode($result);
+        return $response;
+        // return redirect($response->data->hosted_url);   
     }
 
     /**

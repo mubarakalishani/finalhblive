@@ -74,6 +74,47 @@ class DepositComponent extends Component
 
     }
 
+    public function coinbaseCommerce(){
+        $curl = curl_init();
+        $postFilds=array(
+            'name' => 'Deposit to '.env('APP_NAME'),
+            'redirect_url' => url('/advertiser/deposit'),
+            'cancel_url' => url('//advertiser/deposit'),
+            'success_url' => url('/advertiser/deposit'),
+            'local_price' => [
+                'amount' => $this->amount,
+                'currency' => 'USD',
+            ],
+            'pricing_type'=>'fixed_price',
+            'metadata'=>array(
+                'user_id'=> auth()->user()->unique_id,
+                )
+        );
+        $postFilds=urldecode(http_build_query($postFilds));
+        curl_setopt_array($curl, 
+            array(
+                CURLOPT_URL => "https://api.commerce.coinbase.com/charges",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $postFilds,
+                CURLOPT_HTTPHEADER => array(
+                    "X-CC-Api-Key: 5a917e55-0ca0-42ae-a543-67fa9dbd8c28",
+                    "X-CC-Version: 2018-03-22",
+                    "content-type: multipart/form-data"
+                ),
+            )
+        );
+        $result = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        $response = json_decode($result);
+        $this->paymentUrl = $response->data->hosted_url;
+    }
+
     public function updatedAmount(){
         switch($this->selectedMethod)
         {
@@ -94,6 +135,7 @@ class DepositComponent extends Component
                 break;
             case 'coinbasecommerce':
                 $this->amount < DepositMethodSetting::where('name', 'coinbasecommerce_min_deposit')->value('value') ? $this->addError('minamount', 'Min deposit amount for '.$this->selectedMethod.' must be at least $'.$this->minAmount) : $this->amount = $this->amount;
+                $this->coinbaseCommerce();
                 break;
             case 'perfectmoney':
                 $this->amount < DepositMethodSetting::where('name', 'perfectmoney_min_deposit')->value('value') ? $this->addError('minamount', 'Min deposit amount for '.$this->selectedMethod.' must be at least $'.$this->minAmount) : $this->amount = $this->amount;
@@ -104,6 +146,7 @@ class DepositComponent extends Component
                 
         }
     }
+
 
     public function pay(){
         

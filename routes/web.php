@@ -170,6 +170,8 @@ Route::get('/test-coinbase-commerce', [CoinbaseCommerceTestController::class, 'c
 
 Route::get('/faucetpay/callback', [DepositController::class, 'faucetpaySuccessCallback']);
 
+Route::post('/webhook/coinbase', [DepositController::class, 'handleCoinbaseWebhook']);
+
 
 
 

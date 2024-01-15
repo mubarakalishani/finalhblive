@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\DepositMethodSetting;
 use App\Models\Deposit;
 use App\Models\User;
+use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 
 class DepositController extends Controller
 {
@@ -59,5 +60,80 @@ class DepositController extends Controller
         // Invalid IPN callback
         return response('Invalid IPN', 400);
 
+    }
+
+
+    public function handleCoinbaseWebhook(Request $request)
+    {
+        $payload = $request->getContent();
+        $secret = DepositMethodSetting::where('name', 'coinbase_webhook_secret')->value('value');
+
+        // Validate the webhook signature
+        $signature = $request->header('X-CC-WEBHOOK-SIGNATURE');
+        if (hash_equals(hash_hmac('sha256', $payload, $secret), $signature)) {
+            // Signature is valid, process the webhook payload
+            $event = json_decode($payload, true);
+            \App\Models\Log::create([
+                'user_id' => 1,
+                'description' => 'Coinbase Webhook Received '.$event->data->code,
+            ]); 
+            \Illuminate\Support\Facades\Log::info('Coinbase Webhook Received', ['event' => $event]);
+
+            switch ($event->type) {
+                case 'charge:created':
+                    $status = 'created';
+                    break;
+                case 'charge:pending':
+                    $status = 'pending';
+                    break;
+                case 'charge:confirmed':
+                    $status = 'completed';
+                    break;
+                case 'charge:failed':
+                    $status = 'failed';
+                    break;            
+                
+                default:
+                    $status = 'created';
+                    break;
+            }
+            $externalTxAlreadyExists = Deposit::where('external_tx', $event->data->id)->exists();
+            $uniqueUserId = $event->data->metadata->user_id;
+            $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
+            $user = User::find($userId);
+            if (!$externalTxAlreadyExists) {
+                Deposit::create([
+                    'user_id' => $userId,
+                    'method' => 'coinbasecommerce',
+                    'amount' => $event->data->pricing->local->amount,
+                    'status' => $status,
+                    'internal_tx' => Str::random(12),
+                    'description' => 'transaction Coinbase commerce id'.$event->data->id.' status '.$status,
+                    'external_tx' => $event->data->id,
+                ]);
+            }
+            else {
+                $transaction = Deposit::where('external_tx', $event->data->id)
+                ->where('status', '!=', 'completed');
+                $transaction->update([
+                    'status' => $status,
+                ]);
+                switch ($status) {
+                    case 'completed':
+                        $user->addAdvertiserBalance($event->data->pricing->settlement->amount);
+                        break;
+                    
+                    default:
+                        $transaction->update(['status' => $status]);
+                        break;
+                }
+            }
+            
+        } else {
+            // Invalid signature, ignore or log the request
+            return response()->json(['error' => 'Invalid signature'], 401);
+        }
+
+        return response()->json(['status' => 'success']);
     }
 }
