@@ -40,6 +40,7 @@ Route::group([
     $router->resource('offerwalls', OfferwallController::class);
     $router->resource('faucet-settings', FaucetSettingController::class);
     $router->resource('pages', PagesController::class);
+    $router->resource('deposit-methods', DepositMethodController::class);
 
 
 

@@ -1,0 +1,1 @@
+const e=document.querySelector(".btn");e.addEventListener("click",function(){document.querySelector("#sidebar").classList.toggle("collapsed")});var r=new Splide(".splide1",{type:"loop",perPage:3,rewind:!0,breakpoints:{640:{perPage:2,gap:".7rem",height:"12rem"},480:{perPage:1,gap:".7rem",height:"12rem"}}});r.mount();

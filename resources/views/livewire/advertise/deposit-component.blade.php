@@ -24,7 +24,7 @@
                                     </select>
                                     <div class="input-group mb-3 mt-3 py-2">
                                         <span class="input-group-text" id="basic-addon1">$</span>
-                                        <input type="number" class="form-control" placeholder="amount in usd" wire:model.live.debounce.500ms="amount">
+                                        <input type="number" class="form-control" placeholder="amount in usd" wire:model.live="amount">
                                         @error('minamount') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <a href="{{ $paymentUrl }}" target="_blank" class="btn btn-primary text-center my-3">Add funds</a>

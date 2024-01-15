@@ -22,7 +22,7 @@ class DepositComponent extends Component
     public $paypalStatus;
     public $perfectmoneyStatus;
 
-    public $selectedMethod;
+    public $selectedMethod = "coinbasecommerce";
     public $amount = 0;
     public $minAmount = 0;
     public $paymentUrl;
@@ -50,6 +50,7 @@ class DepositComponent extends Component
                 break;
             case 'coinbasecommerce':
                 $this->minAmount = DepositMethod::where('name', 'coinbasecommerce')->value('min_deposit');
+                $this->coinbaseCommerce();
                 break;
             case 'perfectmoney':
                 $this->minAmount = DepositMethod::where('name', 'perfectmoney')->value('min_deposit');
@@ -94,7 +95,7 @@ class DepositComponent extends Component
                 CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_POSTFIELDS => $postFilds,
                 CURLOPT_HTTPHEADER => array(
-                    "X-CC-Api-Key: ".DepositMethodSetting::where('name', 'coinbase_webhook_secret')->value('value'),
+                    "X-CC-Api-Key: ".DepositMethodSetting::where('name', 'coinbase_api')->value('value'),
                     "X-CC-Version: 2018-03-22",
                     "content-type: multipart/form-data"
                 ),
