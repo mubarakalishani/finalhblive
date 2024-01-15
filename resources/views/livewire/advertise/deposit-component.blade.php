@@ -18,24 +18,9 @@
                                 <div class="my-5">
                                     <span class="mb-1">select the payment method</span>
                                     <select class="form-select py-2" wire:model.live="selectedMethod">
-                                        @if ($payeerStatus == 'enabled')
-                                            <option value="payeer">Payeer</option>
-                                        @endif
-                                        @if ($faucetpayStatus == 'enabled')
-                                            <option value="faucetpay">Fauctepay</option>
-                                        @endif
-                                        @if ($perfectmoneyStatus == 'enabled')
-                                            <option value="perfectmoney">Perfect money</option>
-                                        @endif
-                                        @if ($airtmStatus == 'enabled')
-                                            <option value="airtm">Airtm</option>
-                                        @endif
-                                        @if ($paypalStatus == 'enabled')
-                                            <option value="paypal">Paypal</option>
-                                        @endif
-                                        @if ($coinbaseCommerceStatus == 'enabled')
-                                            <option value="coinbasecommerce">Coinbase Commerce</option>
-                                        @endif
+                                        @foreach ($depositMethods as $depositMethod)
+                                            <option value="{{ $depositMethod->name }}">{{ $depositMethod->name }}</option>
+                                        @endforeach
                                     </select>
                                     <div class="input-group mb-3 mt-3 py-2">
                                         <span class="input-group-text" id="basic-addon1">$</span>
