@@ -82,7 +82,7 @@
                                 </table>
                             </div>
                             <div class="d-flex">
-                                {{ $proofs->links() }}
+                                {{ $histories->links() }}
                             </div>
                         </div>
                     </div>
