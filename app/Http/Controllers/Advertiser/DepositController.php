@@ -131,9 +131,10 @@ class DepositController extends Controller
             
         } else {
             // Invalid signature, ignore or log the request
-            return response()->json(['error' => 'Invalid signature'], 401);
+        
+            return response('Invalid signature', 401);
         }
 
-        return response()->json(['status' => 'success']);
+        return response('OK', 200);
     }
 }
