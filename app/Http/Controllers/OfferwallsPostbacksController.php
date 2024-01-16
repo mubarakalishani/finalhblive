@@ -33,7 +33,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postbacks/adscendmedia?status=[STS]hash=[HSH=mJuhLk842UjkkzAzAzAzA8888zAzA]user_id[SID]=&payout[PAY]=&reward=[CUR]&transaction_id=[TID]&ip=[IP][/HSH]&offer_name=[ONM]&offer_id=[OID]
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
@@ -44,14 +43,14 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input();
 
      /*===================================check the hash security==========================================================*/
-        if(hash_hmac('md5', "user_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, OfferwallsSetting::where( 'name', 'adscendmedia_hash')->value('value')) !== $hash) {
+        if(hash_hmac('md5', "user_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, $offerwall->secret_key) !== $hash) {
             echo 0;
             die();
         }
      /*===================================Do necessary Calculations==========================================================*/
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -280,8 +279,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/ayetstudios?user_id={external_identifier}&status={is_chargeback}=&payout{payout_usd}=&reward={currency_amount}&transaction_id={transaction_id}&ip={ip}&offer_name={offer_name}&offer_id={offer_id}
-
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
@@ -297,8 +294,7 @@ class OfferwallsPostbacksController extends Controller
         ksort($parameters);
         // Concatenate the parameters into a string
         $parameterString = http_build_query($parameters);
-        $apiKey = OfferwallsSetting::where('name', 'ayetstudios_api' )->value('value');
-        $computedHash = hash_hmac('sha256', $parameterString, $apiKey);
+        $computedHash = hash_hmac('sha256', $parameterString, $offerwall->api_key);
         // Get the received hash from the custom header
         $receivedHash = $request->header('HTTP_X_AYETSTUDIOS_SECURITY_HASH');
         // Compare the computed hash with the received hash
@@ -315,7 +311,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -536,7 +532,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/ayetstudios?user_id=[YOUR_USER_ID]&status=[STATUS]=&payout=[PAYOUT]=&reward=[REWARD_VALUE]&transaction_id=[TXID]&ip=[USER_IP]&offer_name=[OFFER_NAME]&offer_id=[OFFER_ID]&hash=[HASH]
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
@@ -547,8 +542,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
         //status = completed, or rejected value according to adbreakmedia docs
      /*===================================check the hash security==========================================================*/
-        $secret = OfferwallsSetting::where( 'name', 'adbreakmedia_secret')->value('value');
-        $calculated_hash = hash('sha256', $uniqueUserId . $offerId . $transactionId . $secret);
+        $calculated_hash = hash('sha256', $uniqueUserId . $offerId . $transactionId . $offerwall->secret_key);
  
         if ($hash === $calculated_hash) {
             // success
@@ -566,7 +560,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -793,7 +787,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/ayetstudios?user_id=[%UID%]&status=[%TYPE%]&payout=[%RAW%]&reward=[%VAL%]&transaction_id=[%REF%]&ip=[%IP%]&offer_name=[%OFFER_NAME%]&offer_id=[%OFFER_ID%]
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
@@ -816,7 +809,7 @@ class OfferwallsPostbacksController extends Controller
         // Example: https://url.com?param1=foo&param2=bar
         $url_val = substr($url, 0, -strlen("&hash=$params[hash]"));
         // Generate a hash from the complete callback URL without the "hash" query parameter
-        $calculatedHash = hash_hmac("sha1", $url_val, OfferwallsSetting::where('name', 'bitlabs_secret' )->value('value'));
+        $calculatedHash = hash_hmac("sha1", $url_val, $offerwall->secret_key);
             
         //Check if the generated hash is the same as the "hash" query parameter
         if ($calculatedHash === $hash) {
@@ -831,7 +824,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1065,7 +1058,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('signature');
         
          /*===================================check the hash security==========================================================*/
-         $secretKey = OfferwallsSetting::where( 'name', 'bitcotasks_secret')->value('value');
+         $secretKey = $offerwall->secret_key;
          if(md5($uniqueUserId.$transactionId.$currencyAmount.$secretKey) != $hash)
          {
             echo "ERROR: Signature doesn't match";
@@ -1077,7 +1070,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1304,7 +1297,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/cpxresearch?user_id={user_id}&status={status}&payout={amount_usd}&reward={amount_local}&transaction_id={trans_id}&ip={ip_click}&hash={secure_hash}
         $uniqueUserId = $request->input();
         $payout = $request->input();
         $currencyAmount = $request->input();
@@ -1315,7 +1307,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
         
          /*===================================check the hash security==========================================================*/
-         $secret_key = md5($transactionId.'-' . OfferwallsSetting::where('name', 'cpxsresearch_secret' )->value('value'));
+         $secret_key = md5($transactionId.'-' . $offerwall->secret_key);
          if($secret_key !== $hash){
              echo 0;
              die();
@@ -1326,7 +1318,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1551,7 +1543,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/lootably?user_id={userID}&status={status}&offer_name={offerName}&offer_id={offerID}&payout={revenue}&reward={currencyReward}&transaction_id={transactionID}&ip={ip}&hash={hash}
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
@@ -1562,7 +1553,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
         
      /*===================================check the hash security==========================================================*/
-        $secretKey = OfferwallsSetting::where( 'name', 'lootably_secret')->value('value');
+        $secretKey = $offerwall->secret_key;
         $security = hash("sha256", $uniqueUserId . $ipAddress . $payout . $currencyAmount . $secretKey);
         if($security !== $hash){
             echo 0;
@@ -1574,7 +1565,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1811,7 +1802,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('signature');
         
          /*===================================check the hash security==========================================================*/
-         $secretKey = OfferwallsSetting::where( 'name', 'offers4crypto_secret')->value('value');
+         $secretKey = $offerwall->secret_key;
          if(md5($uniqueUserId.$transactionId.$currencyAmount.$secretKey) != $hash)
          {
             echo "ERROR: Signature doesn't match";
@@ -1823,7 +1814,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2050,7 +2041,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/excentiv?user_id={{userId}}&status={{status}}&payout={{payout}}&reward={{rewardValue}}&transaction_id={{transactionId}}&ip={{userIp}}&hash={{secret}}
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
@@ -2061,7 +2051,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
         
      /*===================================check the hash security==========================================================*/
-     if(md5($uniqueUserId.$transactionId.$currencyAmount.OfferwallsSetting::where('name', 'excentiv_secret' )->value('value')) != $hash)
+     if(md5($uniqueUserId.$transactionId.$currencyAmount.$offerwall->secret_key) != $hash)
      {
       echo "ERROR: Signature doesn't match";
       return;
@@ -2072,7 +2062,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2307,7 +2297,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('signature');
         
          /*===================================check the hash security==========================================================*/
-         $secret_key = OfferwallsSetting::where( 'name', 'kiwiwall_secret')->value('value');
+         $secret_key = $offerwall->secret_key;
          $validation_signature = md5($uniqueUserId . ':' . $currencyAmount . ':' . $secret_key);
          if ($hash != $validation_signature) {
             // Signatures not equal - send error code
@@ -2320,7 +2310,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2545,7 +2535,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/monlix?user_id={{userId}}&status={{status}}&offer_name={{taskName}}&payout={{payout}}&reward={{rewardValue}}&transaction_id={{transactionId}}&ip={{userIp}}&hash={{secretKey}}
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
@@ -2556,7 +2545,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
         
      /*===================================check the hash security==========================================================*/
-        if ($hash != OfferwallsSetting::where( 'name', 'monlix_secret')->value('value')) {
+        if ($hash != $offerwall->secret_key) {
            echo "ERROR: Signature doesn't match";
            return;
         }
@@ -2567,7 +2556,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2805,7 +2794,7 @@ class OfferwallsPostbacksController extends Controller
         
      /*===================================check the hash security==========================================================*/
         /*Create validation hash and validate hashes*/
-        $secretKey = OfferwallsSetting::where( 'name', 'notik_secret')->value('value'); // This has to be your App's secret key that you can find in you App detail page
+        $secretKey = $offerwall->secret_key; // This has to be your App's secret key that you can find in you App detail page
         /*Get the currently active http protocol*/
         $protocol = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on") ? "https" : "http";
         /*Build the full callback URL*/
@@ -2828,7 +2817,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -3061,7 +3050,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/revlum?user_id={subId}&status={status}&offer_name={offerName}&offer_id={offerId}&payout={payout}&reward={reward}&transaction_id={transId}&ip={userIp}&hash={signature}
         $uniqueUserId = $request->input();
         $payout = $request->input();
         $currencyAmount = $request->input();
@@ -3072,7 +3060,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
         
      /*===================================check the hash security==========================================================*/
-        $secret = OfferwallsSetting::where( 'name', 'revlum_secret')->value('value');
+        $secret = $offerwall->secret_key;
         if(md5($uniqueUserId.$transactionId.$currencyAmount.$secret) != $hash)
         {
             echo "ERROR: Signature doesn't match";
@@ -3084,7 +3072,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -3311,7 +3299,6 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        https://handbucks.com/postback/timewall?user_id={userID}&status={type}&payout={revenue}&reward={currencyAmount}&transaction_id={transactionID}&ip={ip}&hash={hash}
         $uniqueUserId = $request->input();
         $payout = $request->input();
         $currencyAmount = $request->input();
@@ -3322,7 +3309,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input();
         
      /*===================================check the hash security==========================================================*/
-        $security_key = hash("sha256", $uniqueUserId . $payout . OfferwallsSetting::where( 'name', 'timewall_secret')->value('value'));
+        $security_key = hash("sha256", $uniqueUserId . $payout . $offerwall->secret_key);
         if ($security_key !== $hash) {
             exit('fail');
         }
@@ -3332,7 +3319,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -3568,7 +3555,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('signature');
         
      /*===================================check the hash security==========================================================*/
-        if(md5($uniqueUserId.$transactionId.$currencyAmount.OfferwallsSetting::where( 'name', 'wannads_secret')->value('value')) != $hash)
+        if(md5($uniqueUserId.$transactionId.$currencyAmount.$offerwall->secret_key) != $hash)
         {
             echo "ERROR: Signature doesn't match";
             return;
@@ -3579,7 +3566,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwal->ref_commission;
+        $refCommissionPercendtage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
