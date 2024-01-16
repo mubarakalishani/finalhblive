@@ -55,20 +55,20 @@ Route::get('/advertiser/task', function () {
 
 
 //offerwalls postbacks routes
-Route::get('/postbacks/adscendmedia', [OfferwallsPostbacksController::class, 'adscendmedia']);
-Route::get('/postbacks/ayetstudios', [OfferwallsPostbacksController::class, 'ayetstudios']);
-Route::get('/postbacks/adbreakmedia', [OfferwallsPostbacksController::class, 'adbreakmedia']);
-Route::get('/postbacks/bitlabs', [OfferwallsPostbacksController::class, 'bitlabs']);
-Route::get('/postbacks/bitcotasks', [OfferwallsPostbacksController::class, 'bitcotasks']);
-Route::get('/postbacks/cpxresearch', [OfferwallsPostbacksController::class, 'cpxresearch']);
-Route::get('/postbacks/lootably', [OfferwallsPostbacksController::class, 'lootably']);
-Route::get('/postbacks/offers4crypto', [OfferwallsPostbacksController::class, 'offers4crypto']);
-Route::get('/postbacks/excentiv', [OfferwallsPostbacksController::class, 'excentiv']);
-Route::get('/postbacks/kiwiwall', [OfferwallsPostbacksController::class, 'kiwiwall']);
-Route::get('/postbacks/notik', [OfferwallsPostbacksController::class, 'notik']);
-Route::get('/postbacks/revlum', [OfferwallsPostbacksController::class, 'revlum']);
-Route::get('/postbacks/timewall', [OfferwallsPostbacksController::class, 'timewall']);
-Route::get('/postbacks/wannads', [OfferwallsPostbacksController::class, 'wannads']);
+Route::get('/postback/adscendmedia', [OfferwallsPostbacksController::class, 'adscendmedia']);
+Route::get('/postback/ayetstudios', [OfferwallsPostbacksController::class, 'ayetstudios']);
+Route::get('/postback/adbreakmedia', [OfferwallsPostbacksController::class, 'adbreakmedia']);
+Route::get('/postback/bitlabs', [OfferwallsPostbacksController::class, 'bitlabs']);
+Route::get('/postback/bitcotasks', [OfferwallsPostbacksController::class, 'bitcotasks']);
+Route::get('/postback/cpxresearch', [OfferwallsPostbacksController::class, 'cpxresearch']);
+Route::get('/postback/lootably', [OfferwallsPostbacksController::class, 'lootably']);
+Route::get('/postback/offers4crypto', [OfferwallsPostbacksController::class, 'offers4crypto']);
+Route::get('/postback/excentiv', [OfferwallsPostbacksController::class, 'excentiv']);
+Route::get('/postback/kiwiwall', [OfferwallsPostbacksController::class, 'kiwiwall']);
+Route::get('/postback/notik', [OfferwallsPostbacksController::class, 'notik']);
+Route::get('/postback/revlum', [OfferwallsPostbacksController::class, 'revlum']);
+Route::get('/postback/timewall', [OfferwallsPostbacksController::class, 'timewall']);
+Route::get('/postback/wannads', [OfferwallsPostbacksController::class, 'wannads']);
 
 
 /*===============================================After Login Routes, with middleware auth required====================================== */
