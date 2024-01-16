@@ -105,7 +105,7 @@ class OfferwallController extends AdminController
     {
         $form = new Form(new Offerwall());
 
-        $form->switch('order', __('Order'));
+        $form->number('order', __('Order'));
         $form->text('name', __('Name'));
         $form->switch('status', __('Status'))->default(1);
         $form->text('secret_key', __('Secret key'));
