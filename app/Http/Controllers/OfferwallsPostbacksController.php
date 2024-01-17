@@ -16,22 +16,22 @@ class OfferwallsPostbacksController extends Controller
 
         $offerwall = Offerwall::where('name', 'Adscendmedia')->first();
      /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
-        $ipAddress = $request->ip();
-        // Get the whitelisted IPs from the database
-        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
+        // $ipAddress = $request->ip();
+        // // Get the whitelisted IPs from the database
+        // $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
-        // Check if $ipAddress is in the whitelisted IPs
-        if (in_array($ipAddress, $whitelistedIps)) {
+        // // Check if $ipAddress is in the whitelisted IPs
+        // if (in_array($ipAddress, $whitelistedIps)) {
             
-        } else {
-            // IP address is not whitelisted, take appropriate action
-            return "Access Denied! IP address $ipAddress is not whitelisted!";
-        }
+        // } else {
+        //     // IP address is not whitelisted, take appropriate action
+        //     return "Access Denied! IP address $ipAddress is not whitelisted!";
+        // }
 
-        if ($offerwall->status != 1 ) {
-            die();
-            echo "offerwall is not enabled ";
-        }
+        // if ($offerwall->status != 1 ) {
+        //     die();
+        //     echo "offerwall is not enabled ";
+        // }
         /*===================================Get All common data from the postback==========================================================*/
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
@@ -43,10 +43,10 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
 
      /*===================================check the hash security==========================================================*/
-        if(hash_hmac('md5', "user_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, $offerwall->secret_key) !== $hash) {
-            echo 0;
-            die();
-        }
+        // if(hash_hmac('md5', "user_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, $offerwall->secret_key) !== $hash) {
+        //     echo 0;
+        //     die();
+        // }
      /*===================================Do necessary Calculations==========================================================*/
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
