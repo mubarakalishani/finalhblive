@@ -16,22 +16,22 @@ class OfferwallsPostbacksController extends Controller
 
         $offerwall = Offerwall::where('name', 'Adscendmedia')->first();
      /*===================================Ip Whitelist and Check Offerwall Enabled or not==================================*/
-        // $ipAddress = $request->ip();
-        // // Get the whitelisted IPs from the database
-        // $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
+        $ipAddress = $request->ip();
+        // Get the whitelisted IPs from the database
+        $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
-        // // Check if $ipAddress is in the whitelisted IPs
-        // if (in_array($ipAddress, $whitelistedIps)) {
+        // Check if $ipAddress is in the whitelisted IPs
+        if (in_array($ipAddress, $whitelistedIps)) {
             
-        // } else {
-        //     // IP address is not whitelisted, take appropriate action
-        //     return "Access Denied! IP address $ipAddress is not whitelisted!";
-        // }
+        } else {
+            // IP address is not whitelisted, take appropriate action
+            return "Access Denied! IP address $ipAddress is not whitelisted!";
+        }
 
-        // if ($offerwall->status != 1 ) {
-        //     die();
-        //     echo "offerwall is not enabled ";
-        // }
+        if ($offerwall->status != 1 ) {
+            die();
+            echo "offerwall is not enabled ";
+        }
         /*===================================Get All common data from the postback==========================================================*/
         $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
