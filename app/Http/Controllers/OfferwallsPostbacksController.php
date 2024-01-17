@@ -40,7 +40,7 @@ class OfferwallsPostbacksController extends Controller
         $ipAddress = $request->has('ip') ? $request->input('ip') : null;
         $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
         $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
-        $hash = $request->input();
+        $hash = $request->input('hash');
 
      /*===================================check the hash security==========================================================*/
         if(hash_hmac('md5', "user_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, $offerwall->secret_key) !== $hash) {
