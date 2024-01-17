@@ -43,7 +43,7 @@ class OfferwallsPostbacksController extends Controller
         $hash = $request->input('hash');
 
      /*===================================check the hash security==========================================================*/
-        if(hash_hmac('md5', "offer_id=".$uniqueUserId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, $offerwall->secret_key) !== $hash) {
+        if(hash_hmac('md5', "offer_id=".$offerId."&payout=".$payout."&reward=".$currencyAmount."&transaction_id=".$transactionId."&ip=".$ipAddress, $offerwall->secret_key) !== $hash) {
             echo 0;
             die();
         }
