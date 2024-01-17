@@ -50,7 +50,7 @@ class OfferwallsPostbacksController extends Controller
      /*===================================Do necessary Calculations==========================================================*/
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -122,7 +122,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -140,8 +140,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -311,7 +310,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -383,7 +382,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -402,8 +401,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -560,7 +558,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -632,7 +630,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -651,8 +649,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -824,7 +821,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -897,7 +894,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -916,8 +913,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -1071,7 +1067,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1143,7 +1139,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -1162,8 +1158,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
         /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -1319,7 +1314,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1391,7 +1386,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -1410,8 +1405,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -1566,7 +1560,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1638,7 +1632,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -1657,8 +1651,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -1815,7 +1808,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -1887,7 +1880,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -1906,8 +1899,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
         /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -2063,7 +2055,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2135,7 +2127,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -2154,8 +2146,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -2311,7 +2302,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2383,7 +2374,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -2402,8 +2393,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
         /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -2557,7 +2547,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2629,7 +2619,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -2648,8 +2638,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -2818,7 +2807,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -2890,7 +2879,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -2909,8 +2898,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
         /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -3073,7 +3061,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -3145,7 +3133,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -3164,8 +3152,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -3320,7 +3307,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -3392,7 +3379,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -3411,8 +3398,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
@@ -3567,7 +3553,7 @@ class OfferwallsPostbacksController extends Controller
 
         $userId = User::where('unique_user_id', $uniqueUserId)->value('id');
         $user = User::find($userId);
-        $refCommissionPercendtage = $offerwall->ref_commission;
+        $refCommissionPercentage = $offerwall->ref_commission;
         $offerHold = $offerwall->hold;
 
         $userLevel = $user->level;
@@ -3639,7 +3625,7 @@ class OfferwallsPostbacksController extends Controller
         if( $uplineId != 0 )
         {
             $upline = User::find($uplineId);
-            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercendtage;
+            $uplineCommision = abs($finalReward) / 100 * $refCommissionPercentage;
         } else
         {
             $uplineCommision = 0;
@@ -3658,8 +3644,7 @@ class OfferwallsPostbacksController extends Controller
             }
         }else{ $offerHoldTime =0; }
         //check if transaction found in the database
-        $transactionId = $request->input('transactionId');
-        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
+        $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->where('provider_name', $offerwall->name)->exists();
 
      /*===================================Create Log if complete, update if trx found and reversed ==========================================================*/
         //if transaction does not exist, create log
