@@ -138,7 +138,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -149,7 +149,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'Adscendmedia',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -400,7 +400,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -411,7 +411,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'ayetstudios',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -649,7 +649,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -660,7 +660,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'adbreakmedia',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -858,20 +858,21 @@ class OfferwallsPostbacksController extends Controller
 
         if( $request->has('status') ) 
         {
-            if ($request->input('status') == 'RECONCILIATION' && $offerHold == 0 ) 
+            if ($request->input('status') == 'COMPLETED' && $offerHold == 0 ) 
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 'RECONCILIATION' && $finalReward <= $offerwall->tier1_hold_amount )
+            elseif ($request->input('status') == 'COMPLETED' && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 'RECONCILIATION' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 'COMPLETED' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
-            else
-            {
+            elseif( $request->input('status') == 'PENDING' ){
+                return;
+            }else{
                 $finalStatus = 2;
             }
         }
@@ -913,7 +914,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -924,7 +925,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'bitlabs',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -1159,7 +1160,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1170,7 +1171,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'bitcotasks',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -1407,7 +1408,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1418,7 +1419,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'cpxsresearch',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -1654,7 +1655,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1665,7 +1666,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'lootably',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -1903,7 +1904,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -1914,7 +1915,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'offers4crypto',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -2151,7 +2152,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2162,7 +2163,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'excentiv',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -2399,7 +2400,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2410,7 +2411,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'kiwiwall',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -2645,7 +2646,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2656,7 +2657,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'monlix',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -2906,7 +2907,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -2917,7 +2918,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'notik',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -3161,7 +3162,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -3172,7 +3173,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'revlum',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -3408,7 +3409,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -3419,7 +3420,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'timewall',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
@@ -3655,7 +3656,7 @@ class OfferwallsPostbacksController extends Controller
             else{
                 $offerHoldTime = $offerwall->tier3_hold_time;
             }
-        }
+        }else{ $offerHoldTime =0; }
         //check if transaction found in the database
         $transactionId = $request->input('transactionId');
         $transactionIdExists = OffersAndSurveysLog::where('transaction_id', $transactionId)->exists();
@@ -3666,7 +3667,7 @@ class OfferwallsPostbacksController extends Controller
          {
             OffersAndSurveysLog::create([
                 'user_id' => $userId,
-                'provider_name' => 'wannads',
+                'provider_name' => $offerwall->name,
                 'payout' => $payout,
                 'reward' => $finalReward,
                 'added_expert_level' => $addToExpertLevel,
