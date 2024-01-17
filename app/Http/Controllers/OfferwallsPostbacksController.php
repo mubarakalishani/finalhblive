@@ -58,14 +58,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -318,14 +318,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -566,14 +566,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -829,14 +829,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -1075,14 +1075,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -1322,14 +1322,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -1568,14 +1568,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -1816,14 +1816,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -2063,14 +2063,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -2310,14 +2310,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -2555,14 +2555,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -2815,14 +2815,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -3069,14 +3069,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -3315,14 +3315,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
@@ -3561,14 +3561,14 @@ class OfferwallsPostbacksController extends Controller
         if ( $userLevel == 0 ) 
         {
             $finalReward = ( $payout / 100 ) * $offerwall->starter_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 1 )
         {
             $finalReward = ( $payout / 100 ) * $offerwall->advance_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }elseif ( $userLevel == 2 ) {
             $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-            $addToExpertLevel = ( $payout / 100 ) * ($expertCp - $finalReward);
+            $addToExpertLevel = ( ( $expertCp / 100 ) * $payout ) - $finalReward;
         }else
         {
             Log::create([
