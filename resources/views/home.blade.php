@@ -53,7 +53,7 @@
                               <!-- Register buttons end -->
                             </form>
                             <div class="row">
-                              <div class="col-lg-7 signup-btn">
+                              <div class="col-lg-12 signup-btn">
                                 <a href="/auth/google" class="btn bg-light btn-block"><img src="images/google.png">with google</a>
                               </div>
                             </div>
