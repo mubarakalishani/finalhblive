@@ -18,6 +18,11 @@ class OffersAndSurveysLog extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function provider()
+    {
+        return $this->belongsTo(Offerwall::class, 'user_id', 'id');
+    }
+
     public function scopeSearch($query, $value)
     {
         $query->where(function ($query) use ($value) {

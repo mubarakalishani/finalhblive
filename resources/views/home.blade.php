@@ -224,7 +224,7 @@
                   </div>
                 </div>
               </div>
-              <!-- ***** Most Popular Provider End ***** -->
+              <!-- ***** Features End ***** -->
               <!-- ***** Most Popular Providers Start ***** -->
               <div class="container">
                 <div class="most-popular-1">
@@ -232,7 +232,7 @@
                       <div id="view-all-btn">
                         <div class="results-bar d-flex align-items-center justify-content-between">
                           <div class="heading-section-custom">
-                            <h4><em>Most Popular</em> Provider</h4>
+                            <h4><em>Most Popular</em> Providers</h4>
                           </div>
                           <div class="d-flex">
                             <div class="ml-4">
@@ -249,7 +249,7 @@
                                 <div class="col-sm-2 splide__slide m-0">
                                   <div class="">
                                     <div class="item inner-item">
-                                      <img src="{{ $offerwall->image_url }}" alt="{{ $offerwall->name }} offerwall">
+                                      <img src="{{ $offerwall->image_url }}" alt="{{ $offerwall->name }} offerwall" height="50px">
                                       <h4>{{ $offerwall->name }}<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
                                     </div>
                                   </div>
@@ -274,7 +274,7 @@
                         </div>
                         <div class="d-flex">
                           <div class="ml-4">
-                            <a href="login.html">View all</a>
+                            <a href="/login">View all</a>
                           </div>
                         </div>
                       </div>

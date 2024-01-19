@@ -5,11 +5,11 @@
               <div class="row row-2">
                   <div class="col-sm-3 ">
                     <div class="footer-logo">
-                      <a href="#">
+                      <a href="/">
                         <img src="images/logo.png"  alt="CoolBrand" style="">
                       </a>
                     </div>
-                    <p>This is our Handbucks a heaven for micro taskers</p>
+                    <p>Handbucks, a heaven for online workers</p>
                   </div>
                   <div class="col-sm-2  my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
