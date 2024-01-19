@@ -24,6 +24,7 @@ use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\ContactPageController;
+use App\Http\Controllers\Pages\FaqController;
 use App\Http\Controllers\Pages\PrivacyPolicyController;
 use App\Http\Controllers\Pages\TermsController;
 
@@ -187,6 +188,7 @@ Route::get('/contact', [ContactPageController::class, 'index']);
 Route::post('/contact', [ContactPageController::class, 'store'])->name('contact.submit');
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 Route::get('/terms', [TermsController::class, 'index'])->name('terms-and-conditions.index');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('/privacy-policy', [App\Http\Controllers\Pages\PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
 
 
