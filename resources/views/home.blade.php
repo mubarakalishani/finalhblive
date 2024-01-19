@@ -12,8 +12,10 @@
                     <div class="col-lg-6">
                       <div class="header-text" style="margin-top: 60px; margin-bottom: 20px;">
                         <h6>Welcome To Handbucks</h6>
-                        <h4><em>HandBucks</em> - Your Gateway to Earning Cash Online!</h4>
-                        <p style="padding-bottom: 20px; black: white;">Discover a world of endless opportunities to earn real cash online with HandBucks! Complete surveys, engage with exciting offers, click on paid-to-click (PTC) ads, explore shortlinks, tackle tasks, and play games – all while putting money in your pocket. Join today and turn your spare time into rewarding experiences and cold, hard cash!</p>
+                        <h4><em>HandBucks</em> - Your Cash Oasis Online!</h4>
+                        <p style="padding-bottom: 20px; black: white;">
+                          Explore, earn, enjoy! HandBucks is your go-to for cash rewards. Complete surveys, click PTC ads, explore shortlinks, and more. Join now for a world of cash-earning opportunities!
+                        </p>
                         <div class="main-button">
                           <a href="/register">Register Now</a>
                         </div>
@@ -29,44 +31,32 @@
                             <x-validation-errors class="mb-4" />
                             <form method="POST" action="{{ route('login') }}">
                               @csrf
-                              <!-- 2 column grid layout with text inputs for the first and last names -->
-                              {{-- <div class="form-outline mb-4">
-                                <input type="email" id="form3Example3" class="form-control"  placeholder="Name" />
-                              </div> --}}
-
                               <!-- Email input -->
                               <div class="form-outline mb-4">
-                                <input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" placeholder="registered email address" />
+                                <input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" placeholder="email address" />
                               </div>
 
                               <!-- Password input -->
                               <div class="form-outline mb-4">
                                 <input id="password" class="form-control" type="password" name="password" required autocomplete="current-password" placeholder="password"/>
                               </div>
-
-                              <!-- Checkbox -->
-                              <!-- <div class="form-check d-flex justify-content-center mb-4">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-                                <label class="form-check-label" for="form2Example33">
-                                  Subscribe to our newsletter
-                                </label>
-                              </div> -->
-
                               <!-- Submit button -->
-                              <div class="singup-term-text">By signing in you agree to our terms and conditions as well as Privacy Policy. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+                              <div class="singup-term-text">By signing in you agree to our terms and conditions as well as Privacy Policy. This site is protected by reCAPTCHA and the Google/hcaptcha Privacy Policy and Terms of Service apply.
                               </div>
                               <div class="signup-btn-icons-area">
                                 <div class="row">
-                                  <div class="col-lg-5 signup-btn">
-                                    <button type="submit" class="btn btn-block mb-2">Sign up</button>
-                                  </div>
-                                  <div class="col-lg-7 signup-btn">
-                                    <a href="/auth/google" class="btn bg-light btn-block"><img src="images/google.png">with google</a>
+                                  <div class="col-lg-12 signup-btn">
+                                    <button type="submit" class="btn btn-block mb-2">Login</button>
                                   </div>
                                 </div>
                               </div>
                               <!-- Register buttons end -->
                             </form>
+                            <div class="row">
+                              <div class="col-lg-7 signup-btn">
+                                <a href="/auth/google" class="btn bg-light btn-block"><img src="images/google.png">with google</a>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
