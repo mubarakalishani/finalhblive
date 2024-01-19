@@ -83,7 +83,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    2000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',
@@ -103,7 +113,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    2000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',
@@ -123,7 +143,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    2000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',
@@ -143,7 +173,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    2000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',
@@ -163,7 +203,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    2000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',
@@ -183,7 +233,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    2000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',
@@ -203,7 +263,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    2000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',
@@ -223,7 +293,17 @@
                 perPage: 3,
                 rewind: true,
                 breakpoints: {
-                    640: {
+                    3000: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    1024: {
+                        perPage: 3,
+                        gap: '.7rem',
+                        height: '12rem',
+                    },
+                    768: {
                         perPage: 2,
                         gap: '.7rem',
                         height: '12rem',

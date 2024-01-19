@@ -76,7 +76,7 @@
                         </div>
                         <div class="d-flex">
                           <div class="ml-4">
-                            <a href="login.html">View all</a>
+                            <a href="/login">View all</a>
                           </div>
                         </div>
                       </div>
@@ -88,11 +88,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item inner-item">
-                                    <img src="https://www.aticlix.net/images/wanna.png" alt="">
-                                    <h4>Micro Task<br><span>Proposals</span></h4>
+                                    <img src="images/features/faucet.jpg" alt="">
+                                    <h4>Faucet<br><span>Available</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> </li>
-                                      <li> 393</li>
+                                      <li><i class="fa-solid fa-faucet-drip"></i> 500</li>
                                     </ul>
                                   </div>
                                 </div>
@@ -100,8 +100,8 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/lot.png" alt="">
-                                    <h4>Surveys<br><span>Proposals</span></h4>
+                                    <img src="images/features/microtasks.jpg" alt="">
+                                    <h4>MicroTask<br><span>Available</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> </li>
                                       <li><i class="fa-solid fa-list"></i> 629</li>
@@ -112,11 +112,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/cpxs.png" alt="">
-                                    <h4>Offerwalls<br><span>Proposals</span></h4>
+                                    <img src="images/features/shortlinks.jpg" alt="">
+                                    <h4>ShortLink<br><span>Available</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-list"></i> 862</li>
+                                      <li><i class="fa-solid fa-link"></i> 862</li>
                                     </ul>
                                   </div>
                                 </div>
@@ -124,11 +124,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/adsc.png" alt="">
-                                    <h4>Faucet<br><span>Proposals</span></h4>
+                                    <img src="images/features/ptc1.png" alt="">
+                                    <h4>PTC<br><span>Avaialable</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-faucet-drip"></i> 7877</li>
+                                      <li><i class="fa-solid fa-eye"></i> 787</li>
                                     </ul>
                                   </div>
                                 </div>
@@ -136,11 +136,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/agm.png" alt="">
-                                    <h4>PTC Ads<br><span>Proposals</span></h4>
+                                    <img src="images/features/survey2.jpg" alt="">
+                                    <h4>Surveys<br><span>Proposals</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-eye"></i> 484</li>
+                                      <li><i class="fa-solid fa-list"></i> 484</li>
                                     </ul>
                                   </div>
                                 </div>
@@ -148,11 +148,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                    <h4>Shortlink<br><span>Proposals</span></h4>
+                                    <img src="images/features/offers.jpg" alt="">
+                                    <h4>Offers<br><span>Proposals</span></h4>
                                     <ul>
                                     <li><i class="fa fa-star"></i> 4.8</li>
-                                    <li><i class="fa-solid fa-link"></i> 843</li>
+                                    <li><i class="fa-solid fa-list"></i> 843</li>
                                   </ul>
                                   </div>
                                 </div>
@@ -160,11 +160,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                    <h4>Advertising<br><span>Buy ads pack</span></h4>
+                                    <img src="images/features/games.jpg" alt="">
+                                    <h4>Games<br><span>available</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-rectangle-ad"></i> ...</li>
+                                      <li><i class="fa-solid fa-gamepad"></i> ...</li>
                                     </ul>
                                   </div>
                                 </div>
@@ -172,7 +172,7 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
+                                    <img src="images/features/videos.jpg" alt="">
                                     <h4>Videos<br><span>Proposals</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> 4.8</li>
@@ -184,8 +184,8 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                    <h4>Affiliating<br><span>Percentage</span></h4>
+                                    <img src="images/features/afilliate.jpg" alt="">
+                                    <h4>Afilliate<br><span>Reward</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> 4.8</li>
                                       <li><i class="fa-solid fa-people-group"></i> 25%</li>
@@ -196,11 +196,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                    <h4>Games<br><span>Proposals</span></h4>
+                                    <img src="images/features/ads.jpg" alt="">
+                                    <h4>Advertise<br><span>Packages</span></h4>
                                     <ul>
                                       <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-gamepad"></i> 180</li>
+                                      <li><i class="fa-solid fa-rectangle-ad"></i> 5</li>
                                     </ul>
                                   </div>
                                 </div>
@@ -208,11 +208,11 @@
                               <div class="col-sm-2 splide__slide m-0">
                                 <div class="">
                                   <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                    <h4>Level system<br><span>Proposals</span></h4>
+                                    <img src="images/features/level.jpg" alt="">
+                                    <h4>Levels<br><span>All levels</span></h4>
                                     <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-stairs"></i> 1..3</li>
+                                      <li><i class="fa fa-star"></i> 1-3</li>
+                                      <li><i class="fa-solid fa-stairs"></i> 3</li>
                                     </ul>
                                   </div>
                                 </div>
@@ -236,7 +236,7 @@
                           </div>
                           <div class="d-flex">
                             <div class="ml-4">
-                              <a href="login.html">View all</a>
+                              <a href="/dashboard">View all</a>
                             </div>
                           </div>
                         </div>
@@ -245,54 +245,16 @@
                         <div class="splide splide2">
                           <div class="splide__track">
                             <div class="splide__list">
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item inner-item">
-                                    <img src="https://www.aticlix.net/images/wanna.png" alt="">
-                                    <h4>Wannads<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
+                              @foreach ($offerwalls as $offerwall)
+                                <div class="col-sm-2 splide__slide m-0">
+                                  <div class="">
+                                    <div class="item inner-item">
+                                      <img src="{{ $offerwall->image_url }}" alt="{{ $offerwall->name }} offerwall">
+                                      <h4>{{ $offerwall->name }}<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                  <div class="">
-                                    <div class="item">
-                                      <img src="https://www.aticlix.net/images/lot.png" alt="">
-                                      <h4>Lootably<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                  </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                  <div class="">
-                                    <div class="item">
-                                      <img src="https://www.aticlix.net/images/cpxs.png" alt="">
-                                      <h4>CPX<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                  </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                  <div class="">
-                                    <div class="item">
-                                      <img src="https://www.aticlix.net/images/adsc.png" alt="">
-                                      <h4>Moonlix<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                  </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                  <div class="">
-                                    <div class="item">
-                                      <img src="https://www.aticlix.net/images/agm.png" alt="">
-                                      <h4>AdGatemedia<br><span><i class="fa-solid fa-circle" style="color:red;"></i> Availabe</span></h4>
-                                    </div>
-                                  </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                  <div class="">
-                                    <div class="item">
-                                      <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                      <h4>Offertoro<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                  </div>
-                              </div>
+                              @endforeach
                             </div>
                           </div>
                         </div>
@@ -321,80 +283,33 @@
                       <div class="splide splide3">
                         <div class="splide__track">
                           <div class="splide__list">
-                            <div class="col-sm-2 splide__slide m-0">
-                              <div class="">
+                            @foreach ($gateways as $gateway)
+                              <div class="col-sm-3 splide__slide m-0">
+                                <div class="">
                                   <div class="item inner-item">
-                                    <img src="https://www.dosurveys.net/assets/images/gateways/perfectmoney.png" alt="">
-                                    <h4>PM<br><span>Minimum</span></h4>
-                                  <ul>
-                                    <li><i class="fa-solid fa-gauge-high"></i> Instant</li>
-                                    <li><i class="fa fa-dollar"></i> 0.1</li>
-                                  </ul>
+                                    <div class="row">
+                                      <div class="col-lg-12">
+                                        <img src="{{ $gateway->image_path }}" alt="payout method - {{$gateway->name}}" height="30px">
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col">
+                                        <h4>{{ $gateway->name }}</h4>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-6">
+                                        <span>min:</span>
+                                      </div>
+                                      <div class="col-lg-6">
+                                          <span><i class="fa text-primary fa-dollar"></i> {{ $gateway->min_payout }}</span>
+                                      </div>
+                                    </div>
                                   </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                              <div class="">
-                                <div class="item inner-item">
-                                  <img src="https://www.dosurveys.net/assets/images/gateways/payeer.png" alt="">
-                                  
-                                  <h4>Payeer<br><span>Minimum</span></h4>
-                                  <ul>
-                                    <li><i class="fa-solid fa-gauge-high"></i> Instant</li>
-                                    <li><i class="fa fa-dollar"></i> 0.1</li>
-                                  </ul>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                              <div class="">
-                                <div class="item">
-                                  <img src="https://www.dosurveys.net/assets/images/gateways/binance.png" alt="">
-                                  <h4>Binance<br><span>Minimum</span></h4>
-                                  <ul>
-                                    <li><i class="fa-solid fa-gauge-high"></i> Instant</li>
-                                    <li><i class="fa fa-dollar"></i> 0.1</li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                              <div class="">
-                                <div class="item">
-                                  <img src="https://www.dosurveys.net/assets/images/gateways/faucetpay.png" alt="">
-                                  <h4>Faucetpay<br><span>Minimum</span></h4>
-                                  <ul>
-                                    <li><i class="fa-solid fa-gauge-high"></i> Instant</li>
-                                    <li><i class="fa fa-dollar"></i> 0.1</li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                              <div class="">
-                                <div class="item">
-                                  <img src="https://www.dosurveys.net/assets/images/gateways/airtm.png" alt="">
-                                  <h4>Airtm<br><span>Minimum</span></h4>
-                                  <ul>
-                                    <li><i class="fa-solid fa-gauge-high"></i> Instant</li>
-                                    <li><i class="fa fa-dollar"></i> 0.1</li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                              <div class="">
-                                <div class="item">
-                                  <img src="https://www.dosurveys.net/assets/images/gateways/usdt.png" alt="">
-                                  <h4>USDT<br><span>Minimum</span></h4>
-                                  <ul>
-                                    <li><i class="fa-solid fa-gauge-high"></i> Instant</li>
-                                    <li><i class="fa fa-dollar"></i> 0.1</li>
-                                  </ul>
-                              </div>
-                            </div>
+                            @endforeach  
                           </div>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -408,11 +323,11 @@
                     <div id="view-all-btn">
                       <div class="results-bar d-flex align-items-center justify-content-between">
                         <div class="heading-section-custom">
-                          <h4>Last Cashouts</h4>
+                          <h4>Last 5 Cashouts</h4>
                         </div>
                         <div class="d-flex">
                           <div class="ml-4">
-                            <a href="#">View all</a>
+                            <a href="/payment-proofs">View all</a>
                           </div>
                         </div>
                       </div>
@@ -434,78 +349,26 @@
                                       </tr>
                                     </thead>
                                     <tbody>
+                                      @foreach ($withdrawals as $withdrawal)
                                         <tr>
                                           <td class="txt-oflo">
-                                            <span class="fi fi-us"></span> Mubarak
+                                            <span class="fi fi-us"></span> {{ $withdraw->user->username }}
                                           </td>
                                           <td>
-                                            <span class="text-success">$0.60</span>
+                                            <span class="text-success">$ {{ $withdrawal->amount_after_fee }}</span>
                                           </td>
                                           <td>
                                             <span class="text-info">
-                                              <img src="https://dosurveys.net/assets/images/gateways/binancepayid.png" >
+                                              <img src="{{ $withdrawal->gateway->image_path }}" >
                                             </span>
                                           </td>
                                           <td>
-                                            <span class="text-warning">26 Sep 2023</span>
+                                            <span class="text-warning">{{ $withdrawal->date_updated->diffForHumans() }}</span>
                                           </td>
                                         </tr>
-                                        <tr>
-                                          <td class="txt-oflo">
-                                            <span class="fi fi-us"></span>Usama
-                                          </td>
-                                          <td>
-                                            <span class="text-success">$1.96</span>
-                                          </td>
-                                          <td>
-                                            <span class="text-info">
-                                              <img src="https://dosurveys.net/assets/images/gateways/binancepayid.png" >
-                                            </span>
-                                          </td>
-                                          <td>
-                                            <span class="text-warning">26 Sep 2023</span>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="txt-oflo">
-                                                <span class="fi fi-at"></span> Maxiaus
-                                            </td>
-                                            <td>
-                                                <span class="text-success">$4.38</span>
-                                            </td>
-                                            <td>
-                                                <span class="text-info">
-                                                    <img src="https://dosurveys.net/assets/images/gateways/binancepayid.png" >
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="text-warning">26 Sep 2023</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <!-- More rows can be added here -->
-                                        </tr>
+                                      @endforeach
                                     </tbody>
                                   </table>
-                                </div>
-                                <div>
-                                  <ul class="pagination d-flex justify-content-center">
-                                    <li class="page-item">
-                                      <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                      </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                      <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                      </a>
-                                    </li>
-                                  </ul>
                                 </div>
                               </div>
                             </div>
@@ -519,11 +382,6 @@
                       <div class="results-bar d-flex align-items-center justify-content-between">
                         <div class="heading-section-custom">
                           <h4>Last completed task</h4>
-                        </div>
-                        <div class="d-flex">
-                          <div class="ml-4">
-                            <a href="#">View all</a>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -544,78 +402,26 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                        <td class="txt-oflo">
-                                          <span class="fi fi-us"></span>Mubarak
-                                        </td>
-                                        <td>
-                                          <span class="text-success">$9.02</span>
-                                        </td>
-                                        <td>
-                                          <span class="text-info">
-                                              <img src="https://timewall.io/img/logo/TimeWall_logo_homepage_desktop.png" >
-                                          </span>
-                                        </td>
-                                        <td>
-                                          <span class="text-warning">26 Sep 2023</span>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td class="txt-oflo">
-                                          <span class="fi fi-us"></span>Usama
-                                        </td>
-                                        <td>
-                                          <span class="text-success">$1.96</span>
-                                        </td>
-                                        <td>
-                                          <span class="text-info">
-                                            <img src="https://lootably.com/img/logo.png" >
-                                          </span>
-                                        </td>
-                                        <td>
-                                          <span class="text-warning">26 Sep 2023</span>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td class="txt-oflo">
-                                          <span class="fi fi-at"></span>Shaniali8
-                                        </td>
-                                        <td>
-                                          <span class="text-success">$4.38</span>
-                                        </td>
-                                        <td>
-                                          <span class="text-info">
-                                              <img  src="https://www.lolsurveys.com/assets/images/offerwalls/ayetstudios.png" >
-                                          </span>
-                                        </td>
-                                        <td>
-                                          <span class="text-warning">26 Sep 2023</span>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                          <!-- More rows can be added here -->
-                                      </tr>
+                                      @foreach ($offersLogs as $log)
+                                        <tr>
+                                          <td class="txt-oflo">
+                                            <span class="fi fi-us"></span>{{ $log->worker->username }}
+                                          </td>
+                                          <td>
+                                            <span class="text-success">{{ $log->reward }}</span>
+                                          </td>
+                                          <td>
+                                            <span class="text-info">
+                                                <img src="{{  $log->provider_image }}" >
+                                            </span>
+                                          </td>
+                                          <td>
+                                            <span class="text-warning">{{ $log->date_created->diffForHumans() }}</span>
+                                          </td>
+                                        </tr>
+                                      @endforeach
                                     </tbody>
                                   </table>
-                                </div>
-                                <div>
-                                  <ul class="pagination d-flex justify-content-center">
-                                    <li class="page-item">
-                                      <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                      </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                      <span aria-hidden="true">&raquo;</span>
-                                      <span class="sr-only">Next</span>
-                                    </a>
-                                    </li>
-                                  </ul>
                                 </div>
                               </div>
                             </div>

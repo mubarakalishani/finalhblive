@@ -13,6 +13,10 @@ class WithdrawalHistory extends Model
     ];
 
     public function user(){
-        $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function gateway() {
+        return $this->hasOne(PayoutGateway::class, 'id');
     }
 }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\OffersAndSurveysLog;
+use App\Models\Offerwall;
+use App\Models\PayoutGateway;
 use App\Models\WithdrawalHistory;
 use Illuminate\Http\Request;
 
@@ -14,10 +17,25 @@ class HomeController extends Controller
     public function index()
     {
         $faqs = Faq::where('s_no', '>', 0)->orderBy('s_no', 'ASC')->get();
-        $withdrawals = WithdrawalHistory::where('status', 1)->orderBy('updated_at', 'DESC')->get();
+        $withdrawals = WithdrawalHistory::where('status', 1)->orderBy('updated_at', 'DESC')->take(6);
+        $offerwalls = Offerwall::orderBy('order', 'ASC')
+        ->where('status', 1)
+        ->get();
+        $geteways = PayoutGateway::where('status', 1)->get();
+        $offersLogs = OffersAndSurveysLog::where('reward', '>', 0.05)
+        ->orderBy('id', 'DESC')
+        ->take(6);
+
+
+        foreach ($offersLogs as $log) {
+            $log->provider_image = Offerwall::where('name', $log->provider_name)->value('image_url');
+        }
         return view('home', [
             'faqs' => $faqs,
-            'withdrawals' => $withdrawals
+            'withdrawals' => $withdrawals,
+            'offerwalls' => $offerwalls,
+            'gateways' => $geteways,
+            'offersLogs' => $offersLogs
         ]);
     }
 
