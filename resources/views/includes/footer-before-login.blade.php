@@ -9,39 +9,39 @@
                         <img src="images/logo.png"  alt="CoolBrand" style="">
                       </a>
                     </div>
-                    <p>This is our micro task project it's includes all mini tasks like faucetpay, surveys, offerwalls, PTC, shortlink,videos etc.</p>
+                    <p>This is our Handbucks a heaven for micro taskers</p>
                   </div>
                   <div class="col-sm-2  my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
                       <h5>About Us</h5>
-                      <li><a href="#">About Microtask</a></li>
-                      <li><a href="#">Contact Us <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="#">Contact at Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/about">About</a></li>
+                      <li><a href="/contact">Contact Us <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social/telegram">Contact at Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
                     </ul>
                     
                   </div>
                   <div class="col-sm-2 my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
                       <h5>Browse</h5>
-                      <li><a href="#">Ranking</a></li>
-                      <li><a href="#">Advertiser</a></li>
-                      <li><a href="#">Browse</a></li>
+                      <li><a href="/leaderboard">Ranking</a></li>
+                      <li><a href="/advertiser">Advertiser</a></li>
+                      <li><a href="/dashboard">Browse</a></li>
                     </ul>
                   </div>
                   <div class="col-sm-2 my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
-                      <h5>Help</h5>
-                      <li><a href="#">Privacy Policy</a></li>
-                      <li><a href="#">Terms & Conditions</a></li>
-                      <li><a href="#">FAQ's</a></li>
+                      <h5>Pages</h5>
+                      <li><a href="/privacy-policy">Privacy Policy</a></li>
+                      <li><a href="/terms">Terms & Conditions</a></li>
+                      <li><a href="/faq">FAQ's</a></li>
                     </ul>
                   </div>
                   <div class="col-sm-2 my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
                       <h5>Socials</h5>
-                      <li><a href="#">Facebook  <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="#">Twitter <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="#">Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social/facebook">Facebook  <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social/twitter">Twitter <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social/telegram">Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
                     </ul>
                   </div>
               </div>  
@@ -50,21 +50,21 @@
      <div class="row justify-content-center mt-0 pt-0 row-1 mb-0  px-sm-3 px-2">
       <div class="row footer-bottom-area" style="border-top: 1px solid;">
                   <div class="col-sm-6 col-auto">
-                    <p>Copyright © 2023 <a href="#">Microtask</a> Company. All rights reserved.
+                    <p>Copyright © 2023 <a href="/">Handbucks</a> All rights reserved.
                   </div>
                   <div class="col-md-3 col-auto"></div>
                   <div class="col-md-3  my-auto text-right text-center">
-                  <small> <a class="email-address-font" href="#">hello@microtask.com </a>|
-                  <a href="#" target="_blank" title="Visit us on Facebook">
+                  <small> <a class="email-address-font" href="mailto:contact@handbucks.com">contact@handbucks.com </a>|
+                  <a href="/social/facebook" target="_blank" title="Visit us on Facebook">
                     <i class="fab fa-facebook-square"></i>
                   </a> 
-                  <a href="#" target="_blank" title="Visit us on Facebook">
+                  <a href="/social/telegram" target="_blank" title="Visit us on Telegram">
                     <i class="fab fa-telegram "></i>
                   </a>
-                  <a href="#" target="_blank" title="Visit us on Facebook">
+                  <a href="/social/twitter" target="_blank" title="Visit us on Twitter">
                     <i class="fab fa-twitter-square"></i>
                   </a>
-                  <a href="#" target="_blank" title="Visit us on Facebook">
+                  <a href="/social/instagram" target="_blank" title="Visit us on Instagram">
                     <i class="fab fa-instagram-square"></i>
                   </a>
                 </small>  

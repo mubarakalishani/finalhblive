@@ -13,7 +13,7 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $faqs = Faq::all();
+        $faqs = Faq::orderBy('sr_no', 'asc')->get();
         return view('pages.faq', [
             'faqs' => $faqs
         ]);

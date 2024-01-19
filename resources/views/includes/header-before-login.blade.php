@@ -48,8 +48,7 @@
                       </a>
                       <div class="dropdown-menu">
                         <a class="dropdown-item" href="/jobs">Find Jobs <span>262</span></a>
-                        <a class="dropdown-item" href="login.html">Surveys <span>329</span></a>
-                        <a class="dropdown-item" href="login.html">Offerwalls <span>692</span></a>
+                        <a class="dropdown-item" href="/offers">Offerwalls <span>692</span></a>
                         <a class="dropdown-item" href="#">Faucet <span><i class="fa-solid fa-infinity"></i></span></a>
                         <a class="dropdown-item" href="#">Shortlinks <span>89</span></a>
                         <a class="dropdown-item" href="#">PTC <span>154</span></a>
