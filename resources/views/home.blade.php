@@ -246,7 +246,7 @@
                           <div class="splide__track">
                             <div class="splide__list">
                               @foreach ($offerwalls as $offerwall)
-                                <div class="col-sm-2 splide__slide m-0">
+                                <div class="col-sm-3 splide__slide m-0">
                                   <div class="">
                                     <div class="item inner-item">
                                       <img src="{{ $offerwall->image_url }}" alt="{{ $offerwall->name }} offerwall" height="50px">
