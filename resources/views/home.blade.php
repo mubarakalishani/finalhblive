@@ -11,11 +11,11 @@
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="header-text" style="margin-top: 60px; margin-bottom: 20px;">
-                        <h6>Welcome To MicroTask</h6>
-                        <h4><em>Browse</em> Our Popular Offers & Surveys here</h4>
-                        <p style="padding-bottom: 20px; black: white;">Earn coins for simple tasks such as completing Offerwalls , Surveys , playing games, watching videos and more. Users already earned more than $100,000 USD on Microtask!</p>
+                        <h6>Welcome To Handbucks</h6>
+                        <h4><em>HandBucks</em> - Your Gateway to Earning Cash Online!</h4>
+                        <p style="padding-bottom: 20px; black: white;">Discover a world of endless opportunities to earn real cash online with HandBucks! Complete surveys, engage with exciting offers, click on paid-to-click (PTC) ads, explore shortlinks, tackle tasks, and play games – all while putting money in your pocket. Join today and turn your spare time into rewarding experiences and cold, hard cash!</p>
                         <div class="main-button">
-                          <a href="#">Starting Now</a>
+                          <a href="/register">Register Now</a>
                         </div>
                       </div>
                     </div>
@@ -26,20 +26,22 @@
 
                         <div class="card-1 home-signup-card">
                           <div class="card-body px-4 py-5 px-md-5">
-                            <form>
+                            <x-validation-errors class="mb-4" />
+                            <form method="POST" action="{{ route('login') }}">
+                              @csrf
                               <!-- 2 column grid layout with text inputs for the first and last names -->
-                              <div class="form-outline mb-4">
+                              {{-- <div class="form-outline mb-4">
                                 <input type="email" id="form3Example3" class="form-control"  placeholder="Name" />
-                              </div>
+                              </div> --}}
 
                               <!-- Email input -->
                               <div class="form-outline mb-4">
-                                <input type="email" id="form3Example3" class="form-control" placeholder="Email address" />
+                                <input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" placeholder="registered email address" />
                               </div>
 
                               <!-- Password input -->
                               <div class="form-outline mb-4">
-                                <input type="password" id="form3Example4" class="form-control" placeholder="Password" />
+                                <input id="password" class="form-control" type="password" name="password" required autocomplete="current-password" placeholder="password"/>
                               </div>
 
                               <!-- Checkbox -->
@@ -51,7 +53,7 @@
                               </div> -->
 
                               <!-- Submit button -->
-                              <div class="singup-term-text">By signing up you agree to our terms and conditions as well as Privacy Policy. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+                              <div class="singup-term-text">By signing in you agree to our terms and conditions as well as Privacy Policy. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
                               </div>
                               <div class="signup-btn-icons-area">
                                 <div class="row">
