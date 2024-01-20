@@ -343,7 +343,7 @@
                                   <table class="table no-wrap">
                                     <thead>
                                       <tr>
-                                        <th class="border-top-0">Name</th>
+                                        <th class="border-top-0">Username</th>
                                         <th class="border-top-0">Amount</th>
                                         <th class="border-top-0">Method</th>
                                         <th class="border-top-0">Date</th>
@@ -396,9 +396,9 @@
                                   <table class="table no-wrap">
                                     <thead>
                                       <tr>
-                                        <th class="border-top-0">Name</th>
+                                        <th class="border-top-0">Username</th>
                                         <th class="border-top-0">Amount</th>
-                                        <th class="border-top-0">Method</th>
+                                        <th class="border-top-0">Provider</th>
                                         <th class="border-top-0">Date</th>
                                       </tr>
                                     </thead>
