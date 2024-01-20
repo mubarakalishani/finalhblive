@@ -81,146 +81,147 @@
                         </div>
                       </div>
                     </div>
-                      <div class="row">
-                        <div class="splide splide1">
-                          <div class="splide__track">
-                            <div class="splide__list">
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item inner-item">
-                                    <img src="images/features/faucet.jpg" alt="">
-                                    <h4>Faucet<br><span>Available</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> </li>
-                                      <li><i class="fa-solid fa-faucet-drip"></i> 500</li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/microtasks.jpg" alt="">
-                                    <h4>MicroTask<br><span>Available</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> </li>
-                                      <li><i class="fa-solid fa-list"></i> 629</li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/shortlinks.jpg" alt="">
-                                    <h4>ShortLink<br><span>Available</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-link"></i> 862</li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/ptc1.png" alt="">
-                                    <h4>PTC<br><span>Avaialable</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-eye"></i> 787</li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/survey2.jpg" alt="">
-                                    <h4>Surveys<br><span>Proposals</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-list"></i> 484</li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/offers.jpg" alt="">
-                                    <h4>Offers<br><span>Proposals</span></h4>
-                                    <ul>
-                                    <li><i class="fa fa-star"></i> 4.8</li>
-                                    <li><i class="fa-solid fa-list"></i> 843</li>
+                    <div class="row">
+                      <div class="splide splide1">
+                        <div class="splide__track">
+                          <div class="splide__list">
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item inner-item">
+                                  <img src="images/features/faucet.jpg" alt="">
+                                  <h4>Faucet<br><span>Available</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> </li>
+                                    <li><i class="fa-solid fa-faucet-drip"></i> 500</li>
                                   </ul>
-                                  </div>
                                 </div>
                               </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/games.jpg" alt="">
-                                    <h4>Games<br><span>available</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-gamepad"></i> ...</li>
-                                    </ul>
-                                  </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/microtasks.jpg" alt="">
+                                  <h4>MicroTask<br><span>Available</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> </li>
+                                    <li><i class="fa-solid fa-list"></i> 629</li>
+                                  </ul>
                                 </div>
                               </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/videos.jpg" alt="">
-                                    <h4>Videos<br><span>Proposals</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-brands fa-youtube"></i> 788</li>
-                                    </ul>
-                                  </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/shortlinks.jpg" alt="">
+                                  <h4>ShortLink<br><span>Available</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                    <li><i class="fa-solid fa-link"></i> 862</li>
+                                  </ul>
                                 </div>
                               </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/afilliate.jpg" alt="">
-                                    <h4>Afilliate<br><span>Reward</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-people-group"></i> 25%</li>
-                                    </ul>
-                                  </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/ptc1.png" alt="">
+                                  <h4>PTC<br><span>Avaialable</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                    <li><i class="fa-solid fa-eye"></i> 787</li>
+                                  </ul>
                                 </div>
                               </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/ads.jpg" alt="">
-                                    <h4>Advertise<br><span>Packages</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 4.8</li>
-                                      <li><i class="fa-solid fa-rectangle-ad"></i> 5</li>
-                                    </ul>
-                                  </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/survey2.jpg" alt="">
+                                  <h4>Surveys<br><span>Proposals</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                    <li><i class="fa-solid fa-list"></i> 484</li>
+                                  </ul>
                                 </div>
                               </div>
-                              <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="images/features/level.jpg" alt="">
-                                    <h4>Levels<br><span>All levels</span></h4>
-                                    <ul>
-                                      <li><i class="fa fa-star"></i> 1-3</li>
-                                      <li><i class="fa-solid fa-stairs"></i> 3</li>
-                                    </ul>
-                                  </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/offers.jpg" alt="">
+                                  <h4>Offers<br><span>Proposals</span></h4>
+                                  <ul>
+                                  <li><i class="fa fa-star"></i> 4.8</li>
+                                  <li><i class="fa-solid fa-list"></i> 843</li>
+                                </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/games.jpg" alt="">
+                                  <h4>Games<br><span>available</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                    <li><i class="fa-solid fa-gamepad"></i> ...</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/videos.jpg" alt="">
+                                  <h4>Videos<br><span>Proposals</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                    <li><i class="fa-brands fa-youtube"></i> 788</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/afilliate.jpg" alt="">
+                                  <h4>Afilliate<br><span>Reward</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                    <li><i class="fa-solid fa-people-group"></i> 25%</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/ads.jpg" alt="">
+                                  <h4>Advertise<br><span>Packages</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 4.8</li>
+                                    <li><i class="fa-solid fa-rectangle-ad"></i> 5</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-2 splide__slide m-0">
+                              <div class="">
+                                <div class="item">
+                                  <img src="images/features/level.jpg" alt="">
+                                  <h4>Levels<br><span>All levels</span></h4>
+                                  <ul>
+                                    <li><i class="fa fa-star"></i> 1-3</li>
+                                    <li><i class="fa-solid fa-stairs"></i> 3</li>
+                                  </ul>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                    </div>
+                    
                   </div>
                 </div>
               </div>
