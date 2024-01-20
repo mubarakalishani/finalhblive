@@ -86,12 +86,12 @@
                     2000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
@@ -116,22 +116,22 @@
                     2000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     480: {
                         perPage: 1,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                 },
             });
@@ -146,22 +146,22 @@
                     2000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     480: {
                         perPage: 1,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                 },
             });
@@ -176,22 +176,22 @@
                     2000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     480: {
                         perPage: 1,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                 },
             });
@@ -206,22 +206,22 @@
                     2000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     480: {
                         perPage: 1,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                 },
             });
@@ -236,22 +236,22 @@
                     2000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     480: {
                         perPage: 1,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                 },
             });
@@ -266,22 +266,22 @@
                     2000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     480: {
                         perPage: 1,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                 },
             });
@@ -296,22 +296,22 @@
                     3000: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     1024: {
                         perPage: 3,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                     480: {
                         perPage: 1,
                         gap: '.7rem',
-                        
+                        height: '12rem',
                     },
                 },
             });
