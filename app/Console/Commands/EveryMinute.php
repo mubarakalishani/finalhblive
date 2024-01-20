@@ -56,7 +56,7 @@ class EveryMinute extends Command
         foreach ($offersPendingCleared as $offer) {
             $offerUser = User::find($offer->worker->id);
                 $offerUser->addWorkerBalance($offer->reward);
-                $user->increment('diamond_level_balance', $offer->added_expert_level);
+                $offerUser->increment('diamond_level_balance', $offer->added_expert_level);
                 Log::create([
                     'user_id' => $offer->worker->id,
                     'description' => 'reward '.$offer->reward.' added from '.$offer->provider_name
