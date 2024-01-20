@@ -61,6 +61,8 @@ class EveryMinute extends Command
                     'user_id' => $offer->worker->id,
                     'description' => 'reward '.$offer->reward.' added from '.$offer->provider_name
                 ]);
+
+                $offer->update(['status' => 0]);
         }
     }
 }
