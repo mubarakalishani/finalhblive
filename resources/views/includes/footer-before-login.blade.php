@@ -126,7 +126,7 @@
                     768: {
                         perPage: 2,
                         gap: '.7rem',
-                        height: '12rem',
+                        height: '15rem',
                     },
                     480: {
                         perPage: 1,
