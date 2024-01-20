@@ -364,7 +364,7 @@
                                             </span>
                                           </td>
                                           <td>
-                                            <span class="text-warning">{{ $withdrawal->date_updated->diffForHumans() }}</span>
+                                            <span class="text-warning">{{ $withdrawal->updated_at->diffForHumans() }}</span>
                                           </td>
                                         </tr>
                                       @endforeach
@@ -417,7 +417,7 @@
                                             </span>
                                           </td>
                                           <td>
-                                            <span class="text-warning">{{ $log->date_created->diffForHumans() }}</span>
+                                            <span class="text-warning">{{ $log->created_at->diffForHumans() }}</span>
                                           </td>
                                         </tr>
                                       @endforeach
