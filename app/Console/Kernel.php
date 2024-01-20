@@ -7,12 +7,15 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        \App\Console\Commands\EveryMinute::class,
+    ];
     /**
      * Define the application's command schedule.
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('every:minute')->everyMinute();
+        $schedule->command('every:minute')->everyFiveMinutes();
     }
 
     /**
