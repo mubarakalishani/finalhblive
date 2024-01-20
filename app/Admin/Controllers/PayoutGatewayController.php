@@ -40,6 +40,8 @@ class PayoutGatewayController extends AdminController
             'disable' => ['value' => 0, 'text' => 'close', 'color' => 'default'],
         ]);
 
+        $grid->column('image_path', __('Image url'));
+
         return $grid;
     }
 
@@ -55,6 +57,7 @@ class PayoutGatewayController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
+        $show->field('image_path', __('Image url'));
         $show->field('min_payout', __('Min payout'));
         $show->field('fixed_fee', __('Fixed fee'));
         $show->field('fee_percentage', __('Fee percentage'));
@@ -74,11 +77,13 @@ class PayoutGatewayController extends AdminController
         $form = new Form(new PayoutGateway());
 
         $form->text('name', __('Name'));
+        $form->text('image_path', __('Image url'));
         $form->decimal('min_payout', __('Min payout'))->default(0.000);
         $form->decimal('fixed_fee', __('Fixed fee'))->default(0.000);
-        $form->number('fee_percentage', __('Fee percentage'));
-        $form->switch('instant', __('Instant'));
-        $form->switch('status', __('Status'));
+        $form->number('fee_percentage', __('Fee percentage'))->default(0);
+        $form->switch('instant', __('Instant'))->default(0);
+        $form->switch('status', __('Status'))->default(1);
+
 
         return $form;
     }
