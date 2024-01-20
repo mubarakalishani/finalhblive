@@ -35,13 +35,14 @@ class EveryMinuteController extends Controller
         })->where('status', 1)->get();
 
         foreach ($offersPendingCleared as $offer) {
-            $offerUser = User::find($offer->worker->id);
+                $offerUser = User::find($offer->worker->id);
                 $offerUser->addWorkerBalance($offer->reward);
                 $offerUser->increment('diamond_level_balance', $offer->added_expert_level);
                 Log::create([
                     'user_id' => $offer->worker->id,
                     'description' => 'reward '.$offer->reward.' added from '.$offer->provider_name
                 ]);
+                $offer->update(['status' => 0]);
         }
     }
 }
