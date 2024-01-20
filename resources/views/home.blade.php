@@ -353,7 +353,7 @@
                                       @foreach ($withdrawals as $withdrawal)
                                         <tr>
                                           <td class="txt-oflo">
-                                            <span class="fi fi-us"></span> {{ $withdraw->user->username }}
+                                            <span class="fi fi-us"></span> {{ $withdrawal->user->username }}
                                           </td>
                                           <td>
                                             <span class="text-success">$ {{ $withdrawal->amount_after_fee }}</span>
