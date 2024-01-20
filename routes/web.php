@@ -20,6 +20,7 @@ use App\Livewire\ReviewTasks;
 use App\Http\Controllers\Admin\AdminTaskCategoryController;
 use App\Http\Controllers\Advertiser\DepositController;
 use App\Http\Controllers\CoinbaseCommerceTestController;
+use App\Http\Controllers\Cronjobs\EveryMinuteController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Pages\AboutController;
@@ -205,6 +206,8 @@ Route::get('/views/youtube', [PtcAdController::class, 'showYoutube'])->name('wor
 
 
 
+
+Route::get('/cronjob/everyminute', [EveryMinuteController::class, 'index']);
 
 
 
