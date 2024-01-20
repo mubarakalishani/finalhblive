@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Models\DepositMethodSetting;
 use App\Models\Deposit;
+use App\Models\Log;
 use App\Models\User;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 
@@ -17,18 +18,11 @@ class DepositController extends Controller
 
         $token = $request->input('token');
         $faucetpayUsername = DepositMethodSetting::where('name', 'faucetpay_merchant_username')->value('value');
-        // $payment_info = file_get_contents("https://faucetpay.io/merchant/get-payment/" . $token);
-        // $payment_info = json_decode($payment_info, true);
-        // $token_status = $payment_info['valid'];
 
-        
-
-        
         // Validate the IPN callback using FaucetPay's API
         $validationResponse = Http::get("https://faucetpay.io/merchant/get-payment/$token");
         $validationData = $validationResponse->json();
-
-        if ($validationData['valid']) {
+        if ($validationData['valid'] == true) {
             $transactionIdFaucetPay = $validationData['transaction_id'];
             $merchantUsername = $validationData['merchant_username'];
             $amount1 = $validationData['amount1'];
@@ -38,7 +32,7 @@ class DepositController extends Controller
             $custom = $validationData['custom'];
 
             //check if the external unique id exists in the database with completed status, if it does, never add balance again
-            $externalTxAlreadyExists = Deposit::where('external_tx', $token)->where('status', 'completed')->exists();
+            $externalTxAlreadyExists = Deposit::where('external_tx', $transactionIdFaucetPay)->where('status', 'completed')->exists();
             if ($merchantUsername == $faucetpayUsername && $currency1 == 'USDT' && !$externalTxAlreadyExists) {
                 $userId = User::where('unique_user_id', $custom)->value('id');
                 $user = User::find($userId);
@@ -49,7 +43,7 @@ class DepositController extends Controller
                     'status' => 'completed',
                     'internal_tx' => Str::random(12),
                     'description' => 'transaction faucetpay '.$transactionIdFaucetPay,
-                    'external_tx' => $token,
+                    'external_tx' => $transactionIdFaucetPay ,
                 ]);
                 $user->addAdvertiserBalance($amount1);
             }

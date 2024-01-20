@@ -169,7 +169,7 @@ Route::get('/login/google/callback', [CustomAuthController::class, 'handleGoogle
 Route::get('/test-coinbase-commerce', [CoinbaseCommerceTestController::class, 'charge']);
 
 
-Route::get('/faucetpay/callback', [DepositController::class, 'faucetpaySuccessCallback']);
+Route::post('/faucetpay/callback', [DepositController::class, 'faucetpaySuccessCallback'])->middleware('web');
 
 Route::post('/webhook/coinbase', [DepositController::class, 'handleCoinbaseWebhook']);
 

@@ -1612,7 +1612,20 @@ body {
     width: 100%;
 }
 
+
+/* WebKit (Chrome, Safari) */
+.sidebar::-webkit-scrollbar {
+  width: 5px; /* You can adjust the width as needed */
+}
+
+/* WebKit (Chrome, Safari) */
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #B7BEC7; /* Color of the scrollbar thumb */
+}
+
+
 #sidebar {
+    overflow-y: auto;
 	height: 100vh;
     max-width: 264px;
     min-width: 264px;
