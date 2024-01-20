@@ -464,6 +464,11 @@ Most Popular-1 Style
   text-align: center;
   margin-bottom: -53px;
 }
+@media(max-width:767px){
+  .splide__slide{
+  height: auto !important;
+}
+}
 
 /* 
 ---------------------------------------------
