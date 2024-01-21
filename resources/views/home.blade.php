@@ -340,7 +340,7 @@
                     <div class="paymentproof-content">
                       <form action="" method="#">
                         <div class="row">
-                          <div class="col-lg-12 col-sm-6 col-md-6 mb-2">
+                          <div class="col-lg-12 col-sm-12 col-md-12 mb-2">
                             <div class="card p-0 payment-proof-background">
                               <div class="card-body">
                                 <div class="table-responsive">
@@ -382,7 +382,7 @@
                       </form>
                     </div>
                   </div>
-                  <div class="col-lg-6 col-sm-6 col-md-6">
+                  <div class="col-lg-6 col-sm-12 col-md-12">
                     <div id="view-all-btn">
                       <div class="results-bar d-flex align-items-center justify-content-between">
                         <div class="heading-section-custom">
@@ -393,7 +393,7 @@
                     <div class="paymentproof-content">
                       <form action="" method="#">
                         <div class="row">
-                          <div class="col-lg-12 col-sm-4 col-md-4">
+                          <div class="col-lg-12 col-sm-12 col-md-12">
                             <div class="card p-0 payment-proof-background">
                               <div class="card-body">
                                 <div class="table-responsive">
