@@ -204,6 +204,49 @@ class DepositController extends Controller
 }
 
 
+public function handlePerfectMoneyWebhook(Request $request){
+    $transactionId = $request->input('PAYMENT_ID');
+    $amount = $request->input('PAYMENT_AMOUNT');
+    $externalTx = $request->input('PAYMENT_BATCH_NUM');
+    $transactionExist = Deposit::where('internal_tx', $transactionId)
+    ->where('method', 'perfectmoney')
+    ->exists();
+    
+
+
+    $secretKey = DepositMethodSetting::where('name', 'perfectmoney_secret')->value('value');
+
+    $string=
+        $request->input('PAYMENT_ID').':'.$request->input('PAYEE_ACCOUNT').':'.
+        $request->input('PAYMENT_AMOUNT').':'.$request->input('PAYMENT_UNITS').':'.
+        $request->input('PAYMENT_BATCH_NUM').':'.
+        $request->input('PAYER_ACCOUNT').':'.$secretKey.':'.
+        $request->input('TIMESTAMPGMT');
+
+    $hash=strtoupper(md5($string));
+    if($hash===$_POST('V2_HASH')){
+        return "invalid hash";
+    }
+
+    if(!$transactionExist){
+        $userId = User::where('unique_user_id', $request->input('USER_ID'))->value('id');
+        $user = User::find($userId);
+        Deposit::create([
+            'user_id' => $userId,
+            'method' => 'faucetpay',
+            'amount' => $amount,
+            'status' => 'completed',
+            'internal_tx' => Str::random(12),
+            'description' => 'transaction perfectmoney completed',
+            'external_tx' => $externalTx ,
+        ]);
+        $user->addAdvertiserBalance($amount);
+    }
+
+
+}
+
+
 
 public function createCoinbasePayLink(Request $request){
         $curl = curl_init();
@@ -251,15 +294,15 @@ public function createCoinbasePayLink(Request $request){
 public function createPerfectMoneyPayLink(Request $request){
     $amount = $request->input('amount');
     $transactionId = Str::random(12);
-    Deposit::create([
-        'user_id' => auth()->user()->id,
-        'method' => 'perfectmoney',
-        'amount' => $amount,
-        'status' => 'Waiting For Payment',
-        'internal_tx' => $transactionId,
-        'description' => 'transaction Perfect Money id' . $transactionId . ' status not paid yet',
-        'external_tx' => 'no external tx yet',
-    ]);
+    // Deposit::create([
+    //     'user_id' => auth()->user()->id,
+    //     'method' => 'perfectmoney',
+    //     'amount' => $amount,
+    //     'status' => 'Waiting For Payment',
+    //     'internal_tx' => $transactionId,
+    //     'description' => 'transaction Perfect Money id' . $transactionId . ' status not paid yet',
+    //     'external_tx' => 'no external tx yet',
+    // ]);
 
     return view('advertiser.deposit.perfectmoney', [
         'amount' => $amount,
