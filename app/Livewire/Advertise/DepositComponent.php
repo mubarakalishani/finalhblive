@@ -26,7 +26,7 @@ class DepositComponent extends Component
     }
 
     public function updatedSelectedMethod(){
-        $this->selectedGateway = Deposit::where('name', $this->selectedMethod)->first();
+        $this->selectedGateway = DepositMethod::where('name', $this->selectedMethod)->first();
         switch($this->selectedGateway->name)
         {
             case 'faucetpay':
