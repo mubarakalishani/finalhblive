@@ -47,7 +47,7 @@
         <aside id="sidebar" class="sidebar">
             <div class="h-100">
                 <div class="sidebar-logo">
-                    <a href="#" class="navbar-brand">
+                    <a href="/" class="navbar-brand">
                         <img src="{{ asset('images/logo.png') }}"  alt="CoolBrand" style="">
                         <!-- <h5 style="color:#0098d8;"><span> <i class="fa fa-firefox" aria-hidden="true" style="color:#0098d8;"></i></span><b>  Bucksbite</b></h5> -->
                     </a>
@@ -66,21 +66,18 @@
                     <li class="sidebar-item">
                         <a href="/advertiser/create-new-task" class="sidebar-link"><i class="fa-solid fa-file-circle-plus"></i> Post new job</a>
                     </li>
-                    <li class="sidebar-item">
+                    {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
                             aria-expanded="false" aria-controls="pages">
                             <i class="fa-solid fa-earth-americas"></i>
                             Earn
-                        </a>
-                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        </a> --}}
+                        {{-- <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"> --}}
                             <li class="sidebar-item">
-                                <a href="/jobs" class="sidebar-link"><i class="fa-solid fa-list-check"></i> Find Jobs</a>
+                                <a href="/jobs" class="sidebar-link"><i class="fa-solid fa-list-check"></i> Micro Tasks</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/offers" class="sidebar-link"><i class="fa-brands fa-buffer"></i> Offerwalls</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="all-surveys.html" class="sidebar-link"><i class="fa-solid fa-square-poll-vertical"></i> Surveys</a>
+                                <a href="/offers" class="sidebar-link"><i class="fa-brands fa-buffer"></i> Offerwalls and Surveys</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="/faucet" class="sidebar-link"><i class="fa-solid fa-faucet-drip"></i> Faucet</a>
@@ -91,11 +88,11 @@
                             <li class="sidebar-item">
                                 <a href="/views/iframe" class="sidebar-link"><i class="fa-solid fa-eye"></i> PTC</a>
                             </li>
-                            <li class="sidebar-item">
+                            {{-- <li class="sidebar-item">
                                 <a href="/games" class="sidebar-link"><i class="fa-solid fa-dice"></i> Paid Games</a>
-                            </li>
-                        </ul>
-                    </li>
+                            </li> --}}
+                        {{-- </ul>
+                    </li> --}}
 
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#campaigns" aria-expanded="false" aria-controls="campaigns">
@@ -152,9 +149,9 @@
                     <li class="sidebar-item">
                         <a href="/referral" class="sidebar-link"><i class="fa-solid fa-people-group"></i> Referrals</a>
                     </li>
-                    <li class="sidebar-item">
+                    {{-- <li class="sidebar-item">
                         <a href="bonus.html" class="sidebar-link"><i class="fa-solid fa-gift"></i> Bonus</a>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-item">
                         <a href="/leaderboard" class="sidebar-link"><i class="fa-solid fa-people-roof"></i> Leaderboard</a>
                     </li>
@@ -194,26 +191,23 @@
                             Settings
                         </a>
                         <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
+                            {{-- <li class="sidebar-item">
                                 <a href="profile.html" class="sidebar-link"><i class="fa-solid fa-user"></i> Profile</a>
-                            </li>
+                            </li> --}}
                             <li class="sidebar-item">
                                 <a href="/profile/security" class="sidebar-link"><i class="fa-solid fa-shield-halved"></i> Security</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="profile-billing.html" class="sidebar-link"><i class="fa-solid fa-wallet"></i> Withdraw</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="profile-notification.html" class="sidebar-link"><i class="fa-solid fa-bell"></i> Notifications</a>
+                                <a href="/profile/payout-methods" class="sidebar-link"><i class="fa-solid fa-wallet"></i> Setup Payout Methods</a>
                             </li>
                         </ul>
                     </li>
                     
                     <li class="sidebar-item">
-                        <a href="contact.html" class="sidebar-link"><i class="fa-solid fa-headset"></i> Contact/Support</a>
+                        <a href="/contact" class="sidebar-link"><i class="fa-solid fa-headset"></i> Contact/Support</a>
                     </li>
                     <li class="sidebar-item">
-                      <a href="logout" class="sidebar-link"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
+                      <a href="/logout" class="sidebar-link"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
                     </li>
                     
                 </ul>
@@ -229,7 +223,7 @@
                     </button>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-                    <div class="notification-icon">
+                    {{-- <div class="notification-icon">
                         <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-bell"></i>
                             <!-- Use the Bootstrap Badge component for notifications -->
@@ -241,7 +235,7 @@
                             <a class="dropdown-item" href="#">Notification 2</a>
                             <a class="dropdown-item" href="#">Notification 3</a>
                         </div>
-                    </div>
+                    </div> --}}
                 </ul>
               </div>
             </nav>
@@ -259,16 +253,16 @@
                 <div class="col-md-3 col-auto"></div>
                 <div class="col-md-3  my-auto text-right text-center">
                 <small> <a class="email-address-font" href="#">contact@handbucks.com </a>|
-                <a href="/social/facebook" target="_blank" title="Visit us on Facebook">
+                <a href="/social?name=facebook" target="_blank" title="Visit us on Facebook">
                   <i class="fab fa-facebook-square"></i>
                 </a> 
-                <a href="/social/telegram" target="_blank" title="Visit us on Telegram">
+                <a href="/social?name=telegram" target="_blank" title="Visit us on Telegram">
                   <i class="fab fa-telegram "></i>
                 </a>
-                <a href="/social/twitter" target="_blank" title="Visit us on Twitter">
+                <a href="/social?name=twitter" target="_blank" title="Visit us on Twitter">
                   <i class="fab fa-twitter-square"></i>
                 </a>
-                <a href="/social/instagram" target="_blank" title="Visit us on Instagram">
+                <a href="/social?name=instagram" target="_blank" title="Visit us on Instagram">
                   <i class="fab fa-instagram-square"></i>
                 </a>
               </small>  
