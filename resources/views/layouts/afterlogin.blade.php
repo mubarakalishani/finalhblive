@@ -224,7 +224,7 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <strong>Balance: {{ auth()->user()->balance }}</strong>
+                        <strong>Balance: {{ number_format(auth()->user()->balance, 2) }}</strong>
                     </li>
                     {{-- <div class="notification-icon">
                         <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
