@@ -17,14 +17,14 @@ class HomeController extends Controller
     public function index()
     {
         $faqs = Faq::where('s_no', '>', 0)->orderBy('s_no', 'ASC')->get();
-        $withdrawals = WithdrawalHistory::where('status', 1)->orderBy('updated_at', 'DESC')->take(6)->get();
+        $withdrawals = WithdrawalHistory::where('status', 1)->orderBy('updated_at', 'DESC')->take(5)->get();
         $offerwalls = Offerwall::orderBy('order', 'ASC')
         ->where('status', 1)
         ->get();
         $geteways = PayoutGateway::where('status', 1)->get();
         $offersLogs = OffersAndSurveysLog::where('reward', '>', 0.05)
         ->orderBy('id', 'DESC')
-        ->take(6)->get();
+        ->take(5)->get();
 
 
         foreach ($offersLogs as $log) {
