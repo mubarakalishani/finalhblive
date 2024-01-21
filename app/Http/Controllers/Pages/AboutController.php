@@ -14,7 +14,7 @@ class AboutController extends Controller
     public function index()
     {
         $about = Page::where('title', 'about')->first();
-        return view('pages.privacy-policy', [
+        return view('pages.about', [
             'about' => $about
         ]);
     }
