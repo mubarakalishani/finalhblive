@@ -19,7 +19,7 @@
             <input type="hidden" name="NOPAYMENT_URL_METHOD" value="GET"> 
             <input type="hidden" name="NOPAYMENT_URL" value="https://handbucks.com/advertiser/deposit">
             <input type="hidden" name="BAGGAGE_FIELDS" value="USER_ID">
-            <input type="hidden" name="USER_ID" value="{{ auth()->user()->unique_user_id }}}">
+            <input type="hidden" name="USER_ID" value="{{ auth()->user()->unique_user_id }}">
             <input type="submit" name="PAYMENT_METHOD" value="PerfectMoney account">
         </p>
         </form>
