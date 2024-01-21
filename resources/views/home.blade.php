@@ -250,7 +250,11 @@
                                 <div class="col-sm-3 splide__slide m-0">
                                   <div class="">
                                     <div class="item inner-item">
-                                      <img src="{{ $offerwall->image_url }}" alt="{{ $offerwall->name }} offerwall" height="50px">
+                                      <div class="row">
+                                        <div class="col-lg-12">
+                                          <img src="{{ $offerwall->image_url }}" alt="{{ $offerwall->name }} offerwall">
+                                        </div>
+                                      </div>
                                       <h4>{{ $offerwall->name }}<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
                                     </div>
                                   </div>
@@ -290,7 +294,7 @@
                                   <div class="item inner-item">
                                     <div class="row">
                                       <div class="col-lg-12">
-                                        <img src="{{ $gateway->image_path }}" alt="payout method - {{$gateway->name}}" height="30px">
+                                        <img src="{{ $gateway->image_path }}" alt="payout method - {{$gateway->name}}">
                                       </div>
                                     </div>
                                     <div class="row">
