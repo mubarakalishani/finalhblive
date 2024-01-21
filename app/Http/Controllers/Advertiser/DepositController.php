@@ -141,10 +141,10 @@ class DepositController extends Controller
     $signature = $request->header('X-CC-WEBHOOK-SIGNATURE');
     if (hash_equals(hash_hmac('sha256', $payload, $secret), $signature)) {
         // Signature is valid, process the webhook payload
-        $event = $request->all();
+        $receivedEvent = $request->all();
 
-        \Illuminate\Support\Facades\Log::info('Coinbase Webhook Received', ['event' => $event]);
-
+        \Illuminate\Support\Facades\Log::info('Coinbase Webhook Received', ['event' => $receivedEvent]);
+        $event = $receivedEvent['event'];
         switch ($event['type']) {
             case 'charge:created':
                 $status = 'created';
