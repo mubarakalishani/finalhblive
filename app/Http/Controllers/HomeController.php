@@ -30,6 +30,10 @@ class HomeController extends Controller
         foreach ($offersLogs as $log) {
             $log->provider_image = Offerwall::where('name', $log->provider_name)->value('image_url');
         }
+
+        foreach ($withdrawals as $withdraw) {
+            $withdraw->image = PayoutGateway::where('name', $withdraw->method)->value('image_path');
+        }
         return view('home', [
             'faqs' => $faqs,
             'withdrawals' => $withdrawals,

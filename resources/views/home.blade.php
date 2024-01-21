@@ -360,11 +360,11 @@
                                             <span class="fi fi-us"></span> {{ $withdrawal->user->username }}
                                           </td>
                                           <td>
-                                            <span class="text-success">$ {{ $withdrawal->amount_after_fee }}</span>
+                                            <span class="text-success">${{ $withdrawal->amount_after_fee }}</span>
                                           </td>
                                           <td>
                                             <span class="text-info">
-                                              <img src="{{ $withdrawal->gateway->image_path }}" >
+                                              <img src="{{ $withdrawal->image }}" >
                                             </span>
                                           </td>
                                           <td>
