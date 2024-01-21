@@ -214,17 +214,9 @@ Route::get('/cronjob/everyminute', [EveryMinuteController::class, 'index']);
 
 
 Route::get('/social', function () {
-    $socialName = request()->query('name');
-
-    // Fetch the link from the database based on the social name
-    $socialLink = SocialLink::where('name', $socialName)->value('url');
-
-    // If the social link is found, perform the redirection; otherwise, redirect to the default URL
-    if ($socialLink) {
-        return new RedirectResponse($socialLink);
-    } else {
-        return new RedirectResponse('/');
-    }
+    
+        return new RedirectResponse('https://google.com');
+   
 });
 
 
