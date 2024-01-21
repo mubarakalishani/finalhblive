@@ -210,7 +210,7 @@ public function createCoinbasePayLink(Request $request){
         $postFilds=array(
             'name' => 'Deposit to '.env('APP_NAME'),
             'redirect_url' => url('/advertiser/deposit'),
-            'cancel_url' => url('//advertiser/deposit'),
+            'cancel_url' => url('/advertiser/deposit'),
             'success_url' => url('/advertiser/deposit'),
             'local_price' => [
                 'amount' => $request->input('amount'),
