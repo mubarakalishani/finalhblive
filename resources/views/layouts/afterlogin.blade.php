@@ -223,6 +223,9 @@
                     </button>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <strong>Balance: {{ auth()->user()->balance }}</strong>
+                    </li>
                     {{-- <div class="notification-icon">
                         <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-bell"></i>
