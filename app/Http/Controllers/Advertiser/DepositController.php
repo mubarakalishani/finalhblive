@@ -224,7 +224,7 @@ public function handlePerfectMoneyWebhook(Request $request){
         $request->input('TIMESTAMPGMT');
 
     $hash=strtoupper(md5($string));
-    if($hash===$_POST('V2_HASH')){
+    if($hash != $request->input('V2_HASH')){
         return "invalid hash";
     }
 
