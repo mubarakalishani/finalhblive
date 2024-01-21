@@ -172,7 +172,7 @@ Route::get('/test-coinbase-commerce', [CoinbaseCommerceTestController::class, 'c
 
 Route::post('/faucetpay/callback', [DepositController::class, 'faucetpaySuccessCallback'])->middleware('web');
 
-Route::post('/webhook/coinbase', [DepositController::class, 'handleCoinbaseWebhook']);
+Route::post('/webhook/coinbase', [DepositController::class, 'handleCoinbaseWebhook'])->middleware('web');
 
 
 
