@@ -10,6 +10,7 @@ use App\Models\DepositMethodSetting;
 use App\Models\Deposit;
 use App\Models\Log;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 
 class DepositController extends Controller
@@ -200,6 +201,50 @@ class DepositController extends Controller
     }
 
     return response('OK', 200);
+}
+
+
+
+public function createCoinbasePayLink(Request $request){
+        $curl = curl_init();
+        $postFilds=array(
+            'name' => 'Deposit to '.env('APP_NAME'),
+            'redirect_url' => url('/advertiser/deposit'),
+            'cancel_url' => url('//advertiser/deposit'),
+            'success_url' => url('/advertiser/deposit'),
+            'local_price' => [
+                'amount' => $request->input('amount'),
+                'currency' => 'USD',
+            ],
+            'pricing_type'=>'fixed_price',
+            'metadata'=>array(
+                'user_id'=> auth()->user()->unique_user_id,
+                'username' => auth()->user()->username,
+                )
+        );
+        $postFilds=urldecode(http_build_query($postFilds));
+        curl_setopt_array($curl, 
+            array(
+                CURLOPT_URL => "https://api.commerce.coinbase.com/charges",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $postFilds,
+                CURLOPT_HTTPHEADER => array(
+                    "X-CC-Api-Key: ".DepositMethodSetting::where('name', 'coinbase_api')->value('value'),
+                    "X-CC-Version: 2018-03-22",
+                    "content-type: multipart/form-data"
+                ),
+            )
+        );
+        $result = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        $response = json_decode($result);
+        return new RedirectResponse($response->data->hosted_url);
 }
 
 }
