@@ -143,11 +143,6 @@ class DepositController extends Controller
         // Signature is valid, process the webhook payload
         $event = $request->all();
 
-        \App\Models\Log::create([
-            'user_id' => 1,
-            'description' => 'Coinbase Webhook Received ' . $event['data']['code'],
-        ]);
-
         \Illuminate\Support\Facades\Log::info('Coinbase Webhook Received', ['event' => $event]);
 
         switch ($event['type']) {

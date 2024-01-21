@@ -16,7 +16,7 @@
                       <h5>About Us</h5>
                       <li><a href="/about">About</a></li>
                       <li><a href="/contact">Contact Us <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="/social/telegram">Contact at Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social?name=telegram">Contact at Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
                     </ul>
                     
                   </div>
@@ -39,9 +39,9 @@
                   <div class="col-sm-2 my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
                       <h5>Socials</h5>
-                      <li><a href="/social/facebook">Facebook  <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="/social/twitter">Twitter <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="/social/telegram">Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social?name=facebook">Facebook  <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social?name=twitter">Twitter <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social?name=telegram">Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
                     </ul>
                   </div>
               </div>  
@@ -55,16 +55,16 @@
                   <div class="col-md-3 col-auto"></div>
                   <div class="col-md-3  my-auto text-right text-center">
                   <small> <a class="email-address-font" href="mailto:contact@handbucks.com">contact@handbucks.com </a>|
-                  <a href="/social/facebook" target="_blank" title="Visit us on Facebook">
+                  <a href="/social?name=facebook" target="_blank" title="Visit us on Facebook">
                     <i class="fab fa-facebook-square"></i>
                   </a> 
-                  <a href="/social/telegram" target="_blank" title="Visit us on Telegram">
+                  <a href="/social?name=telegram" target="_blank" title="Visit us on Telegram">
                     <i class="fab fa-telegram "></i>
                   </a>
-                  <a href="/social/twitter" target="_blank" title="Visit us on Twitter">
+                  <a href="/social?name=twitter" target="_blank" title="Visit us on Twitter">
                     <i class="fab fa-twitter-square"></i>
                   </a>
-                  <a href="/social/instagram" target="_blank" title="Visit us on Instagram">
+                  <a href="/social?name=instagram" target="_blank" title="Visit us on Instagram">
                     <i class="fab fa-instagram-square"></i>
                   </a>
                 </small>  
