@@ -193,7 +193,7 @@ Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('/privacy-policy', [App\Http\Controllers\Pages\PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
 
 
-Route::post('/jobs/{taskId}', [TaskSubmitController::class, 'store'])->name('worker.submit_task');
+
 Route::get('/jobs/submitted/{taskId}', [TaskSubmitController::class, 'showSbumittedProof']);
 Route::post('/jobs/submitted/{taskId}/file-dispute', [TaskSubmitController::class, 'fileDispute'])->name('worker.file_dispute');
 
