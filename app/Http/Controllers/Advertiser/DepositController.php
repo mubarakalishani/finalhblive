@@ -141,7 +141,7 @@ class DepositController extends Controller
     $signature = $request->header('X-CC-WEBHOOK-SIGNATURE');
     if (hash_equals(hash_hmac('sha256', $payload, $secret), $signature)) {
         // Signature is valid, process the webhook payload
-        $event = json_decode($payload, true);
+        $event = $request->all();
 
         \App\Models\Log::create([
             'user_id' => 1,
