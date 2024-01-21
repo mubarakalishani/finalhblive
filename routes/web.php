@@ -213,7 +213,7 @@ Route::get('/cronjob/everyminute', [EveryMinuteController::class, 'index']);
 
 
 
-Route::get('/social', function () {
+Route::get('/abccc', function () {
     
         return redirect('https://google.com');
    
