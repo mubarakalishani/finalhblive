@@ -228,6 +228,8 @@ public function handlePerfectMoneyWebhook(Request $request){
         return "invalid hash";
     }
 
+    
+
     if(!$transactionExist){
         $userId = User::where('unique_user_id', $request->input('USER_ID'))->value('id');
         $user = User::find($userId);
@@ -242,6 +244,8 @@ public function handlePerfectMoneyWebhook(Request $request){
         ]);
         $user->addAdvertiserBalance($amount);
     }
+
+    \Illuminate\Support\Facades\Log::info('perfectmoney', ['hash' => $hash]);
 
 
 }
