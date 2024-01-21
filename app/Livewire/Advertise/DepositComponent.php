@@ -80,9 +80,8 @@ class DepositComponent extends Component
             ],
             'pricing_type'=>'fixed_price',
             'metadata'=>array(
-                'user_id'=> auth()->user()->unique_id,
+                'user_id'=> auth()->user()->unique_user_id,
                 'username' => auth()->user()->username,
-                'check' => 'lol'
                 )
         );
         $postFilds=urldecode(http_build_query($postFilds));
