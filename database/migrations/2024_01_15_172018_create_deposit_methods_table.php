@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->decimal('min_deposit', 5, 2)->default(0.00);
+            $table->tinyInteger('auto')->default(0);
             $table->tinyInteger('status')->default(1);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

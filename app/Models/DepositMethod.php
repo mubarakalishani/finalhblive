@@ -9,6 +9,6 @@ class DepositMethod extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'min_deposit', 'status'
+        'name', 'min_deposit', 'status', 'auto', 'description', 'payment_url'
     ];
 }

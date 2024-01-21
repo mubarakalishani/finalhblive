@@ -14,7 +14,7 @@
                 <!--end col-->
                 <div class="tab-content" id="nav-tabContent">
                         <div class="row">
-                            <div class="col col-lg-4">
+                            <div class="col col-lg-4 col-md-12 col-sm-12">
                                 <div class="my-5">
                                     <span class="mb-1">select the payment method</span>
                                     <select class="form-select py-2" wire:model.live="selectedMethod">
@@ -22,14 +22,23 @@
                                             <option value="{{ $depositMethod->name }}">{{ $depositMethod->name }}</option>
                                         @endforeach
                                     </select>
-                                    <div class="input-group mb-3 mt-3 py-2">
-                                        <span class="input-group-text" id="basic-addon1">$</span>
-                                        <input type="number" class="form-control" placeholder="amount in usd" wire:model.live="amount">
-                                        @error('minamount') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-                                    <a href="{{ $paymentUrl }}" target="_blank" class="btn btn-primary text-center my-3">Add funds</a>
+                                    @if($selectedGateway->auto == 1)
+                                        <div class="input-group mb-3 mt-3 py-2">
+                                            <span class="input-group-text" id="basic-addon1">$</span>
+                                            <input type="number" class="form-control" placeholder="amount in usd" wire:model.live.debounce.500ms="amount">
+                                            @error('minamount') <span class="text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <a href="{{ $paymentUrl }}" target="_blank" class="btn btn-primary text-center my-3">Add funds</a>
+                                    @endif
                                 </div>
                             </div>
+                            @if($selectedGateway->auto == 0)
+                                <div class="col col-lg-8 col-md-12 col-sm-12">
+                                    <div class="my-5">
+                                        {!! $selectedGateway->description !!}
+                                    </div>
+                                </div>
+                            @endif    
                         </div>
                         <!--end row-->
 

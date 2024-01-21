@@ -50,6 +50,7 @@ class DepositMethodController extends AdminController
         $show->field('name', __('Name'));
         $show->field('min_deposit', __('Min deposit'));
         $show->field('status', __('Status'));
+        $show->field('auto', __('Auto Gateway?'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -68,6 +69,8 @@ class DepositMethodController extends AdminController
         $form->text('name', __('Name'));
         $form->decimal('min_deposit', __('Min deposit'))->default(0.00);
         $form->switch('status', __('Status'))->default(1);
+        $form->switch('auto', __('Automatic Gateway?'))->default(1);
+        $form->ckeditor('description');
 
         return $form;
     }
