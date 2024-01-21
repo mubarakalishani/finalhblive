@@ -4,12 +4,12 @@
         <div class="container-xl px-4 mt-4">
             <!-- Account page navigation-->
             <nav class="nav nav-borders">
-                <a class="nav-link  ms-0" href="profile-settings.html">Profile</a>
+                {{-- <a class="nav-link  ms-0" href="profile-settings.html">Profile</a> --}}
                 <a class="nav-link active" href="/profile/payout-methods">Payout Methods</a>
                 <a class="nav-link" href="/profile/security">Security</a>
             </nav>
             <hr class="mt-0 mb-4">
-            <div class="row">
+            {{-- <div class="row">
                       <div class="col-lg-4 mb-4">
                           <!-- Billing card 1-->
                           <div class="card h-100 border-start-lg border-start-primary">
@@ -49,7 +49,7 @@
                               </div>
                           </div>
                       </div>
-            </div>
+            </div> --}}
 
 
 
