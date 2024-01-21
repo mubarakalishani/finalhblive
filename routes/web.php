@@ -87,6 +87,7 @@ Route::middleware([
         return view('advertiser.deposit');
     });
     Route::get('/pay/coinbase', [DepositController::class, 'createCoinbasePayLink']);
+    Route::get('/pay/perfectmoney', [DepositController::class, 'createPerfectMoneyPayLink']);
     Route::get('/advertiser/create-new-task', function () {
         return view('advertiser.task.create-campaign');
     });

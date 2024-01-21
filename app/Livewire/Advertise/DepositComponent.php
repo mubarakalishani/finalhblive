@@ -35,7 +35,10 @@ class DepositComponent extends Component
                 break;
             case 'coinbasecommerce':
                 $this->paymentUrl = url('/pay/coinbase?amount='.$this->amount);
-                break;   
+                break;
+            case 'perfectmoney':
+                $this->paymentUrl = url('/pay/perfectmoney?amount='.$this->amount);
+                break;        
             default:
                 $this->minAmount = 0;
                 break;
@@ -55,7 +58,10 @@ class DepositComponent extends Component
                 break;
             case 'coinbasecommerce':
                 $this->paymentUrl = url('/pay/coinbase?amount='.$this->amount);
-                break;   
+                break; 
+            case 'perfectmoney':
+                $this->paymentUrl = url('/pay/perfectmoney?amount='.$this->amount);
+                break;      
             default:
                 $this->minAmount = 0;
                 break;

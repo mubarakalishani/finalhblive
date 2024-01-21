@@ -247,4 +247,24 @@ public function createCoinbasePayLink(Request $request){
         return new RedirectResponse($response->data->hosted_url);
 }
 
+
+public function createPerfectMoneyPayLink(Request $request){
+    $amount = $request->input('amount');
+    $transactionId = Str::random(12);
+    Deposit::create([
+        'user_id' => auth()->user()->id,
+        'method' => 'perfectmoney',
+        'amount' => $amount,
+        'status' => 'Waiting For Payment',
+        'internal_tx' => $transactionId,
+        'description' => 'transaction Perfect Money id' . $transactionId . ' status not paid yet',
+        'external_tx' => 'no external tx yet',
+    ]);
+
+    return view('advertiser.deposit.perfectmoney', [
+        'amount' => $amount,
+        'transactionId' => $transactionId
+    ]);
+}
+
 }
