@@ -216,14 +216,17 @@ public function handlePerfectMoneyWebhook(Request $request){
 
     $secretKey = DepositMethodSetting::where('name', 'perfectmoney_secret')->value('value');
 
-    $string=
-        $request->input('PAYMENT_ID').":".$request->input('PAYEE_ACCOUNT').":".
-        $request->input('PAYMENT_AMOUNT').":".$request->input('PAYMENT_UNITS').":".
-        $request->input('PAYMENT_BATCH_NUM').":".
-        $request->input('PAYER_ACCOUNT').":".$secretKey.":".
-        $request->input('TIMESTAMPGMT');
+    $string =
+    (string)$request->input('PAYMENT_ID') . ":" .
+    (string)$request->input('PAYEE_ACCOUNT') . ":" .
+    (string)$request->input('PAYMENT_AMOUNT') . ":" .
+    (string)$request->input('PAYMENT_UNITS') . ":" .
+    (string)$request->input('PAYMENT_BATCH_NUM') . ":" .
+    (string)$request->input('PAYER_ACCOUNT') . ":" .
+    (string)$secretKey . ":" .
+    (string)$request->input('TIMESTAMPGMT');
 
-    $hash=md5($string);
+    $hash=strtoupper(md5($string));
     \App\Models\Log::create([
         'user_id' => 1,
         'description' => 'perfectmoney calculated hash = '.$hash,
