@@ -12,10 +12,6 @@ use Illuminate\Http\Request;
 class EveryMinuteController extends Controller
 {
     public function index(){
-        Log::create([
-            'user_id' => 1,
-            'description' => 'the cronjob rann at '.now()
-        ]);
         $pendingWithdrawals = WithdrawalHistory::where('status' , 0)->get();
         foreach ($pendingWithdrawals as $withdrawal) {
             if ( $withdrawal->user->balance < 0 ) {

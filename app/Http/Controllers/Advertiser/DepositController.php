@@ -223,7 +223,7 @@ public function handlePerfectMoneyWebhook(Request $request){
         $request->input('PAYER_ACCOUNT').":".$secretKey.":".
         $request->input('TIMESTAMPGMT');
 
-    $hash=strtoupper(md5($string));
+    $hash=md5($string);
     \App\Models\Log::create([
         'user_id' => 1,
         'description' => 'perfectmoney calculated hash = '.$hash,
