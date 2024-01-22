@@ -121,10 +121,6 @@
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="additionalField1" name="id">
                  </div>
-                 <div class="mb-3">
-                    <label for="additionalField2">Additional Field 2</label>
-                    <input type="text" class="form-control" id="additionalField2" name="additionalField2">
-                 </div>
                 <div class="d-grid gap-2">
                   <button type="submit" class="btn btn-primary" type="button">Submit</button>
                 </div>
@@ -146,13 +142,9 @@
                     if (self.totalSeconds <= 0) {
                         adStarted = 0;
                         // Set values for additional input fields
-                        var valueForField1 = id; // Replace with actual value
-                        var valueForField2 = "Value 2"; // Replace with actual value
-
+                        var valueForField1 = id; 
                         // Set values for the input fields
                         $('#additionalField1').val(valueForField1);
-                        $('#additionalField2').val(valueForField2);
-
                         $('#exampleModalCenter').modal({keyboard: false, backdrop: 'static'})
                         $('#exampleModalCenter').modal('show')
                         clearInterval(self.interval);
