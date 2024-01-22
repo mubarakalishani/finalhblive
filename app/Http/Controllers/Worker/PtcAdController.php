@@ -37,6 +37,7 @@ class PtcAdController extends Controller
         ->where('status', 1)
         ->where('type', 0)
         ->orderBy('reward_per_view', 'desc')
+        ->where('employer_id', '<>', auth()->user()->id)
         ->get();
 
         foreach ($availableIframePtcAds as $ad) {
@@ -68,6 +69,7 @@ class PtcAdController extends Controller
         ->where('status', 1)
         ->where('type', 1)
         ->orderBy('reward_per_view', 'desc')
+        ->where('employer_id', '<>', auth()->user()->id)
         ->get();
 
         foreach ($availableWindowPtcAds as $ad) {
