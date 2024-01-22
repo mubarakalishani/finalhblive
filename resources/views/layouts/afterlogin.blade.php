@@ -90,7 +90,7 @@
                             <li class="sidebar-item">
                                 <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlinks
                                     <span class="badge bg-primary">{{ \App\Models\ShortLink::count() - 
-                                    App\Models\ShortLinkHistory::where('user_id', Auth::user()->id)
+                                    App\Models\ShortLinksHistory::where('user_id', Auth::user()->id)
                                         ->where('created_at', '>=', Carbon::now()->subDay()) // Filter records within the last 24 hours
                                         ->count() }}</span>
                                 </a>
