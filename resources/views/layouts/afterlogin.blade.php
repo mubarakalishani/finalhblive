@@ -86,7 +86,7 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlink
-                                    <span class="badge bg-primary p-5">{{ \App\Models\Shortlink::count() }}</span>
+                                    <span class="badge bg-primary p-5">{{ \App\Models\ShortLink::count() }}</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
