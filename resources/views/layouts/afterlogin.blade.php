@@ -81,14 +81,18 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="/faucet" class="sidebar-link"><i class="fa-solid fa-faucet-drip"></i> Faucet
-                                    <span class="badge bg-secondary">New</span>
+                                    <span class="badge bg-primary p-5"><i class="fa-solid fa-infinity"></i></span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlink</a>
+                                <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlink
+                                    <span class="badge bg-primary p-5">{{ \App\Models\Shortlink::count() }}</span>
+                                </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/views/iframe" class="sidebar-link"><i class="fa-solid fa-eye"></i> PTC</a>
+                                <a href="/views/iframe" class="sidebar-link"><i class="fa-solid fa-eye"></i> PTC
+                                    {{ \App\Models\PtcAd::where('status', 1)->count() }}
+                                </a>
                             </li>
                             {{-- <li class="sidebar-item">
                                 <a href="/games" class="sidebar-link"><i class="fa-solid fa-dice"></i> Paid Games</a>
