@@ -177,35 +177,41 @@
                                   <div class="col-sm-4 splide__slide m-0">
                                       <div class="">
                                           <div class="item inner-item">
-                                            <div class="ads-para-description text-center" style="height: 100px;">
-                                                <h6>{{ $ad->title }}</h6>
-                                                <span style="font-size: 0.8rem !important">{{ $ad->description }}</span>
+                                              <div class="card-body ">
+                                                <div class="ads-para-description text-center" style="height: 110px;">
+                                                    <h6>{{ $ad->title }}</h6>
+                                                    <span style="font-size: 0.8rem !important">{{ $ad->description }}</span>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-4">
+                                                        <span class="text-info" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                            title="seconds you have to watch this ad before getting credited">
+                                                            <i class="fa-solid fa-clock" aria-hidden="true"></i> {{ $ad->seconds }}
+                                                            sec
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <span class="text-primary" data-bs-toggle="tooltip"
+                                                            data-bs-placement="right"
+                                                            title="The Amount You will earn for viewing this listing">
+                                                            <i class="fa-solid fa-sack-dollar" aria-hidden="true"></i> {{
+                                                            $ad->reward_per_view }}
+                                                        </span>
+                                                    </div>
+              
+                                                    <div class="col-4">
+                                                        <span class="text-success" data-bs-toggle="tooltip"
+                                                            data-bs-placement="right"
+                                                            title="This is the time after which you can rewatch this ad.">
+                                                            <i class="fa-solid fa-arrows-rotate"></i> {{ $ad->revision_interval
+                                                            }}hrs
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="row mt-2">
-                                            <div class="col-4">
-                                                <span class="text-info" data-bs-toggle="tooltip" data-bs-placement="right"
-                                                    title="average time required to solve this shortlink">
-                                                    <i class="fa-solid fa-clock" aria-hidden="true"></i> {{ $ad->seconds }}
-                                                    sec
-                                                </span>
-                                            </div>
-                                            <div class="col-4">
-                                                <span class="text-primary" data-bs-toggle="tooltip"
-                                                    data-bs-placement="right"
-                                                    title="The Amount You will earn for viewing this listing">
-                                                    <i class="fa-solid fa-sack-dollar" aria-hidden="true"></i> {{
-                                                    $ad->reward_per_view }}
-                                                </span>
-                                            </div>
-        
-                                            <div class="col-4">
-                                                <span class="text-success" data-bs-toggle="tooltip"
-                                                    data-bs-placement="right"
-                                                    title="This is the time after which you can rewatch this ad.">
-                                                    <i class="fa-solid fa-arrows-rotate"></i> {{ $ad->revision_interval
-                                                    }}hrs
-                                                </span>
-                                            </div>
+                                            <div class="card-footer">
+                                                <a href="/views/iframe/{{ $ad->unique_id }}" onclick="adClicked('ad{{ $ad->id }}')" target="_blank"
+                                                    class="form-control btn btn-primary">View ads</a>
                                             </div>
                                           </div>
                                       </div>
