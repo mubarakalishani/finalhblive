@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ $ad->url }}" onclick="startTimer('{{ $ad->seconds }}', '{{ $ad->id }}')" id="startTimerLink" target="_blank"
+                                <a href="{{ $ad->url }}" onclick="startTimer('{{ $ad->seconds }}' , '{{ $ad->unique_id }}')" id="startTimerLink" target="_blank"
                                     class="form-control view-window btn btn-primary">View ads
                                 </a>
                                 <h6 id="safeTimerDisplay" class="text-center" style="display: none;">Time Left: seconds</h6>
@@ -136,10 +136,12 @@
     <script>
         var adStarted;
         var Clock = {
-            totalSeconds: 0, // initial value of the timer, will be updated later
+            totalSeconds: 0,
+            uniqueId = 0; // initial value of the timer, will be updated later
             start: function (seconds, id) {
                 // update the totalSeconds property with the parameter
                 this.totalSeconds = parseInt(seconds);
+                this.uniqueId = id;
                 var self = this;
                 this.interval = setInterval(function () {
                     document.getElementById('safeTimerDisplay').innerHTML = '00:' + self.totalSeconds;
@@ -168,7 +170,7 @@
                 delete this.interval;
             },
             resume: function () {
-                if (!this.interval) this.start(this.totalSeconds); // pass the current value of totalSeconds
+                if (!this.interval) this.start(this.totalSeconds, this.uniqueId); // pass the current value of totalSeconds
             }
         };
     
