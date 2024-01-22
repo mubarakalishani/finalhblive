@@ -98,7 +98,7 @@
                             <li class="sidebar-item">
                                 <a href="/views/iframe" class="sidebar-link"><i class="fa-solid fa-eye"></i> PTC
                                     <span class="badge bg-primary">{{ \App\Models\PtcAd::where('status', 1)->count() - 
-                                    App\Models\PtcLog::where('worker_id', auth()->user()->id)->groupBy('ad_id')->selectRaw('ad_id, COUNT(*) as count')->havingRaw('MAX(created_at) > ?', [now()->subHours(DB::raw('MAX(revision_interval)'))])->count() }}</span>
+                                    App\Models\PtcLog::where('worker_id', auth()->user()->id)->havingRaw('MAX(created_at) > ?', [now()->subHours(\Illuminate\Support\Facades\DB::raw('MAX(revision_interval)'))])->count() }}</span>
                                 </a>
                             </li>
                             {{-- <li class="sidebar-item">
