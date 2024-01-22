@@ -215,7 +215,7 @@ public function handlePerfectMoneyWebhook(Request $request){
 
 
     $secretKey = DepositMethodSetting::where('name', 'perfectmoney_secret')->value('value');
-
+    $hashedSecretKey = strtoupper(md5($secretKey));
     $string =
     (string)$request->input('PAYMENT_ID') . ":" .
     (string)$request->input('PAYEE_ACCOUNT') . ":" .
@@ -223,7 +223,7 @@ public function handlePerfectMoneyWebhook(Request $request){
     (string)$request->input('PAYMENT_UNITS') . ":" .
     (string)$request->input('PAYMENT_BATCH_NUM') . ":" .
     (string)$request->input('PAYER_ACCOUNT') . ":" .
-    (string)$secretKey . ":" .
+    (string)$hashedSecretKey . ":" .
     (string)$request->input('TIMESTAMPGMT');
 
     $hash=strtoupper(md5($string));
