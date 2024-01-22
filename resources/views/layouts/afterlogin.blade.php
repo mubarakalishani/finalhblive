@@ -355,7 +355,7 @@
                 breakpoints: {
                     640: {
                         perPage: 2,
-                        gap: '.7rem',
+                        gap: '.5rem',
                     },
                     480: {
                         perPage: 1,
