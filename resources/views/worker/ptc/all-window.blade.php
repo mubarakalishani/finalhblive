@@ -141,7 +141,6 @@
             start: function (seconds, id) {
                 // update the totalSeconds property with the parameter
                 this.totalSeconds = parseInt(seconds);
-                this.uniqueId = id;
                 var self = this;
                 this.interval = setInterval(function () {
                     document.getElementById('safeTimerDisplay').innerHTML = '00:' + self.totalSeconds;
@@ -170,7 +169,7 @@
                 delete this.interval;
             },
             resume: function () {
-                if (!this.interval) this.start(this.totalSeconds, this.uniqueId); // pass the current value of totalSeconds
+                if (!this.interval) this.start(this.totalSeconds); // pass the current value of totalSeconds
             }
         };
     
