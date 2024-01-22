@@ -172,11 +172,9 @@
                     <div class="splide splide1">
                         <div class="splide__track">
                             <div class="splide__list">
-                                @foreach ($availableIframePtcAds as $ad)
-                                @if (!$ad->totalMinutesDifference || $ad->totalMinutesDifference > ($ad->revision_interval * 60))
-                                  <div class="col-sm-3 splide__slide m-0">
-                                      <div class="">
-                                          <div class="item inner-item">
+                                      @foreach ($availableIframePtcAds as $ad)
+                                        @if (!$ad->totalMinutesDifference || $ad->totalMinutesDifference > ($ad->revision_interval * 60))
+                                          <div class="col-lg-3 col-md-6 col-sm-12 mt-4 pt-2" id="ad{{ $ad->id }}">
                                               <div class="card-body ">
                                                 <div class="ads-para-description text-center" style="height: 110px;">
                                                     <h6>{{ $ad->title }}</h6>
@@ -214,10 +212,8 @@
                                                     class="form-control btn btn-primary">View ads</a>
                                             </div>
                                           </div>
-                                      </div>
-                                  </div>
-                                @endif
-                                @endforeach
+                                        @endif
+                                      @endforeach
                             </div>
                         </div>
                     </div>
