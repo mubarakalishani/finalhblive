@@ -147,7 +147,7 @@
                         adStarted = 0;
                         // Set values for additional input fields
                         var valueForField1 = id; // Replace with actual value
-                        var valueForField2 = seconds; // Replace with actual value
+                        var valueForField2 = id; // Replace with actual value
 
                         // Set values for the input fields
                         $('#additionalField1').val(valueForField1);
