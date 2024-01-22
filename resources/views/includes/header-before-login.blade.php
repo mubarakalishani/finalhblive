@@ -47,11 +47,11 @@
                         Earn
                       </a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/jobs">Find Jobs <span>262</span></a>
-                        <a class="dropdown-item" href="/offers">Offerwalls <span>692</span></a>
+                        <a class="dropdown-item" href="/jobs">Micro Jobs <span>{{ \App\Models\Task::where('status', 1)->count() }}</span></a>
+                        <a class="dropdown-item" href="/offers">Offerwalls <span>{{ \App\Models\Offerwall::where('status', 1)->count() }}</span></a>
                         <a class="dropdown-item" href="/faucet">Faucet <span><i class="fa-solid fa-infinity"></i></span></a>
-                        <a class="dropdown-item" href="/shortlinks">Shortlinks <span>89</span></a>
-                        <a class="dropdown-item" href="/views/iframe">PTC <span>154</span></a>
+                        <a class="dropdown-item" href="/shortlinks">Shortlinks <span>{{ \App\Models\ShortLink::count() }}</span></a>
+                        <a class="dropdown-item" href="/views/iframe">PTC <span>{{ \App\Models\PtcAd::where('status', 1)->count() }}</span></a>
                       </div>
                     </li>
                     <a href="/login" class="nav-item nav-link aut-btn">Login</a>

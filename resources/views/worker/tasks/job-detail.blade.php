@@ -1,9 +1,6 @@
 @extends('layouts.afterlogin')
 @section('content')
                 <div class="container-fluid">
-                    {{-- <div class="mt-3 mb-5">
-                        <h3>Welcome Username</h3>
-                    </div> --}}
 
                     <!-- user dashboard start -->
                     <div class="all-history-page jobs-page">

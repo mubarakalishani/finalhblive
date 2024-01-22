@@ -74,24 +74,26 @@
                         </a> --}}
                         {{-- <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"> --}}
                             <li class="sidebar-item">
-                                <a href="/jobs" class="sidebar-link"><i class="fa-solid fa-list-check"></i> Micro Tasks</a>
+                                <a href="/jobs" class="sidebar-link"><i class="fa-solid fa-list-check"></i> Micro Tasks
+                                    <span class="badge bg-primary">{{ \App\Models\Task::where('status', 1)->count() }}</span>
+                                </a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="/offers" class="sidebar-link"><i class="fa-brands fa-buffer"></i> Offerwalls and Surveys</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="/faucet" class="sidebar-link"><i class="fa-solid fa-faucet-drip"></i> Faucet
-                                    <span class="badge bg-primary p-5"><i class="fa-solid fa-infinity"></i></span>
+                                    <span class="badge bg-primary"><i class="fa-solid fa-infinity"></i></span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlink
-                                    <span class="badge bg-primary p-5">{{ \App\Models\ShortLink::count() }}</span>
+                                <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlinks
+                                    <span class="badge bg-primary">{{ \App\Models\ShortLink::count() }}</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="/views/iframe" class="sidebar-link"><i class="fa-solid fa-eye"></i> PTC
-                                    {{ \App\Models\PtcAd::where('status', 1)->count() }}
+                                    <span class="badge bg-primary">{{ \App\Models\PtcAd::where('status', 1)->count() }}</span>
                                 </a>
                             </li>
                             {{-- <li class="sidebar-item">

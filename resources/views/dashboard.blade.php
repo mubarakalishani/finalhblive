@@ -18,10 +18,11 @@
                         <h5 class="d-flex align-items-center mb-3">Balance Status</h5>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Total balance</h6>
+                          <h6 class="mb-0">Main/Advertising Balance</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          $12.29 <a href="login.html">withdraw</a>
+                          ${{ auth()->user()->balance }} <a href="/withdraw">withdraw</a>
+                           / ${{ auth()->user()->deposit_balance }}
                         </div>
                       </div>
                       <hr>
@@ -30,7 +31,7 @@
                           <h6 class="mb-0">Expert Level Balance</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          $3.03 <a href="login.html">Learn More</a>
+                          {{ auth()->user()->diamond_level_balance }} <a href="/">Learn More</a>
                         </div>
                       </div>
                       <hr>
@@ -39,7 +40,8 @@
                           <h6 class="mb-0">Pending Balance</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          $0.34 <a href="login.html">View all</a>
+                          ${{ \App\Models\WithdrawalHistory::where('status', 0)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }}
+                           <a href="/withdraw">View</a>
                         </div>
                       </div>
                       <hr>
@@ -48,7 +50,8 @@
                           <h6 class="mb-0">Total withdrawn</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          $64.23 <a href="login.html">View all</a>
+                          ${{ \App\Models\WithdrawalHistory::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }} 
+                          <a href="/withdraw">View</a>
                         </div>
                       </div>
                     </div>
@@ -57,13 +60,14 @@
                 <div class="col-sm-4 mb-3">
                   <div class="card h-100">
                     <div class="card-body">
-                      <h5 class="d-flex align-items-center mb-3">Jobs Status</h5>
+                      <h5 class="d-flex align-items-center mb-3">Micro Tasks Status</h5>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Finished Jobs</h6>
+                          <h6 class="mb-0">Total Submitted</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          80 <a href="login.html">View all</a>
+                          {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->count() }} 
+                          <a href="/history/jobs">View all</a>
                         </div>
                       </div>
                       <hr>
@@ -72,25 +76,28 @@
                           <h6 class="mb-0">Approved+Paid</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          72 <a href="login.html">View all</a>
+                          {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 1)->count() }}
+                           <a href="/history/jobs">View all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Rejected Jobs</h6>
+                          <h6 class="mb-0">Rejected</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          05 <a href="login.html">View all</a>
+                          {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 2)->count() }}
+                          <a href="/history/jobs">View all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Pending Review</h6>
+                          <h6 class="mb-0">Pending Approval</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          03 <a href="login.html">View all</a>
+                          {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 0)->count() }}
+                          <a href="/history/jobs">View all</a>
                         </div>
                       </div>
                     </div>
@@ -105,7 +112,8 @@
                           <h6 class="mb-0">Total Offer/Surveys Completed</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          {{ auth()->user()->total_offers_completed }} <a href="/history/offers-and-surveys">view all</a>
+                          {{ auth()->user()->total_offers_completed }} 
+                          <a href="/history/offers-and-surveys">view all</a>
                         </div>
                       </div>
                       <hr>
@@ -397,76 +405,6 @@
             </div>
         </div>
 
-        <div class="most-popular-1">
-            <div id="view-all-btn">
-              <div class="results-bar d-flex align-items-center justify-content-between">
-                <div class="heading-section-custom">
-                  <h4><em>Most Popular</em> Faucet</h4>
-                </div>
-                <div class="d-flex">
-                  <div class="ml-4">
-                    <a href="all-faucet.html">View all</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-                <div class="splide splide5">
-                    <div class="splide__track">
-                        <div class="splide__list">
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                    <div class="item inner-item">
-                                      <img src="https://www.aticlix.net/images/wanna.png" alt="">
-                                      <h4>Wannads<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/lot.png" alt="">
-                                    <h4>Lootably<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/cpxs.png" alt="">
-                                    <h4>CPX<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/adsc.png" alt="">
-                                    <h4>Moonlix<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/agm.png" alt="">
-                                    <h4>AdGatemedia<br><span><i class="fa-solid fa-circle" style="color:red;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                    <h4>Offertoro<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="most-popular-1">
             <div id="view-all-btn">
