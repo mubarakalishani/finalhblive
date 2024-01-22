@@ -244,7 +244,7 @@ public function handlePerfectMoneyWebhook(Request $request){
         $user = User::find($userId);
         Deposit::create([
             'user_id' => $userId,
-            'method' => 'faucetpay',
+            'method' => 'perfectmoney',
             'amount' => $amount,
             'status' => 'completed',
             'internal_tx' => Str::random(12),

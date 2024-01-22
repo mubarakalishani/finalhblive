@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="mt-3 mb-5">
-        <h3>Welcome Username</h3>
+        <h3>Welcome {{auth()->user()->username}}</h3>
     </div>
 
     <!-- dashboard status cards start -->
@@ -27,16 +27,16 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Withdrawable balance</h6>
+                          <h6 class="mb-0">Expert Level Balance</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          $3.03 <a href="login.html">View all</a>
+                          $3.03 <a href="login.html">Learn More</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Pendding balance</h6>
+                          <h6 class="mb-0">Pending Balance</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
                           $0.34 <a href="login.html">View all</a>
@@ -45,19 +45,10 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Total withdraw</h6>
+                          <h6 class="mb-0">Total withdrawn</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
                           $64.23 <a href="login.html">View all</a>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <h6 class="mb-0">Total bonus received</h6>
-                        </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
-                          $3.35 <a href="login.html">View all</a>
                         </div>
                       </div>
                     </div>
@@ -67,15 +58,6 @@
                   <div class="card h-100">
                     <div class="card-body">
                       <h5 class="d-flex align-items-center mb-3">Jobs Status</h5>
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <h6 class="mb-0">Level</h6>
-                        </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
-                          90 <a href="login.html">view all</a>
-                        </div>
-                      </div>
-                      <hr>
                       <div class="row">
                         <div class="col-sm-6">
                           <h6 class="mb-0">Finished Jobs</h6>
@@ -105,7 +87,7 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Pendding Review</h6>
+                          <h6 class="mb-0">Pending Review</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
                           03 <a href="login.html">View all</a>
@@ -120,46 +102,37 @@
                       <h5 class="d-flex align-items-center mb-3">All Jobs</h5>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Total Offer/Surveys</h6>
+                          <h6 class="mb-0">Total Offer/Surveys Completed</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          24 <a href="login.html">view all</a>
+                          {{ auth()->user()->total_offers_completed }} <a href="/history/offers-and-surveys">view all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Total PTC</h6>
+                          <h6 class="mb-0">Total PTC Completed</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          80 <a href="login.html">View all</a>
+                          {{ auth()->user()->total_ptc_completed }}
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Total Faucet</h6>
+                          <h6 class="mb-0">Total Faucet Completed</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          72 <a href="login.html">View all</a>
+                          {{ auth()->user()->total_faucet_completed }}
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Total Shorterlink</h6>
+                          <h6 class="mb-0">Total Shorterlinks Completed</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          05 <a href="login.html">View all</a>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <h6 class="mb-0">Total Games</h6>
-                        </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
-                          03 <a href="login.html">View all</a>
+                          {{ auth()->user()->total_shortlinks_completed }}
                         </div>
                       </div>
                     </div>

@@ -80,7 +80,9 @@
                                 <a href="/offers" class="sidebar-link"><i class="fa-brands fa-buffer"></i> Offerwalls and Surveys</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/faucet" class="sidebar-link"><i class="fa-solid fa-faucet-drip"></i> Faucet</a>
+                                <a href="/faucet" class="sidebar-link"><i class="fa-solid fa-faucet-drip"></i> Faucet
+                                    <span class="badge bg-secondary">New</span>
+                                </a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlink</a>
