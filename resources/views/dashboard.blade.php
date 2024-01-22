@@ -159,7 +159,7 @@
               <div id="view-all-btn">
                   <div class="results-bar d-flex align-items-center justify-content-between">
                     <div class="heading-section-custom">
-                      <h4><em>Trending</em> Today</h4>
+                      <h4><em>Ptc Ads</em> Available</h4>
                     </div>
                     <div class="d-flex">
                       <div class="ml-4">
@@ -172,14 +172,46 @@
                     <div class="splide splide1">
                         <div class="splide__track">
                             <div class="splide__list">
-                                <div class="col-sm-4 splide__slide m-0">
-                                    <div class="">
-                                        <div class="item inner-item">
-                                          <img src="https://www.aticlix.net/images/wanna.png" alt="">
-                                          <h4>Wannads<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                        </div>
-                                    </div>
-                                </div>
+                                @foreach ($availableIframePtcAds as $ad)
+                                @if (!$ad->totalMinutesDifference || $ad->totalMinutesDifference > ($ad->revision_interval * 60))
+                                  <div class="col-sm-4 splide__slide m-0">
+                                      <div class="">
+                                          <div class="item inner-item">
+                                            <div class="ads-para-description text-center" style="height: 100px;">
+                                                <h6>{{ $ad->title }}</h6>
+                                                <span style="font-size: 0.8rem !important">{{ $ad->description }}</span>
+                                            </div>
+                                            <div class="row mt-2">
+                                            <div class="col-4">
+                                                <span class="text-info" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                    title="average time required to solve this shortlink">
+                                                    <i class="fa-solid fa-clock" aria-hidden="true"></i> {{ $ad->seconds }}
+                                                    sec
+                                                </span>
+                                            </div>
+                                            <div class="col-4">
+                                                <span class="text-primary" data-bs-toggle="tooltip"
+                                                    data-bs-placement="right"
+                                                    title="The Amount You will earn for viewing this listing">
+                                                    <i class="fa-solid fa-sack-dollar" aria-hidden="true"></i> {{
+                                                    $ad->reward_per_view }}
+                                                </span>
+                                            </div>
+        
+                                            <div class="col-4">
+                                                <span class="text-success" data-bs-toggle="tooltip"
+                                                    data-bs-placement="right"
+                                                    title="This is the time after which you can rewatch this ad.">
+                                                    <i class="fa-solid fa-arrows-rotate"></i> {{ $ad->revision_interval
+                                                    }}hrs
+                                                </span>
+                                            </div>
+                                            </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                @endif
+                                @endoforeach
                             </div>
                         </div>
                     </div>
