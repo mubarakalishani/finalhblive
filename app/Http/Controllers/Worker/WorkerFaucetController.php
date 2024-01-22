@@ -82,7 +82,7 @@ class WorkerFaucetController extends Controller
             'h-captcha-response' => 'required|captcha'
         ]);
         $data = array(
-            'secret' => Setting::where('name', 'hcaptcha_secret'),
+            'secret' => Setting::where('name', 'hcaptcha_secret')->value('value'),
             'response' => $request->input('h-captcha-response'),
         );
         $verify = curl_init();

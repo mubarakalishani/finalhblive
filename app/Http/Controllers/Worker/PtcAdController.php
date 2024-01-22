@@ -152,7 +152,7 @@ class PtcAdController extends Controller
             $worker->addWorkerBalance($ad->reward_per_view);
             $worker->increment('total_earned', $ad->reward_per_view);
             $worker->increment('earned_from_ptc' , $ad->reward_per_view);
-            $worker->increment('ptc_completed');
+            $worker->increment('total_ptc_completed');
             //if there is an upline of the user, credit his respective referral commission
             if ($worker->upline !=0 && Setting::where('name', 'ptc_referral_status')->value('value') == 'enabled') {
                 $upline = User::find($worker->upline);
@@ -227,7 +227,7 @@ class PtcAdController extends Controller
             $worker->addWorkerBalance($ad->reward_per_view);
             $worker->increment('total_earned', $ad->reward_per_view);
             $worker->increment('earned_from_ptc' , $ad->reward_per_view);
-            $worker->increment('ptc_completed');
+            $worker->increment('total_ptc_completed');
             //if there is an upline of the user, credit his respective referral commission
             if ($worker->upline !=0 && Setting::where('name', 'ptc_referral_status')->value('value') == 'enabled') {
                 $upline = User::find($worker->upline);
