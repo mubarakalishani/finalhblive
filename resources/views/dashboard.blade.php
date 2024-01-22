@@ -163,7 +163,7 @@
                     </div>
                     <div class="d-flex">
                       <div class="ml-4">
-                        <a href="login.html">View all</a>
+                        <a href="/views/iframe">View all</a>
                       </div>
                     </div>
                   </div>
@@ -174,7 +174,7 @@
                             <div class="splide__list">
                                 @foreach ($availableIframePtcAds as $ad)
                                 @if (!$ad->totalMinutesDifference || $ad->totalMinutesDifference > ($ad->revision_interval * 60))
-                                  <div class="col-sm-4 splide__slide m-0">
+                                  <div class="col-sm-3 splide__slide m-0">
                                       <div class="">
                                           <div class="item inner-item">
                                               <div class="card-body ">
