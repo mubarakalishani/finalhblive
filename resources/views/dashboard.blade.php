@@ -210,7 +210,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer">
-                                                <a href="/views/iframe/{{ $ad->unique_id }}" onclick="adClicked('ad{{ $ad->id }}')" target="_blank"
+                                                <a href="/views/iframe/{{ $ad->unique_id }}" target="_blank"
                                                     class="form-control btn btn-primary">View ads</a>
                                             </div>
                                           </div>
@@ -300,77 +300,6 @@
             <div id="view-all-btn">
               <div class="results-bar d-flex align-items-center justify-content-between">
                 <div class="heading-section-custom">
-                  <h4><em>Most Popular</em> Surveys</h4>
-                </div>
-                <div class="d-flex">
-                  <div class="ml-4">
-                    <a href="all-surveys.html">View all</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-                <div class="splide splide3">
-                    <div class="splide__track">
-                        <div class="splide__list">
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                    <div class="item inner-item">
-                                      <img src="https://www.aticlix.net/images/wanna.png" alt="">
-                                      <h4>Wannads<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/lot.png" alt="">
-                                    <h4>Lootably<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/cpxs.png" alt="">
-                                    <h4>CPX<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/adsc.png" alt="">
-                                    <h4>Moonlix<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/agm.png" alt="">
-                                    <h4>AdGatemedia<br><span><i class="fa-solid fa-circle" style="color:red;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                  <div class="item">
-                                    <img src="https://www.aticlix.net/images/toro.png" alt="">
-                                    <h4>Offertoro<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="most-popular-1">
-            <div id="view-all-btn">
-              <div class="results-bar d-flex align-items-center justify-content-between">
-                <div class="heading-section-custom">
                   <h4><em>Offers</em> Providers</h4>
                 </div>
                 <div class="d-flex">
@@ -385,7 +314,7 @@
                     <div class="splide__track">
                         <div class="splide__list">
                           @foreach ($offerwalls as $offerwall)
-                            <div class="col-sm-2 splide__slide m-0">
+                            <div class="col splide__slide m-0">
                               <div class="">
                                 <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
                                   class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
