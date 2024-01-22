@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ $ad->url }}" onclick="startTimer('{{ $ad->seconds }}', '{{ $ad->unique_id }}')" id="startTimerLink" target="_blank"
+                                <a href="{{ $ad->url }}" onclick="startTimer('{{ $ad->seconds }}', '{{ $ad->id }}')" id="startTimerLink" target="_blank"
                                     class="form-control view-window btn btn-primary">View ads
                                 </a>
                                 <h6 id="safeTimerDisplay" class="text-center" style="display: none;">Time Left: seconds</h6>
