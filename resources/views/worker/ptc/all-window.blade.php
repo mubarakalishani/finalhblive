@@ -68,7 +68,7 @@
                                 <div class="card-body ">
                                 <div class="ads-para-description text-center" style="height: 100px;">
                                     <h6>{{ $ad->title }}</h6>
-                                    <span>{{ $ad->description }} $ad->totalMinutesDifference = {{$ad->totalMinutesDifference}}</span>
+                                    <span>{{ $ad->description }}</span>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
@@ -167,8 +167,8 @@
                 clearInterval(this.interval);
                 delete this.interval;
             },
-            resume: function () {
-                if (!this.interval) this.start(this.totalSeconds); // pass the current value of totalSeconds
+            resume: function (uniqueId) {
+                if (!this.interval) this.start(this.totalSeconds, uniqueId); // pass the current value of totalSeconds
             }
         };
     
@@ -181,6 +181,7 @@
                 link.classList.add('disabled');
             });
             adStarted = 1;
+            uniqueId = id;
             // start the timer with the value of from the onclick attribute
             timer.start(seconds, id);
         }
@@ -196,7 +197,7 @@
         // resume the timer when the window loses focus
         window.addEventListener('blur', function() {
             if(adStarted==1){
-                timer.resume();
+                timer.resume(uniqueId);
             }
       
         });
