@@ -27,6 +27,8 @@ class WorkerFaucetController extends Controller
         if ($lastClaim) {
             $createdAt = $lastClaim->created_at;
             $timeAgo = $createdAt->diffForHumans();
+        }else{
+            $timeAgo = 0;
         }
 
         $faucet_claim_time = Setting::where('name', 'faucet_claim_time')->value('value');
