@@ -6,9 +6,9 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
-use \App\Models\ShortLInk;
+use \App\Models\ShortLink;
 
-class ShortLInkController extends AdminController
+class ShortLinkController extends AdminController
 {
     /**
      * Title for current resource.
@@ -24,7 +24,7 @@ class ShortLInkController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new ShortLInk());
+        $grid = new Grid(new ShortLink());
         
         $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->sortable()->text();
@@ -63,7 +63,7 @@ class ShortLInkController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(ShortLInk::findOrFail($id));
+        $show = new Show(ShortLink::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
@@ -85,7 +85,7 @@ class ShortLInkController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new ShortLInk());
+        $form = new Form(new ShortLink());
 
         $form->text('name', __('Name'));
         $form->url('url', __('Url'));
