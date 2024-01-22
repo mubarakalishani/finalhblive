@@ -319,7 +319,7 @@
                                   class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
                                   <div class="item inner-item">
                                     <img src="{{ $offerwall->image_url }}" width="150px" alt="{{ $offerwall->name }}">
-                                    <h3>{{ $offerwall->name }}</h3>
+                                    <h4>{{ $offerwall->name }}</h4>
                                   </div>
                                 </a>
                             </div>
