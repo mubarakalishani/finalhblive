@@ -96,7 +96,7 @@ class WorkerFaucetController extends Controller
         $faucet_claim_time = Setting::where('name', 'faucet_claim_time')->value('value');
         $faucet_claim_amount = Setting::where('name', 'faucet_claim_amount')->value('value');
         $claimsCount = FaucetClaim::where('user_id', Auth::user()->id)->where('created_at', '>', now()->subMinutes($faucet_claim_time))->count();
-        dd($responseData);
+        dd($responseData->success);
         if($responseData->success) {
             if ( $claimsCount > 0 ) 
             {
