@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ $ad->url }}" onclick="startTimer('{{ $ad->seconds }}' , '{{ $ad->unique_id }}')" id="startTimerLink" target="_blank"
+                                <a href="{{ $ad->url }}" onclick="startTimer('{{ $ad->seconds }}', '{{ $ad->unique_id }}')" id="startTimerLink" target="_blank"
                                     class="form-control view-window btn btn-primary">View ads
                                 </a>
                                 <h6 id="safeTimerDisplay" class="text-center" style="display: none;">Time Left: seconds</h6>
@@ -136,8 +136,7 @@
     <script>
         var adStarted;
         var Clock = {
-            totalSeconds: 0,
-            uniqueId = 0; // initial value of the timer, will be updated later
+            totalSeconds: 0, // initial value of the timer, will be updated later
             start: function (seconds, id) {
                 // update the totalSeconds property with the parameter
                 this.totalSeconds = parseInt(seconds);
@@ -148,7 +147,7 @@
                         adStarted = 0;
                         // Set values for additional input fields
                         var valueForField1 = id; // Replace with actual value
-                        var valueForField2 = id; // Replace with actual value
+                        var valueForField2 = "Value 2"; // Replace with actual value
 
                         // Set values for the input fields
                         $('#additionalField1').val(valueForField1);
