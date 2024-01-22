@@ -90,7 +90,7 @@
                             <li class="sidebar-item">
                                 <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlinks
                                     <span class="badge bg-primary">{{ \App\Models\ShortLink::count() - 
-                                    ShortLinksHistory::where('user_id', Auth::user()->id)
+                                    App\Models\ShortLinkHistory::where('user_id', Auth::user()->id)
                                         ->where('created_at', '>=', Carbon::now()->subDay()) // Filter records within the last 24 hours
                                         ->count() }}</span>
                                 </a>
@@ -98,7 +98,7 @@
                             <li class="sidebar-item">
                                 <a href="/views/iframe" class="sidebar-link"><i class="fa-solid fa-eye"></i> PTC
                                     <span class="badge bg-primary">{{ \App\Models\PtcAd::where('status', 1)->count() - 
-                                    PtcLog::where('worker_id', auth()->user()->id)->groupBy('ad_id')->selectRaw('ad_id, COUNT(*) as count')->havingRaw('MAX(created_at) > ?', [now()->subHours(DB::raw('MAX(revision_interval)'))])->count() }}</span>
+                                    App\Models\PtcLog::where('worker_id', auth()->user()->id)->groupBy('ad_id')->selectRaw('ad_id, COUNT(*) as count')->havingRaw('MAX(created_at) > ?', [now()->subHours(DB::raw('MAX(revision_interval)'))])->count() }}</span>
                                 </a>
                             </li>
                             {{-- <li class="sidebar-item">
