@@ -24,6 +24,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
         {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
         <!-- Styles -->

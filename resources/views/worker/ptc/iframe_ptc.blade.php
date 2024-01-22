@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/891a7151bf.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 
     <title>ptc</title>
 </head>
@@ -22,7 +23,7 @@
               <form method="POST" {{ route('worker.ptc_iframe.submit', ['uniqueId' => $uniqueId]) }}>
                 @csrf
                 <div class="mb-3 text-center">
-                      {!! Captcha::display() !!}
+                  <div class="h-captcha" data-sitekey="{{ \App\Models\Setting::where('name', 'hcaptcha_site_key')->value('value') }}"></div>
                 </div>
                 <div class="d-grid gap-2">
                   <button type="submit" class="btn btn-primary" type="button">Submit</button>

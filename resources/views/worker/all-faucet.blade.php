@@ -95,7 +95,7 @@
           <form method="POST" action=" {{ route( 'worker.claim_faucet' ) }} ">
             @csrf
             <div class="mb-3 captcha text-center">
-                {!! Captcha::display() !!}
+              <div class="h-captcha" data-sitekey="{{ \App\Models\Setting::where('name', 'hcaptcha_site_key')->value('value') }}"></div>
             </div>
             <div class="d-grid gap-2 mb-3">
                 <button type="submit" class="btn btn-primary" type="button">Claim</button>

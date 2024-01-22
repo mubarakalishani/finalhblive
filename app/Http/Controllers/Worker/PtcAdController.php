@@ -112,7 +112,7 @@ class PtcAdController extends Controller
             'h-captcha-response' => 'required|captcha'
         ]);
         $data = array(
-            'secret' => env('CAPTCHA_SECRET'),
+            'secret' => Setting::where('name', 'hcaptcha_secret'),
             'response' => $request->input('h-captcha-response'),
         );
         $verify = curl_init();
@@ -187,7 +187,7 @@ class PtcAdController extends Controller
             'h-captcha-response' => 'required|captcha'
         ]);
         $data = array(
-            'secret' => env('CAPTCHA_SECRET'),
+            'secret' => Setting::where('name', 'hcaptcha_secret'),
             'response' => $request->input('h-captcha-response'),
         );
         $verify = curl_init();

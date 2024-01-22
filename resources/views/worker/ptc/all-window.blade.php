@@ -116,7 +116,7 @@
               <form method="POST" {{ route('worker.ptc.window.submit') }}>
                 @csrf
                 <div class="mb-3 text-center">
-                      {!! Captcha::display() !!}
+                    <div class="h-captcha" data-sitekey="{{ \App\Models\Setting::where('name', 'hcaptcha_site_key')->value('value') }}"></div>
                 </div>
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="additionalField1" name="id">
