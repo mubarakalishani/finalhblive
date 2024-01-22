@@ -314,11 +314,11 @@
                     <div class="splide__track">
                         <div class="splide__list">
                           @foreach ($offerwalls as $offerwall)
-                            <div class="col splide__slide m-0" style="min-width: 150px">
+                            <div class="col splide__slide m-0" style="width: 150px; height:250px">
                                 <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
                                   class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
                                   <div class="item inner-item">
-                                    <img src="{{ $offerwall->image_url }}" alt="{{ $offerwall->name }}">
+                                    <img src="{{ $offerwall->image_url }}" width="150px" alt="{{ $offerwall->name }}">
                                     <h4>{{ $offerwall->name }}<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Available</span></h4>
                                   </div>
                                 </a>
