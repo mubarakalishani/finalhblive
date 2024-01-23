@@ -40,7 +40,7 @@
             </div>
           </div>
         </div>
-        @if ($shortLink->remaining_views >= $shortLink->views_per_day)
+        @if ($shortLink->remaining_views <= $shortLink->views_per_day)
           <div class=" mb-4 text-center">
             <a href="/shortlink/{{ $shortLink->unique_id }}" class="btn btn-primary" target="_blank">Claim</a>
           </div>
