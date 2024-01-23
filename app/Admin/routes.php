@@ -41,6 +41,9 @@ Route::group([
     $router->resource('faucet-settings', FaucetSettingController::class);
     $router->resource('pages', PagesController::class);
     $router->resource('deposit-methods', DepositMethodController::class);
+    $router->resource('social-links', SocialLinksController::class);
+
+
 
 
 
