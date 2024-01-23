@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="row">
     @foreach ($shortLinks as $shortLink)
-    @if ($shortLink->remaining_views >= $shortLink->views_per_day)
+    @if ($shortLink->remaining_views <= $shortLink->views_per_day)
     <div class="col-lg-3 col-md-6 col-12 mt-4 pt-2">
       <div class="card border-0 bg-light rounded shadow">
         <div class="card-header">
