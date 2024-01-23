@@ -89,7 +89,7 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlinks
-                                    <span class="badge bg-primary">{{ \App\Models\ShortLink::count()}}</span>
+                                    <span class="badge bg-primary">{{ \App\Models\ShortLink::sum('views_per_day')}}</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
