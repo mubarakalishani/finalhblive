@@ -309,46 +309,6 @@
             splide1.mount();
         </script>
         <script>
-            var splide2 = new Splide('.splide2', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide2.mount();
-        </script>
-        <script>
-            var splide3 = new Splide('.splide3', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide3.mount();
-        </script>
-        <script>
             var splide4 = new Splide('.splide4', {
                 type: 'loop',
                 perPage: 3,
@@ -365,26 +325,6 @@
                 },
             });
             splide4.mount();
-        </script>
-        <script>
-            var splide5 = new Splide('.splide5', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide5.mount();
         </script>
         <script>
             var splide6 = new Splide('.splide6', {
@@ -405,46 +345,6 @@
                 },
             });
             splide6.mount();
-        </script>
-        <script>
-            var splide7 = new Splide('.splide7', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide7.mount();
-        </script>
-        <script>
-            var splide8 = new Splide('.splide8', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide8.mount();
         </script>
 
         @if(session()->has('success'))

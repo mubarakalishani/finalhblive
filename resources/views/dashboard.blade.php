@@ -268,7 +268,7 @@
                 </div>
                 <div class="d-flex">
                   <div class="ml-4">
-                    <a href="all-shortlinks.html">View all</a>
+                    <a href="/shortlinks">View all</a>
                   </div>
                 </div>
               </div>
@@ -332,68 +332,6 @@
                             </div>
                           @endif
                           @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="most-popular-1">
-            <div id="view-all-btn">
-              <div class="results-bar d-flex align-items-center justify-content-between">
-                <div class="heading-section-custom">
-                  <h4><em>Most Popular</em> Games</h4>
-                </div>
-                <div class="d-flex">
-                  <div class="ml-4">
-                    <a href="all-games.html">View all</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-                <div class="splide splide7">
-                    <div class="splide__track">
-                        <div class="splide__list">
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                    <div class="item inner-item">
-                                      <img src="https://www.aticlix.net/images/wanna.png" alt="">
-                                      <h4>Wannads<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="most-popular-1">
-            <div id="view-all-btn">
-              <div class="results-bar d-flex align-items-center justify-content-between">
-                <div class="heading-section-custom">
-                  <h4><em>Most Popular</em> PTC</h4>
-                </div>
-                <div class="d-flex">
-                  <div class="ml-4">
-                    <a href="allptc-ads.html">View all</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-                <div class="splide splide8">
-                    <div class="splide__track">
-                        <div class="splide__list">
-                            <div class="col-sm-2 splide__slide m-0">
-                                <div class="">
-                                    <div class="item inner-item">
-                                      <img src="https://www.aticlix.net/images/wanna.png" alt="">
-                                      <h4>Wannads<br><span><i class="fa-solid fa-circle" style="color:#4acc4a;"></i> Availabe</span></h4>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
