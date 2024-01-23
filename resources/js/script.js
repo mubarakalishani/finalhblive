@@ -17,21 +17,3 @@ function toggleSidebar() {
 }
 
 
-var splide1 = new Splide('.splide1', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide1.mount();

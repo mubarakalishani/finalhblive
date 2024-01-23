@@ -1656,6 +1656,13 @@ Sidebar collapse style start
 	
 }
 
+@media only screen and (max-width: 767px){
+  .main{
+    margin-left: 0px;
+  }
+
+}
+
 .sidebar-logo {
     padding: 1.15rem 1.5rem;
 }
