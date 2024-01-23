@@ -1,3 +1,15 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar1 = document.getElementById('sidebar');
+    const windowWidth = window.innerWidth;
+
+    // Display or hide the sidebar based on the screen width
+    if (windowWidth <= 767) {
+        sidebar1.style.display = 'none';
+    } else {
+        sidebar1.style.display = 'block';
+    }
+});
+
 const toggler = document.querySelector(".btn");
 toggler.addEventListener("click",function(){
     document.querySelector("#sidebar").classList.toggle("collapsed");
