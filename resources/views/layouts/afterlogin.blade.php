@@ -89,7 +89,7 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="/shortlinks" class="sidebar-link"><i class="fa-solid fa-link"></i> Shorterlinks
-                                    <span class="badge bg-primary">{{ \App\Models\ShortLink::sum('views_per_day')}}</span>
+                                    <span class="badge bg-primary">{{ \App\Models\ShortLink::sum('views_per_day') - \App\Models\ShortLinksHistory::where('user_id', auth()->user()->id)->where('created_at', '>', now()->subHours(24))->count() }}</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
