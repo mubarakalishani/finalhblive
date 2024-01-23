@@ -18,9 +18,6 @@ class CoinbaseCommerceController extends Controller
         if (hash_equals(hash_hmac('sha256', $payload, $secret), $signature)) {
             // Signature is valid, process the webhook payload
             $event = json_decode($payload, true);
-            // Handle the event as needed
-            // Example: Log the event
-            \Log::info('Coinbase Webhook Received', ['event' => $event]);
         } else {
             // Invalid signature, ignore or log the request
             return response()->json(['error' => 'Invalid signature'], 401);

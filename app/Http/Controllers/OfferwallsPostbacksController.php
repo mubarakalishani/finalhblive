@@ -273,7 +273,7 @@ class OfferwallsPostbacksController extends Controller
             return "Access Denied! IP address $ipAddress is not whitelisted!";
         }
 
-        if (OfferwallsSetting::where( 'name', 'ayetstudios_status')->value('value') != 1 ) {
+        if ($offerwall->status != 1 ) {
             die();
             echo "offerwall is not enabled ";
         }
