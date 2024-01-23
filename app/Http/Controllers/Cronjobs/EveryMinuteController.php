@@ -38,6 +38,17 @@ class EveryMinuteController extends Controller
             if (!$completedOfferExist) {
                 $offerUser->addWorkerBalance($offer->reward);
                 $offerUser->increment('diamond_level_balance', $offer->added_expert_level);
+                $uplineId = $offerUser->upline;
+                if($uplineId > 0)
+                {
+                    $uplineToReward = User::find($uplineId);
+                    $uplineToReward->addWorkerBalance( $offer->upline_commision );
+                    $uplineToReward->increment('earned_from_referrals', $offer->upline_commision);
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'received referral Commission ' . $offer->upline_commision . ' from user '. $offerUser->username,
+                    ]);
+                }
             }
             Log::create([
                 'user_id' => $offer->worker->id,
