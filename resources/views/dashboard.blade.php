@@ -278,7 +278,7 @@
                     <div class="splide__track">
                         <div class="splide__list">
                           @foreach ($shortLinks as $shortLink)
-                          @if ($shortLink->remaining_views >= $shortLink->views_per_day)
+                          @if ($shortLink->remaining_views <= $shortLink->views_per_day)
                             <div class="col-sm-3 splide__slide m-0">
                                 <div class="">
                                     <div class="item inner-item">
@@ -316,7 +316,7 @@
                                             </div>
                                           </div>
                                         </div>
-                                        @if ($shortLink->remaining_views >= $shortLink->views_per_day)
+                                        @if ($shortLink->remaining_views <= $shortLink->views_per_day)
                                           <div class=" mb-4 text-center">
                                             <a href="/shortlink/{{ $shortLink->unique_id }}" class="btn btn-primary" target="_blank">Claim</a>
                                           </div>
