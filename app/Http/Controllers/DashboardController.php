@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Offerwall;
 use App\Models\PtcAd;
 use App\Models\PtcLog;
+use App\Models\ShortLink;
+use App\Models\ShortLinksHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -51,9 +53,37 @@ class DashboardController extends Controller
             }
         }
 
+
+
+        $shortLinks = ShortLink::all();
+        foreach ($shortLinks as $shortLink) {
+            $viewsCount = ShortLinksHistory::where('user_id', auth()->user()->id)
+            ->where('link_id', $shortLink->id)
+            ->where('created_at', '>=', Carbon::now()->subDay()) // Filter records within the last 24 hours
+            ->count();
+
+            $lastClaim = ShortLinksHistory::where('user_id', auth()->user()->id)->where('link_id', $shortLink->id)->latest()->first();
+            if ($lastClaim) {
+                $createdAt = Carbon::parse( $lastClaim->created_at);
+                // Calculate the time difference in hours and minutes
+                $timeDifference = now()->diff($createdAt);
+                $totalMinutesDifference = $timeDifference->days * 24 * 60 + $timeDifference->h * 60 + $timeDifference->i;
+                $remainingHours = 24 - $timeDifference->h;
+                $remainingMinutes = 60 - $timeDifference->i;
+                // Store the remaining time in a variable
+                $remainingTime = $remainingHours . ' hours ' . $remainingMinutes . ' minutes';
+
+                // You can now use $remainingTime as needed, for example, store it in the database
+                $shortLink->remaining_time = $remainingTime; 
+                $shortLink->totalMinutesDifference = $totalMinutesDifference;
+            }
+            $shortLink->remaining_views = $shortLink->views_per_day - $viewsCount;
+        }
+
         return view('dashboard', [
             'offerwalls' => $offerwalls,
-            'availableIframePtcAds' => $availableIframePtcAds
+            'availableIframePtcAds' => $availableIframePtcAds,
+            'shortLink' => $shortLink
         ]);
     }
 
