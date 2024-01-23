@@ -99,7 +99,7 @@ class CategorySeeder extends Seeder
         $mobileApps->children()->create(['name' => 'Download + install + signup']);
         $mobileApps->children()->create(['name' => 'Download + install + review']);
 
-        $mobileApps->children()->create(['name' => 'Describe the task and set reasonable price']);
+        $other->children()->create(['name' => 'Describe the task and set reasonable price']);
         
     }
 }
