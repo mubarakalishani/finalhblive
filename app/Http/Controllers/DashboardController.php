@@ -83,7 +83,7 @@ class DashboardController extends Controller
         return view('dashboard', [
             'offerwalls' => $offerwalls,
             'availableIframePtcAds' => $availableIframePtcAds,
-            'shortLink' => $shortLink
+            'shortLinks' => $shortLinks
         ]);
     }
 
