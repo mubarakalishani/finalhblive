@@ -29,7 +29,7 @@ class TaskCategoryController extends AdminController
         $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->sortable()->text();
         $grid->column('parent_id', __('Parent id'))->sortable();
-        $grid->column('min_reward', __('Min reward'))->sortable()->number();
+        $grid->column('min_reward', __('Min reward'))->sortable()->text();
 
         $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
             $categories = TaskCategory::whereNull('parent_id')->pluck('name', 'id')->toArray();
