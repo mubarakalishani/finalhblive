@@ -21,9 +21,9 @@
                 <div class="card-body">
                   <div class="d-flex align-items-center">
                     <div>
-                      <p class="mb-0 text-secondary">Timer</p>
-                      <span id="countdown-display">{{ $countdownValue }}</span>
-                      <p class="mb-0 font-13">+10% after 6 hours</p>
+                      <p class="mb-0 text-secondary">Claim Time</p>
+                      <span id="countdown-display">{{ $faucet_claim_time }} Minutes</span>
+                      {{-- <p class="mb-0 font-13">+10% after 6 hours</p> --}}
                     </div>
                     <div class="widgets-icons-2 rounded-circle  ms-auto"><i class="fa fa-clock-o"></i>
                     </div>
@@ -37,8 +37,8 @@
                   <div class="d-flex align-items-center">
                     <div>
                       <p class="mb-0 text-secondary">Reward per faucet</p>
-                      <h4 class="my-1 text-danger">60 Tokens</h4>
-                      <p class="mb-0 font-13">+10% after 8 hours</p>
+                      <h4 class="my-1 text-danger">{{ $faucet_claim_amount }} USD</h4>
+                      {{-- <p class="mb-0 font-13">+10% after 8 hours</p> --}}
                     </div>
                     <div class="widgets-icons-2 rounded-circle  ms-auto"><i class="fa fa-gift"></i>
                     </div>
