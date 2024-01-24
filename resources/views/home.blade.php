@@ -188,7 +188,7 @@
                                   <h4>Afilliate<br><span>Reward</span></h4>
                                   <ul>
                                     <li><i class="fa fa-star"></i> 4.8</li>
-                                    <li><i class="fa-solid fa-people-group"></i> 25%</li>
+                                    <li><i class="fa-solid fa-people-group"></i> 10%</li>
                                   </ul>
                                 </div>
                               </div>
@@ -294,7 +294,7 @@
                                   <div class="item inner-item">
                                     <div class="row">
                                       <div class="col-lg-12">
-                                        <img src="{{ $gateway->image_path }}" alt="payout method - {{$gateway->name}}">
+                                        <img src="{{ asset('uploads/gateways/' . $gateway->image_path) }}" alt="payout method - {{$gateway->name}}">
                                       </div>
                                     </div>
                                     <div class="row">
