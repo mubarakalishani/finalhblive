@@ -23,8 +23,8 @@
                   <div class="col-sm-2 my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
                       <h5>Browse</h5>
-                      <li><a href="/leaderboard">Ranking</a></li>
-                      <li><a href="/advertiser">Advertiser</a></li>
+                      <li><a href="#">Ranking</a></li>
+                      <li><a href="#">Advertiser</a></li>
                       <li><a href="/dashboard">Browse</a></li>
                     </ul>
                   </div>

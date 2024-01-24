@@ -84,10 +84,15 @@ class CustomAuthController extends Controller
     protected function getUplineId(){
         // Retrieve referral code from the session
         $referralCode = Session::get('upline_id');
+        $uplineExist = User::where('id', $referralCode)->exists();
+        if($uplineExist){
+            $upline = User::find($referralCode);
+            $upline->increment('referrals');
+        }
 
         // Clear the referral code from the session (optional)
         Session::forget('upline_id');
-        if ($referralCode) {
+        if ($uplineExist) {
             return $referralCode;
         }
         else{

@@ -162,7 +162,7 @@
                         <a href="bonus.html" class="sidebar-link"><i class="fa-solid fa-gift"></i> Bonus</a>
                     </li> --}}
                     <li class="sidebar-item">
-                        <a href="/leaderboard" class="sidebar-link"><i class="fa-solid fa-people-roof"></i> Leaderboard</a>
+                        <a href="#" class="sidebar-link"><i class="fa-solid fa-people-roof"></i> Leaderboard</a>
                     </li>
 
 
