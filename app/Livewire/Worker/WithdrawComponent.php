@@ -57,7 +57,13 @@ class WithdrawComponent extends Component
                 case 'FaucetPay':
                     $this->placeholder = 'Your FaucetPay USDT Address or username or email';
                     break;
+                case 'Faucet Pay':
+                        $this->placeholder = 'Your FaucetPay USDT Address or username or email';
+                        break;
                 case 'Perfect Money':
+                    $this->placeholder = 'Perfect Money UID';
+                    break;
+                case 'Perfectmoney':
                     $this->placeholder = 'Perfect Money UID';
                     break; 
                 case 'Payeer':
@@ -66,7 +72,13 @@ class WithdrawComponent extends Component
                 case 'USDT Polygon':
                     $this->placeholder = 'USDT Address on polygon e.g, 0x.......';
                     break;
+                case 'USDT':
+                    $this->placeholder = 'USDT Address on polygon e.g, 0x.......';
+                    break;
                 case 'Binance Pay ID':
+                    $this->placeholder = 'Your Binance Pay UID';
+                    break;
+                case 'Binance Pay':
                     $this->placeholder = 'Your Binance Pay UID';
                     break;
                 case 'USDT BEP20':
@@ -76,7 +88,7 @@ class WithdrawComponent extends Component
                     $this->placeholder = 'Payoneer verified email address';
                     break;        
                 default:
-                    $this->placeholder = $this->placeholder;
+                    $this->placeholder = 'Your wallet address';
                     break;
             }
         }
@@ -162,12 +174,18 @@ class WithdrawComponent extends Component
             case 'USDT Polygon':
                 $this->validateEthereumAddress();
                 break;
+            case 'USDT':
+                $this->validateEthereumAddress();
+                break;    
             case 'USDT BEP20':
                 $this->validateEthereumAddress();
                 break;
             case 'FaucetPay':
                 $this->validateFaucetPayAddress();
-                break;       
+                break;  
+            case 'Faucet Pay':
+                $this->validateFaucetPayAddress();
+                break;          
         }
         if ($this->getErrorBag()->any()) {
             // Handle errors or return early
