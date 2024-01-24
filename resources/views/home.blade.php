@@ -294,7 +294,7 @@
                                   <div class="item inner-item">
                                     <div class="row">
                                       <div class="col-lg-12">
-                                        <img src="{{ asset( $gateway->image_path) }}" alt="payout method - {{$gateway->name}}">
+                                        <img src="{{ asset( 'uploads' . $gateway->image_path) }}" alt="payout method - {{$gateway->name}}">
                                       </div>
                                     </div>
                                     <div class="row">
