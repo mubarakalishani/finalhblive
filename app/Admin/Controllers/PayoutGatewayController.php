@@ -77,7 +77,7 @@ class PayoutGatewayController extends AdminController
         $form = new Form(new PayoutGateway());
 
         $form->text('name', __('Name'));
-        $form->text('image_path', __('Image url'));
+        $form->file('image_path', __('Image'))->pick("/images");
         $form->decimal('min_payout', __('Min payout'))->default(0.000);
         $form->decimal('fixed_fee', __('Fixed fee'))->default(0.000);
         $form->number('fee_percentage', __('Fee percentage'))->default(0);
