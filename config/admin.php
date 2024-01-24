@@ -164,6 +164,7 @@ return [
         'directory' => [
             'image' => 'images',
             'file'  => 'files',
+            'gateway' => 'gateways'
         ],
     ],
 
