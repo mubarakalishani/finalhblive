@@ -40,7 +40,7 @@ return [
             'driver' =>'local',
             'root' => public_path('uploads'),
             'visibility' =>'public',
-            'url' => '/uploads',
+            'url' => '/lol/uploads',
         ],
 
         'public' => [
