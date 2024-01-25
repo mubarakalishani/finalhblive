@@ -53,7 +53,7 @@ class ReferralMiddleware
             $trafficSource = "Direct Traffic";
         }
 
-        Session::put('traffic_source)', $trafficSource);
+        session(['traffic_source' => $trafficSource]);
 
         return $next($request);
     }
