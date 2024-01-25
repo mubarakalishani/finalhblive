@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         '/faucetpay/callback',
         '/webhook/coinbase',
         '/webhook/perfectmoney',
+        '/postback/offers4crypto',
     ];
 }

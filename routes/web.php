@@ -66,7 +66,7 @@ Route::get('/postback/bitlabs', [OfferwallsPostbacksController::class, 'bitlabs'
 Route::get('/postback/bitcotasks', [OfferwallsPostbacksController::class, 'bitcotasks']);
 Route::get('/postback/cpxresearch', [OfferwallsPostbacksController::class, 'cpxresearch']);
 Route::get('/postback/lootably', [OfferwallsPostbacksController::class, 'lootably']);
-Route::get('/postback/offers4crypto', [OfferwallsPostbacksController::class, 'offers4crypto']);
+Route::post('/postback/offers4crypto', [OfferwallsPostbacksController::class, 'offers4crypto']);
 Route::get('/postback/excentiv', [OfferwallsPostbacksController::class, 'excentiv']);
 Route::get('/postback/kiwiwall', [OfferwallsPostbacksController::class, 'kiwiwall']);
 Route::get('/postback/notik', [OfferwallsPostbacksController::class, 'notik']);
