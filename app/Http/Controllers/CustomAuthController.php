@@ -52,6 +52,7 @@ class CustomAuthController extends Controller
             $user->upline = $this->getUplineId();
             $user->username = $username;
             $user->password = Hash::make(bin2hex(random_bytes(6)));
+            $user->utm_source = $this->getTrafficSource();
 
             $user->save();
     
@@ -98,6 +99,14 @@ class CustomAuthController extends Controller
         else{
             return 0;
         }
+
+    }
+
+
+    protected function getTrafficSource(){
+        // Retrieve referral code from the session
+        $trafficSource = Session::get('traffic_source');
+        return $trafficSource;
 
     }
 

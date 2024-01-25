@@ -47,6 +47,7 @@ class CreateNewUser implements CreatesNewUsers
                 'last_ip' => request()->ip(),
                 'country' => $this->getCountryCode(),
                 'upline' => $this->getUplineId(),
+                'utm_source' => $this->getTrafficSource(),
             ]), function (User $user) {
                 $this->createTeam($user);
             });
@@ -100,6 +101,14 @@ class CreateNewUser implements CreatesNewUsers
         else{
             return 0;
         }
+
+    }
+
+
+    protected function getTrafficSource(){
+        // Retrieve referral code from the session
+        $trafficSource = Session::get('traffic_source');
+        return $trafficSource;
 
     }
     
