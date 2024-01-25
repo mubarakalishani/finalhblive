@@ -33,7 +33,7 @@ class ReferralMiddleware
 
 
 
-        $trafficSource = null;
+        $trafficSource = 'direct';
 
         // Check if there is a Referer header
         if ($request->headers->has('referer')) {
@@ -44,9 +44,7 @@ class ReferralMiddleware
         
             // Check if at least one UTM parameter is present
             if ($utmSource) {
-                $trafficSource = "UTM parameters: " . json_encode([
-                    'utm_source' => $utmSource,
-                ]);
+                $trafficSource = $utmSource;
             }
         }
         
