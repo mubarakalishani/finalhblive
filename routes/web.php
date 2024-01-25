@@ -63,7 +63,7 @@ Route::get('/postback/adscendmedia', [OfferwallsPostbacksController::class, 'ads
 Route::get('/postback/ayetstudios', [OfferwallsPostbacksController::class, 'ayetstudios']);
 Route::get('/postback/adbreakmedia', [OfferwallsPostbacksController::class, 'adbreakmedia']);
 Route::get('/postback/bitlabs', [OfferwallsPostbacksController::class, 'bitlabs']);
-Route::get('/postback/bitcotasks', [OfferwallsPostbacksController::class, 'bitcotasks']);
+Route::post('/postback/bitcotasks', [OfferwallsPostbacksController::class, 'bitcotasks']);
 Route::get('/postback/cpxresearch', [OfferwallsPostbacksController::class, 'cpxresearch']);
 Route::get('/postback/lootably', [OfferwallsPostbacksController::class, 'lootably']);
 Route::post('/postback/offers4crypto', [OfferwallsPostbacksController::class, 'offers4crypto']);
