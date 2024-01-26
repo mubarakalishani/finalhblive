@@ -11,7 +11,7 @@
                         <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
                             class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
                             <img width="100px" src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
-                            <h4>{{$offerwall->name}}</h4>
+                            <h6>{{$offerwall->name}}</h6>
                         </a>
                     </div>
                 @endforeach
