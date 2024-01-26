@@ -2,7 +2,7 @@
     <div class="all-history-page">
         <div class="container">
             <div class="pt-3">
-        <h4><em>Jobs History</em></h4>
+        <h4><em>Offers and Surveys History</em></h4>
     </div>
           <div class="row align-items-end mb-4 pb-2">
               <div class="col-md-8">

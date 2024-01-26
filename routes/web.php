@@ -28,6 +28,7 @@ use App\Http\Controllers\Pages\ContactPageController;
 use App\Http\Controllers\Pages\FaqController;
 use App\Http\Controllers\Pages\PrivacyPolicyController;
 use App\Http\Controllers\Pages\TermsController;
+use App\Models\Offerwall;
 use App\Models\SocialLink;
 use Illuminate\Http\RedirectResponse;
 
@@ -110,7 +111,8 @@ Route::middleware([
         return view('worker.all-jobs');
     });
     Route::get('/offers', function () {
-        return view('worker.all-offers');
+        $offerwalls =  Offerwall::where('status', 1)->orderBy('order', 'ASC')->get();
+        return view('worker.all-offers', ['offerwalls' => $offerwalls]);
     });
     Route::get('/views', function () {
         return view('worker.ptc.allptc-ads');
