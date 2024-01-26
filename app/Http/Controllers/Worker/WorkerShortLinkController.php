@@ -165,6 +165,8 @@ class WorkerShortLinkController extends Controller
         $user = User::find(Auth::user()->id);
         $amountToAdd = $shortLink->value('reward');
         $user->addWorkerBalance($amountToAdd);
+        $user->increment('earned_from_shortlinks', $amountToAdd);
+        $user->increment('total_shortlinks_completed');
 
         //create shorlink history
         ShortLinksHistory::create([
