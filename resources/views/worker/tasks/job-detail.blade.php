@@ -55,7 +55,7 @@
                                           <span class="mb-0 jobs-card-ma-headings">Employer Stats:</span>
                                       </div>
                                       <div class="col ">
-                                        <p class="mb-0 jobs-card-after-head" id="jid">{{ $task->employer->uername }}</p>
+                                        <p class="mb-0 jobs-card-after-head" id="jid">{{ $task->employer->username }}</p>
                                       </div>
                                     </div>
                                     <div class="row col">
