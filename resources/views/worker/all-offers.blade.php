@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row">
                 @foreach ($offerwalls as $offerwall)
-                    <div class="col">
+                    <div class="col-lg-2 col-md-3 col-sm-12">
                         <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
                             class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
                             <img width="100px" src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
