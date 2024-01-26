@@ -2843,6 +2843,13 @@ Jobs page style start
   color: #0098d8;
 }
 
+  .all-offers-area-fixed {
+    border: solid 1px;
+    border-radius: 8px;
+    height: 70px px;
+    padding: 10px;
+    margin: 10px;
+  }
 /*Bonus page*/
 .bonus-page .alert{
     color: #155724 !important;
