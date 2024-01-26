@@ -12,15 +12,17 @@
                         <h4><em>Offerwalls</em> and Surveywalls</h4>
                     </div>
                     <div class="row">
-                        <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
-                            class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
-                            <div class="col">
-                                <div class="card-item">
-                                    <img src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
-                                    <h4>{{$offerwall->name}}</h4>
+                        @foreach ($offerwalls as $offerwall)
+                            <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
+                                class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
+                                <div class="col">
+                                    <div class="card-item">
+                                        <img src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
+                                        <h4>{{$offerwall->name}}</h4>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        @endforeach
                         <!-- ***** Most Popular Features End ***** -->
 
                     </div>
