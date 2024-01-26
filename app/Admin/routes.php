@@ -42,6 +42,9 @@ Route::group([
     $router->resource('pages', PagesController::class);
     $router->resource('deposit-methods', DepositMethodController::class);
     $router->resource('social-links', SocialLinksController::class);
+    $router->resource('support-tickets', SupportTicketController::class);
+
+
 
 
 
