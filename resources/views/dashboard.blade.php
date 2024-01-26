@@ -279,7 +279,7 @@
                         <div class="splide__list">
                           @foreach ($shortLinks as $shortLink)
                           @if ($shortLink->remaining_views <= $shortLink->views_per_day)
-                            <div class="col-sm-3 splide__slide m-0">
+                            <div class="col-sm-4 splide__slide m-0">
                                 <div class="">
                                     <div class="item inner-item">
                                       <div class="card border-0 bg-light rounded shadow">
