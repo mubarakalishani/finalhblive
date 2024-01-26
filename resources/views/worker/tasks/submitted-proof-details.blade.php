@@ -133,7 +133,7 @@
                                   <strong>Image/Screenshots:</strong>
                                   <ol>
                                     @foreach ($proof->imageProofs as $imageProof)
-                                      <li>{{ $imageProof->url }}</li>
+                                      <li><img src="{{ asset('storage/proofs/'.$imageProof->url)}}" alt="proof img"></li>
                                     @endforeach
                                   </ol>
                                   <strong>Date Submitted : {{ $proof->created_at }}</strong>
