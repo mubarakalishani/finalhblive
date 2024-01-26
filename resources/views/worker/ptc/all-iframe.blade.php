@@ -9,9 +9,9 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/views/window">Windows</a>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/views/youtube">Youtube</a>
-                  </li>
+                  </li> --}}
             </ul>
 
             <div class="row">
