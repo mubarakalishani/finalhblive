@@ -1,35 +1,25 @@
 @extends('layouts.afterlogin')
 @section('content')
 <div class="container-fluid">
-
     <!-- user dashboard start -->
     <div class="all-history-page all-surveys-page">
         <!-- ***** My jobs Start ***** -->
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 my-4">
-                    <div class="heading-section">
-                        <h4><em>Offerwalls</em> and Surveywalls</h4>
+                @foreach ($offerwalls as $offerwall)
+                    <div class="col">
+                        <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
+                            class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
+                        <div class="card-item">
+                            <img src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
+                            <h4>{{$offerwall->name}}</h4>
+                        </div>
+                        </a>
                     </div>
-                    <div class="row">
-                        @foreach ($offerwalls as $offerwall)
-                            <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
-                                class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
-                                <div class="col">
-                                    <div class="card-item">
-                                        <img src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
-                                        <h4>{{$offerwall->name}}</h4>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
-                        <!-- ***** Most Popular Features End ***** -->
-
-                    </div>
-                </div>
+                @endforeach
+                <!-- ***** Most Popular Features End ***** -->
             </div>
         </div>
-        <!-- My jobs end -->
     </div>
 </div>
 <div class="modal fade" id="myModal" data-backdrop="false" data-keyboard="false">
