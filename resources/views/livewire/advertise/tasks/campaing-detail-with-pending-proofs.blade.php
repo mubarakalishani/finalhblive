@@ -324,7 +324,7 @@
                                   <strong>Image/Screenshots:</strong>
                                   <ol>
                                     @foreach ($proof->imageProofs as $imageProof)
-                                      <li>{{ $imageProof->url }}</li>
+                                      <li><img src="{{ asset('storage/proofs/'.$imageProof->url)}}" alt="proof img" width="320px"></li>
                                     @endforeach
                                   </ol>
                                 </td>
