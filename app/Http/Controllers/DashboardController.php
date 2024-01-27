@@ -17,7 +17,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $offerwalls = Offerwall::where('status', 1)->get();
+        $offerwalls =  Offerwall::where('status', 1)->orderBy('order', 'ASC')->get();
         foreach ($offerwalls as $offerwall) {
            $iframeUrl = $offerwall->iframe_url;
            $url = str_replace('[userid]', auth()->user()->unique_user_id, $iframeUrl);

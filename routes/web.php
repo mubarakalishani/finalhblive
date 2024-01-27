@@ -112,6 +112,11 @@ Route::middleware([
     });
     Route::get('/offers', function () {
         $offerwalls =  Offerwall::where('status', 1)->orderBy('order', 'ASC')->get();
+        foreach ($offerwalls as $offerwall) {
+           $iframeUrl = $offerwall->iframe_url;
+           $url = str_replace('[userid]', auth()->user()->unique_user_id, $iframeUrl);
+           $offerwall->url = $url;
+        }
         return view('worker.all-offers', ['offerwalls' => $offerwalls]);
     });
     Route::get('/views', function () {
