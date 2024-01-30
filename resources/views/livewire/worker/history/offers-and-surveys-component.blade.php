@@ -54,7 +54,7 @@
                                             {{ $history->offer_name }}
                                         </td>
                                         <td class="table-cell-progress text-center">{{ $history->reward }}</td>
-                                        <td class="table-cell-progress text-center">{{ $history->added_for_expert_level }}</td>
+                                        <td class="table-cell-progress text-center">{{ $history->added_expert_level }}</td>
                                         <td class="table-cell-settings text-center">
                                             <span class="badge text-bg-primary py-2 px-2 rounded-pill
                                                 @if($history->status == 0)
