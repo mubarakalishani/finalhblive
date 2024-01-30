@@ -59,6 +59,7 @@ class OffersAndSurveysComponent extends Component
                     'parts' => 2, // Show only two parts (e.g., "2 days 3 hours")
                     'short' => true, // Use short format (e.g., "2d 3h")
                 ]);
+                $remainingTime = str_replace([' ago', ' after'], '', $remainingTime);
                 $remark = 'releasing after '.$remainingTime;
             }
 
