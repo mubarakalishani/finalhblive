@@ -54,7 +54,7 @@
                                             {{ $history->offer_name }}
                                         </td>
                                         <td class="table-cell-progress text-center">{{ $history->reward }}</td>
-                                        <td class="table-cell-progress text-center" data-bs-toggle="tooltip" data-bs-placement="right"
+                                        <td class="table-cell-progress text-center" data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="You will receive this amount at once, when You will become expert level user">
                                             {{ $history->added_expert_level }}
                                         </td>
