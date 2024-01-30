@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sidebar.classList.toggle('closed');
         main.classList.toggle('closed');
         footer.classList.toggle('closed');
+        sidebar1.style.display = 'none';
     }
 });
 
