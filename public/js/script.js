@@ -1,10 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const sidebar1 = document.getElementById('sidebar');
     const windowWidth = window.innerWidth;
 
     // Display or hide the sidebar based on the screen width
     if (windowWidth <= 767) {
         document.querySelector("#sidebar").classList.toggle("collapsed");
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
+        const footer = document.getElementById('footer');
+
+        sidebar.classList.toggle('closed');
+        main.classList.toggle('closed');
+        footer.classList.toggle('closed');
     }
 });
 
