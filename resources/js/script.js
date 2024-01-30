@@ -4,9 +4,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Display or hide the sidebar based on the screen width
     if (windowWidth <= 767) {
-        sidebar1.style.display = 'none';
-    } else {
-        sidebar1.style.display = 'block';
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
+        const footer = document.getElementById('footer');
+        
+        sidebar.classList.toggle('closed');
+        main.classList.toggle('closed');
+        footer.classList.toggle('closed');
     }
 });
 
