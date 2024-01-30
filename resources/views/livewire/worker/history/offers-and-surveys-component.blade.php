@@ -75,7 +75,7 @@
                                         </td>
                                         <td class="table-cell-rated text-center">{{ $history->created_at->diffForHumans() }}</td>
                                         <td class="table-cell-rated text-center">{{ $history->updated_at->diffForHumans() }}</td>
-                                        <td class="table-cell-rated text-center">{{ $history->updated_at->diffForHumans() }}</td>
+                                        <td class="table-cell-rated text-center">{{ $history->remark }}</td>
                                       </tr>
                                     @endforeach  
                                   </tbody>
