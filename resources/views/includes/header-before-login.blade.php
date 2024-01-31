@@ -54,8 +54,10 @@
                         <a class="dropdown-item" href="/views/iframe">PTC <span>{{ \App\Models\PtcAd::where('status', 1)->count() }}</span></a>
                       </div>
                     </li>
+                    @if(!auth()->check())
                     <a href="/login" class="nav-item nav-link aut-btn">Login</a>
                     <a href="/register" class="nav-item nav-link aut-btn">Sign up</a>
+                    @endif
                   </div>
               </div>
           </div>
