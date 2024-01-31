@@ -80,7 +80,7 @@ Route::get('/postback/wannads', [OfferwallsPostbacksController::class, 'wannads'
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified',
+    //'verified',
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   //===========Advertiser Routes==========
