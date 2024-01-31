@@ -145,7 +145,7 @@
                                         <a href="/advertiser/create-new-ptc-campaign" class="sidebar-link"><i class="fa-solid fa-plus"></i> New PTC campaign</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="/ptc-campaigns-list" class="sidebar-link"><i class="fa-solid fa-clock-rotate-left"></i> PTC campaigns history</a>
+                                        <a href="/advertiser/ptc-campaigns-list" class="sidebar-link"><i class="fa-solid fa-clock-rotate-left"></i> PTC campaigns history</a>
                                     </li>
                                 </ul>
                             </li>
