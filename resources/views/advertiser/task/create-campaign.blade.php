@@ -11,7 +11,7 @@
                 </div>
                 <div class="alert alert-with-icon alert-warning alert-dismissible fade show" role="alert">
                     <i class="fa-solid fa-triangle-exclamation"></i> Join support group for advertisers at <a
-                    href="/social?name=telegram">telegram</a>.
+                    href="/social?name=telegram" target="_blank">telegram</a>.
                 </div>
 
                 <form action="{{ route('advertiser.create_task') }}" method="POST" wire:submit.prevent="submit">

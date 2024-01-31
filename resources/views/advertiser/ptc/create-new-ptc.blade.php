@@ -15,7 +15,7 @@
               <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                 <div class="alert alert-with-icon alert-warning alert-dismissible fade show" role="alert">
                   <i class="fa-solid fa-triangle-exclamation"></i> Join support group for advertisers at <a
-                    href="">@micro_task_advertiser</a>.
+                    href="/social?name=telegram" target="_blank">telegram</a>.
                 </div>
 
 

@@ -8,6 +8,7 @@ use App\Models\Offerwall;
 use App\Models\PayoutGateway;
 use App\Models\WithdrawalHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -16,6 +17,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (Auth::check()) {
+            return redirect(url('/dashboard'));
+        }
         $faqs = Faq::where('s_no', '>', 0)->orderBy('s_no', 'ASC')->get();
         $withdrawals = WithdrawalHistory::where('status', 1)->orderBy('updated_at', 'DESC')->take(5)->get();
         $offerwalls = Offerwall::orderBy('order', 'ASC')
