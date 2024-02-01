@@ -26,16 +26,20 @@ class DepositController extends AdminController
     {
         $grid = new Grid(new Deposit());
 
-        $grid->column('id', __('Id'));
-        $grid->column('user_id', __('User id'));
-        $grid->column('method', __('Method'));
-        $grid->column('amount', __('Amount'));
-        $grid->column('status', __('Status'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('user_id', __('User id'))->display( function($userid){
+            return "<a href='/hbmanagement/users/$userid' target='_blank'>$userid</a>";
+        })->sortable();
+        $grid->column('method', __('Method'))->sortable();
+        $grid->column('amount', __('Amount'))->sortable();
+        $grid->column('status', __('Status'))->sortable();
         $grid->column('internal_tx', __('Internal tx'));
         $grid->column('external_tx', __('External tx'));
         $grid->column('description', __('Description'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->sortable();
+        $grid->column('updated_at', __('Updated at'))->sortable();
+
+        $grid->model()->orderBy('updated_at', 'desc');
 
         return $grid;
     }
