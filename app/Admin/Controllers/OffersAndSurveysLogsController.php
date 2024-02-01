@@ -43,6 +43,8 @@ class OffersAndSurveysLogsController extends AdminController
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
+        $grid->model()->orderBy('updated_at', 'desc');
+
         return $grid;
     }
 

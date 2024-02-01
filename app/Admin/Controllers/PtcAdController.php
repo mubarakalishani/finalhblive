@@ -110,6 +110,7 @@ class PtcAdController extends AdminController
         $grid->tools(function (Grid\Tools $tools) {
             $tools->append(new \App\Admin\Actions\Ptc\Reject());
         });
+        
 
         return $grid;
     }
@@ -166,12 +167,14 @@ class PtcAdController extends AdminController
         $form->text('title', __('Title'));
         $form->text('description', __('Description'));
         $form->url('url', __('Url'));
-        $form->switch('seconds', __('Seconds'));
-        $form->switch('revision_interval', __('Revision interval'))->default(24);
+        $form->number('seconds', __('Seconds'));
+        $form->number('revision_interval', __('Revision interval'))->default(24);
         $form->textarea('targeted_countries', __('Targeted countries'));
         $form->textarea('excluded_countries', __('Excluded countries'));
-        $form->switch('type', __('Type'));
+        $form->switch('type', __('Type: Window(1) iframe(0)'));
         $form->switch('status', __('Status'));
+
+        
 
         return $form;
     }

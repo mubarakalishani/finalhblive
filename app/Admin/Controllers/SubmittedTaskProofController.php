@@ -26,13 +26,15 @@ class SubmittedTaskProofController extends AdminController
     {
         $grid = new Grid(new SubmittedTaskProof());
 
-        $grid->column('id', __('Id'));
-        $grid->column('task_id', __('Task id'));
-        $grid->column('worker_id', __('Worker id'));
-        $grid->column('amount', __('Amount'));
-        $grid->column('status', __('Status'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('task_id', __('Task id'))->sortable();
+        $grid->column('worker_id', __('Worker id'))->sortable();
+        $grid->column('amount', __('Amount'))->sortable();
+        $grid->column('status', __('Status'))->sortable();
+        $grid->column('created_at', __('Created at'))->sortable();
+        $grid->column('updated_at', __('Updated at'))->sortable();
+
+        $grid->model()->orderBy('updated_at', 'desc');
 
         return $grid;
     }

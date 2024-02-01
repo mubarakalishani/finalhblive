@@ -121,6 +121,8 @@ class TaskController extends AdminController
             $tools->append(new \App\Admin\Actions\Task\Reject());
         });
 
+        $grid->model()->orderBy('updated_at', 'desc');
+
         return $grid;
     }
 

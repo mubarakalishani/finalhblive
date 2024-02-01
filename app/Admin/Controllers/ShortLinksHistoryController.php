@@ -27,12 +27,14 @@ class ShortLinksHistoryController extends AdminController
         $grid = new Grid(new ShortLinksHistory());
 
         $grid->column('id', __('Id'));
-        $grid->column('user_id', __('User id'));
-        $grid->column('link_id', __('Link id'));
-        $grid->column('reward', __('Reward'));
+        $grid->column('user_id', __('User id'))->sortable();
+        $grid->column('link_id', __('Link id'))->sortable();
+        $grid->column('reward', __('Reward'))->sortable();
         $grid->column('ip_address', __('Ip address'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->sortable();
+        $grid->column('updated_at', __('Updated at'))->sortable();
+
+        $grid->model()->orderBy('updated_at', 'desc');
 
         return $grid;
     }
