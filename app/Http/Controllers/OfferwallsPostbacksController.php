@@ -295,7 +295,7 @@ class OfferwallsPostbacksController extends Controller
         $parameterString = http_build_query($parameters);
         $computedHash = hash_hmac('sha256', $parameterString, $offerwall->api_key);
         // Get the received hash from the custom header
-        $receivedHash = $request->header('HTTP_X_AYETSTUDIOS_SECURITY_HASH');
+        $receivedHash = $request->header('x-ayetstudios-security-hash');
         // Compare the computed hash with the received hash
         if (hash_equals($computedHash, $receivedHash)){
             echo 1;
