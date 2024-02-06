@@ -134,6 +134,8 @@ class UserController extends AdminController
             $countries = AvailableCountry::pluck('country_name', 'country_name')->toArray();
             $filter->like('name', 'name');
             $filter->like('username', 'username');
+            $filter->like('unique_user_id', 'Unique User Id');
+            $filter->like('email', 'email');
             $filter->like('signup_ip', 'signup ip');
             $filter->like('last ip', 'signup ip');
             $filter->in('status')->multipleSelect(['1' => 'Active', '0' => 'Inactive' , '2' => 'Suspended', '3' => 'Suspicious' ]);

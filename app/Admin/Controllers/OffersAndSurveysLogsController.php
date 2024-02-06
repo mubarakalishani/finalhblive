@@ -7,6 +7,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\OffersAndSurveysLog;
+use App\Models\Offerwall;
 
 class OffersAndSurveysLogsController extends AdminController
 {
@@ -44,6 +45,17 @@ class OffersAndSurveysLogsController extends AdminController
         $grid->column('updated_at', __('Updated at'));
 
         $grid->model()->orderBy('updated_at', 'desc');
+
+
+        $grid->filter(function($filter){
+
+            // Add a column filter
+            $offerwalls = Offerwall::pluck('provider_name', 'provider_name')->toArray();
+            $filter->like('name', 'name');
+            $filter->like('user_id', 'User ID');
+            $filter->in('status', 'Status')->multipleSelect(['0' => 'Completed', '1' => 'Pending' , '2' => 'Reversed']);
+            $filter->in('provider_name', 'Offerwall')->multipleSelect($offerwalls);
+        });
 
         return $grid;
     }
