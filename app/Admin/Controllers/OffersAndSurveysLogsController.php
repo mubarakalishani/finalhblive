@@ -30,7 +30,7 @@ class OffersAndSurveysLogsController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('user_id', __('User id'))->sortable();
         $grid->model()->with('user');
-        $grid->column('user.username', 'Username')->filter('like');
+        $grid->column('user.username', 'Username');
         $grid->column('provider_name', __('Provider name'))->sortable();
         $grid->column('payout', __('Payout'))->sortable();
         $grid->column('reward', __('Reward'))->sortable();
