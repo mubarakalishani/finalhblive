@@ -36,7 +36,7 @@ class HomeController extends Controller
         }
 
         foreach ($withdrawals as $withdraw) {
-            $withdraw->image = PayoutGateway::where('name', $withdraw->method)->value('image_path');
+            $withdraw->image = "/uploads/".PayoutGateway::where('name', $withdraw->method)->value('image_path');
         }
         return view('home', [
             'faqs' => $faqs,
