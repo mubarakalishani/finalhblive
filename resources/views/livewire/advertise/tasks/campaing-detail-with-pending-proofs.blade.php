@@ -396,7 +396,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="reasonExplained" class="col-form-label">Explain Rejection/Revision Reason:</label>
-                    <textarea name="reasonExplained" class="form-control" id="message-text" wire:model.live="reasonExplained"></textarea>
+                    <textarea name="reasonExplained" class="form-control" id="message-text" wire:model.lazy="reasonExplained"></textarea>
                     @error('reasonExplained') <span class="text-danger">{{ $message }}</span> @enderror
                   </div>
                 </form>

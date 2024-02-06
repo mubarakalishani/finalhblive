@@ -17,7 +17,7 @@
             <div class="row">
                 @foreach ($availableIframePtcAds as $ad)
                     @if (!$ad->totalMinutesDifference || $ad->totalMinutesDifference > ($ad->revision_interval * 60))
-                        <div class="col-lg-3 col-md-6 col-sm-12 mt-4 pt-2" id="ad{{ $ad->id }}">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-2" id="ad{{ $ad->id }}">
                             <div class="card-body ">
                                 <div class="ads-para-description text-center" style="height: 110px;">
                                     <h6>{{ $ad->title }}</h6>
@@ -62,7 +62,7 @@
             <div class="row">
                 @foreach ($availableIframePtcAds as $ad)
                     @if ($ad->totalMinutesDifference && $ad->totalMinutesDifference < ($ad->revision_interval * 60))
-                        <div class="col-lg-3 col-md-6 col-sm-12 mt-4 pt-2">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-2">
                             <div class="ptc-item">
                                 <div class="card-body ">
                                 <div class="ads-para-description text-center" style="height: 100px;">

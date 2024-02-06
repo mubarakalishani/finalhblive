@@ -11,6 +11,7 @@ use App\Admin\Actions\Withdrawals\Approve;
 use App\Admin\Actions\Withdrawals\SingleApprove;
 use App\Admin\Actions\Withdrawals\SingleCancel;
 use App\Admin\Actions\Withdrawals\SingleRefund;
+use App\Models\PayoutGateway;
 
 class WithdrawalHistoryController extends AdminController
 {
@@ -59,6 +60,22 @@ class WithdrawalHistoryController extends AdminController
 
 
         $grid->model()->orderByRaw('CASE WHEN status = 0 THEN 0 ELSE 1 END');
+
+
+        $grid->filter(function($filter){
+
+            // Add a column filter
+            $methods = PayoutGateway::pluck('name', 'name')->toArray();
+            $filter->like('user_id', 'User ID');
+            $filter->in('status', 'Status')->multipleSelect(['0' => 'Pending', '1' => 'Completed' , '2' => 'Refunded', '3' => 'Cancelled']);
+            $filter->in('method', 'method')->multipleSelect($methods);
+        });
+
+        $grid->quickSearch(function ($model, $query) {
+            $model->where('method', 'like', "%{$query}%")
+            ->orWhere('status', 'like', "%{$query}%")
+            ->orWhere('user_id', 'like', "%{$query}%");
+        });
 
         $grid->actions(function ($actions) {
             $actions->disableDelete();
