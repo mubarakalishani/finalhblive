@@ -30,11 +30,11 @@ class WithdrawalHistoryController extends AdminController
     {
         $grid = new Grid(new WithdrawalHistory());
 
-        $grid->column('id', __('Id'));
-        $grid->column('user_id', __('User id'));
-        $grid->column('method', __('Method'));
-        $grid->column('wallet', __('Wallet'));
-        $grid->column('amount_after_fee', __('Amount after fee'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('user_id', __('User id'))->sortable();
+        $grid->column('method', __('Method'))->sortable();
+        $grid->column('wallet', __('Wallet'))->sortable();
+        $grid->column('amount_after_fee', __('Amount after fee'))->sortable();
         $grid->column('status', __('Status'))->display( function($status){
             switch ($status) {
                 case 0:
@@ -58,7 +58,7 @@ class WithdrawalHistoryController extends AdminController
         $grid->column('updated_at', __('Last Update'))->diffForHumans();
 
 
-        
+        $grid->model()->orderByRaw('CASE WHEN status = 0 THEN 0 ELSE 1 END');
 
         $grid->actions(function ($actions) {
             $actions->disableDelete();

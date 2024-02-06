@@ -121,7 +121,9 @@ class UserController extends AdminController
         // $grid->setActionClass(DropdownActions::class);
         
         $grid->quickSearch(function ($model, $query) {
-            $model->where('name', 'like', "%{$query}%")->orWhere('username', 'like', "%{$query}%");
+            $model->where('name', 'like', "%{$query}%")
+            ->orWhere('username', 'like', "%{$query}%")
+            ->orWhere('email', 'like', "%{$query}%");
         });
 
         //fix header of the table at the top of the screen

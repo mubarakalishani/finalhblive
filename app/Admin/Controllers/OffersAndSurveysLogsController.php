@@ -28,19 +28,36 @@ class OffersAndSurveysLogsController extends AdminController
         $grid = new Grid(new OffersAndSurveysLog());
 
         $grid->column('id', __('Id'));
-        $grid->column('user_id', __('User id'));
-        $grid->column('provider_name', __('Provider name'));
-        $grid->column('payout', __('Payout'));
-        $grid->column('reward', __('Reward'));
-        $grid->column('added_expert_level', __('Added expert level'));
-        $grid->column('upline_commision', __('Upline commision'));
+        $grid->column('user_id', __('User id'))->sortable();
+        $grid->model()->with('user');
+        $grid->column('user.username', 'Username')->filter('like');
+        $grid->column('provider_name', __('Provider name'))->sortable();
+        $grid->column('payout', __('Payout'))->sortable();
+        $grid->column('reward', __('Reward'))->sortable();
+        $grid->column('added_expert_level', __('Added expert level'))->sortable();
+        $grid->column('upline_commision', __('Upline commision'))->sortable();
         $grid->column('transaction_id', __('Transaction id'));
-        $grid->column('offer_id', __('Offer id'));
-        $grid->column('offer_name', __('Offer name'));
-        $grid->column('hold_time', __('Hold time'));
+        $grid->column('offer_id', __('Offer id'))->sortable();
+        $grid->column('offer_name', __('Offer name'))->sortable();
+        $grid->column('hold_time', __('Hold time'))->sortable();
         $grid->column('instant_credit', __('Instant credit'));
         $grid->column('ip_address', __('Ip address'));
-        $grid->column('status', __('Status'));
+        $grid->column('status', __('Status'))->display(function ($status) {
+            switch ($status) {
+                case 0:
+                  return "<span class='badge bg-success'>Completed</span>";
+                  break;
+                case 1:
+                    return "<span class='badge bg-warning'>On Hold</span>";
+                  break;
+                case 2:
+                    return "<span class='badge bg-danger'>Reversed</span>";
+                  break;
+                default:
+                return "<span class='badge bg-primary'>$status</span>";
+              }
+        
+        })->sortable();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
@@ -55,6 +72,12 @@ class OffersAndSurveysLogsController extends AdminController
             $filter->like('user_id', 'User ID');
             $filter->in('status', 'Status')->multipleSelect(['0' => 'Completed', '1' => 'Pending' , '2' => 'Reversed']);
             $filter->in('provider_name', 'Offerwall')->multipleSelect($offerwalls);
+        });
+
+        $grid->quickSearch(function ($model, $query) {
+            $model->where('provider_name', 'like', "%{$query}%")
+            ->orWhere('status', 'like', "%{$query}%")
+            ->orWhere('user_id', 'like', "%{$query}%");
         });
 
         return $grid;

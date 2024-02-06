@@ -70,6 +70,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(AdvertiserStat::class);
     }
 
+
+    public function offerwallLogs()
+    {
+        return $this->hasMany(OffersAndSurveysLog::class, 'user_id');
+    }
+
+
     public function tasks()
     {
         return $this->hasMany(Task::class);
