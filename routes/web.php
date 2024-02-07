@@ -28,6 +28,7 @@ use App\Http\Controllers\Pages\ContactPageController;
 use App\Http\Controllers\Pages\FaqController;
 use App\Http\Controllers\Pages\PrivacyPolicyController;
 use App\Http\Controllers\Pages\TermsController;
+use App\Http\Controllers\TestFaucetPayWithdraw;
 use App\Models\Offerwall;
 use App\Models\SocialLink;
 use Illuminate\Http\RedirectResponse;
@@ -57,7 +58,7 @@ Route::get('/advertiser/task', function () {
 });
 
 
-
+Route::get('/testfaucetpay', [TestFaucetPayWithdraw::class, 'test']);
 
 //offerwalls postbacks routes
 Route::get('/postback/adscendmedia', [OfferwallsPostbacksController::class, 'adscendmedia']);

@@ -74,6 +74,8 @@ class CampaingDetailWithPendingProofs extends Component
             $advertiser->deductAdvertiserBalance($amount);
         }
         $worker->addWorkerBalance($amount);
+        $worker->increment('total_tasks_completed');
+        $worker->increment('earned_from_tasks', $amount);
 
         $submittedTaskProof->update([ 'status' => 1 ]);
 
