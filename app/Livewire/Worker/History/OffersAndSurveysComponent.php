@@ -54,6 +54,9 @@ class OffersAndSurveysComponent extends Component
             if (now()->greaterThanOrEqualTo($expirationTime) || $history->status == 0) {
                 $remark = 'completed';
             }
+            elseif($history->status == 2){
+                $remark = 'Chargedback by the advertiser/provider';
+            }
             else{
                 $remainingTime = $expirationTime->diffForHumans(now(), [
                     'parts' => 2, // Show only two parts (e.g., "2 days 3 hours")

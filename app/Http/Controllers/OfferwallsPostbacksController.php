@@ -2514,12 +2514,12 @@ class OfferwallsPostbacksController extends Controller
         $whitelistedIps = json_decode($offerwall->whitelisted_ips, true);
 
         // Check if $ipAddress is in the whitelisted IPs
-        if (in_array($ipAddress, $whitelistedIps)) {
+        // if (in_array($ipAddress, $whitelistedIps)) {
             
-        } else {
-            // IP address is not whitelisted, take appropriate action
-            return "Access Denied! IP address $ipAddress is not whitelisted!";
-        }
+        // } else {
+        //     // IP address is not whitelisted, take appropriate action
+        //     return "Access Denied! IP address $ipAddress is not whitelisted!";
+        // }
 
         if ($offerwall->status != 1 ) {
             die();

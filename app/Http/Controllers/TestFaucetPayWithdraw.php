@@ -42,10 +42,10 @@ class TestFaucetPayWithdraw extends Controller
 
         // Decode the JSON response
         $result = json_decode($response, true);
-        if ($result['status'] == 200) {
+        if ($result['status'] == 200 && $result['message'] == 'OK') {
             return $result;
         } else {
-            echo $result;
+            return $result;
         }
     }
 }
