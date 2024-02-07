@@ -10,13 +10,13 @@ class TestFaucetPayWithdraw extends Controller
         $apiEndpoint = 'https://faucetpay.io/api/v1/send';
         $apiKey = 'e9464bffa02f021e84016644b2ab6d768fa4caa56af1d6a4accead3745112692';
 
-        $walletAddress = 'TQ9GWFuPBjkS7bHU5u4p5zd15T7H73rq4j';
+        $walletAddress = 'TVLGvwQsrhVEZcad9BjCtBhJQCkqYvbAbr';
 
         // Prepare the data to be sent in the request
         $data = [
             'api_key' => $apiKey,
             'currency' => 'USDT',
-            'amount' => 10000000,
+            'amount' => 80000000,
             'to' => $walletAddress
         ];
 

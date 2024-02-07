@@ -51,7 +51,7 @@ class OffersAndSurveysComponent extends Component
 
         foreach ($histories as $history) {
             $expirationTime = $history->created_at->addMinutes($history->hold_time);
-            if (now()->greaterThanOrEqualTo($expirationTime || $history->status == 0)) {
+            if (now()->greaterThanOrEqualTo($expirationTime) || $history->status == 0) {
                 $remark = 'completed';
             }
             else{
