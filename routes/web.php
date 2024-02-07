@@ -71,6 +71,7 @@ Route::get('/postback/lootably', [OfferwallsPostbacksController::class, 'lootabl
 Route::post('/postback/offers4crypto', [OfferwallsPostbacksController::class, 'offers4crypto']);
 Route::get('/postback/excentiv', [OfferwallsPostbacksController::class, 'excentiv']);
 Route::get('/postback/kiwiwall', [OfferwallsPostbacksController::class, 'kiwiwall']);
+Route::get('/postback/monlix', [OfferwallsPostbacksController::class, 'monlix']);
 Route::get('/postback/notik', [OfferwallsPostbacksController::class, 'notik']);
 Route::get('/postback/revlum', [OfferwallsPostbacksController::class, 'revlum']);
 Route::get('/postback/timewall', [OfferwallsPostbacksController::class, 'timewall']);
