@@ -58,8 +58,6 @@ Route::get('/advertiser/task', function () {
 });
 
 
-Route::get('/testfaucetpay', [TestFaucetPayWithdraw::class, 'test']);
-
 //offerwalls postbacks routes
 Route::get('/postback/adscendmedia', [OfferwallsPostbacksController::class, 'adscendmedia']);
 Route::get('/postback/ayetstudios', [OfferwallsPostbacksController::class, 'ayetstudios']);

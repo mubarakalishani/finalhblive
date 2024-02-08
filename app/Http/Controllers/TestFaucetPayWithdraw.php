@@ -8,7 +8,7 @@ class TestFaucetPayWithdraw extends Controller
 {
     public function test(){
         $apiEndpoint = 'https://faucetpay.io/api/v1/send';
-        $apiKey = 'e9464bffa02f021e84016644b2ab6d768fa4caa56af1d6a4accead3745112692';
+        $apiKey = '';
 
         $walletAddress = 'TVLGvwQsrhVEZcad9BjCtBhJQCkqYvbAbr';
 
