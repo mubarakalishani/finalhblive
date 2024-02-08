@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Log;
 use App\Models\OffersAndSurveysLog;
 use App\Models\OfferwallsSetting;
+use App\Models\DepositMethodSetting;
 use App\Models\PayoutGateway;
 use App\Models\User;
 use App\Models\WithdrawalHistory;
@@ -66,7 +67,7 @@ class EveryMinuteController extends Controller
 
     protected function processFaucetPayPayments(){
         $apiEndpoint = 'https://faucetpay.io/api/v1/send';
-        $apiKey = OfferwallsSetting::where('name', 'faucetpay_merchant_api')->value('value');
+        $apiKey = DepositMethodSetting::where('name', 'faucetpay_merchant_api')->value('value');
 
         $pendingFaucetPayWithdrawals = WithdrawalHistory::where('method', 'Faucet Pay')
         ->where('status', 0)
@@ -105,7 +106,7 @@ class EveryMinuteController extends Controller
                 // Decode the JSON response
                 $result = json_decode($response, true);
                 if ($result['status'] == 200 && $result['message'] == 'OK') {
-                    $withdrawal->update(['status' => 0]);
+                    $withdrawal->update(['status' => 1]);
                 }
             }
         }  
