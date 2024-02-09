@@ -3287,14 +3287,14 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        $uniqueUserId = $request->input();
-        $payout = $request->input();
-        $currencyAmount = $request->input();
-        $transactionId = $request->input('ip_address');
+        $uniqueUserId = $request->input('user_id');
+        $payout = $request->input('payout');
+        $currencyAmount = $request->input('reward');
+        $transactionId = $request->input('transaction_id');
         $ipAddress = $request->has('ip') ? $request->input('ip') : null;
         $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
         $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
-        $hash = $request->input();
+        $hash = $request->input('hash');
         
      /*===================================check the hash security==========================================================*/
         $security_key = hash("sha256", $uniqueUserId . $payout . $offerwall->secret_key);
