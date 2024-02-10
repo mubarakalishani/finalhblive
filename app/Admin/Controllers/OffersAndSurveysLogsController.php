@@ -133,7 +133,7 @@ class OffersAndSurveysLogsController extends AdminController
         $form->number('hold_time', __('Hold time'));
         $form->switch('instant_credit', __('Instant credit'));
         $form->text('ip_address', __('Ip address'));
-        $form->switch('status', __('Status'));
+        $form->number('status', __('Status'));
 
         return $form;
     }
