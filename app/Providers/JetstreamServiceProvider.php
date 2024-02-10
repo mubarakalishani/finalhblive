@@ -9,7 +9,11 @@ use App\Actions\Jetstream\DeleteUser;
 use App\Actions\Jetstream\InviteTeamMember;
 use App\Actions\Jetstream\RemoveTeamMember;
 use App\Actions\Jetstream\UpdateTeamName;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Fortify;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Jetstream\Jetstream;
 
 class JetstreamServiceProvider extends ServiceProvider
@@ -28,7 +32,16 @@ class JetstreamServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configurePermissions();
-
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->emailorusername)
+            ->orWhere('username', $request->emailorusername)
+            ->first();
+    
+            if ($user &&
+                Hash::check($request->password, $user->password)) {
+                return $user;
+            }
+        });
         Jetstream::createTeamsUsing(CreateTeam::class);
         Jetstream::updateTeamNamesUsing(UpdateTeamName::class);
         Jetstream::addTeamMembersUsing(AddTeamMember::class);
