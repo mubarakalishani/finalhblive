@@ -157,7 +157,7 @@ class CreatePtc extends Component
             $this->ptcAd->reward_per_view = $this->packagePrice;
             $this->ptcAd->views_needed = $this->viewsAmount;
             $this->ptcAd->views_completed = 0;
-            $this->ptcAd->status = 0;
+            $this->ptcAd->status = 1;
             $this->ptcAd->type = $this->type;  //iframe or window
             $this->ptcAd->revision_interval = $this->adRevisionInterval;
             $this->ptcAd->excluded_countries = json_encode($this->excludedCountries);
