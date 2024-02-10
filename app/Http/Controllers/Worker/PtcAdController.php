@@ -48,8 +48,10 @@ class PtcAdController extends Controller
                 $timeDifference = now()->diff($createdAt);
                 // Calculate the total time difference in minutes
                 $totalMinutesDifference = $timeDifference->days * 24 * 60 + $timeDifference->h * 60 + $timeDifference->i;
+                $totalSecondsDifference = $timeDifference->days * 24 * 60 * 60 + $timeDifference->h * 60 * 60 + $timeDifference->i * 60 + $timeDifference->s;
                 $remainingHours = $ad->revision_interval - $timeDifference->h;
                 $remainingMinutes = 60 - $timeDifference->i;
+                $remainingSeconds = 60 - $timeDifference->s;
                 // Store the remaining time in a variable
                 $remainingTime = $remainingHours . ' hours ' . $remainingMinutes . ' minutes';
 
@@ -57,6 +59,8 @@ class PtcAdController extends Controller
                 $ad->remaining_hours = $remainingHours;
                 $ad->remaining_time = $remainingTime;
                 $ad->totalMinutesDifference = $totalMinutesDifference;
+                $ad->totalSecondsDifference = $totalSecondsDifference;
+                $ad->remainingSeconds = $remainingSeconds;
 
             }
         }
@@ -91,7 +95,8 @@ class PtcAdController extends Controller
                 $ad->remaining_hours = $remainingHours;
                 $ad->remaining_time = $remainingTime;
                 $ad->totalMinutesDifference = $totalMinutesDifference;
-                $ad->totalMinutesDifference = $totalSecondsDifference;
+                $ad->totalSecondsDifference = $totalSecondsDifference;
+                $ad->remainingSeconds = $remainingSeconds;
 
             }
         }
