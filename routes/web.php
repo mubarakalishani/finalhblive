@@ -89,9 +89,7 @@ Route::middleware([
     });
     Route::get('/pay/coinbase', [DepositController::class, 'createCoinbasePayLink']);
     Route::get('/pay/perfectmoney', [DepositController::class, 'createPerfectMoneyPayLink']);
-    Route::get('/advertiser/create-new-task', function () {
-        return view('advertiser.task.create-campaign');
-    });
+    Route::get('/advertiser/create-new-task', [CreateTaskController::class, 'index']);
     Route::post('/advertiser/create-new-task', [CreateTaskController::class, 'store'])->name('advertiser.create_task');
     Route::get('/advertiser/campaigns', function () {
         return view('advertiser.task.campaign-list');

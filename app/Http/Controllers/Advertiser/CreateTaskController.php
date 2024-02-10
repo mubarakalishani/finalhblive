@@ -22,7 +22,10 @@ class CreateTaskController extends Controller
      */
     public function index()
     {
-        
+        if (auth()->user()->deposit_balance < 0) {
+            return redirect(url('/advertiser/deposit'))->with('error', 'Your Advertising Balance is not enough, kindly deposit first');
+        }
+        return view('advertiser.task.create-campaign');
     }
 
     /**
@@ -122,7 +125,7 @@ class CreateTaskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
