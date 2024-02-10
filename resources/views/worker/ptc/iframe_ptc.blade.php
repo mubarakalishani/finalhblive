@@ -20,6 +20,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-body">
+              <iframe data-aa='2301815' src='//ad.a-ads.com/2301815?size=468x60' style='width:468px; height:60px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
               <form method="POST" {{ route('worker.ptc_iframe.submit', ['uniqueId' => $uniqueId]) }}>
                 @csrf
                 <div class="mb-3 text-center">
@@ -53,94 +54,48 @@
             });
         </script>
     @endif 
-
-      
-      {{-- <script>
-var timer;
-var sec = {{ $seconds }};
-
-function startTimer() {
-  timer = setInterval(function() {
-    document.getElementById('safeTimerDisplay').innerHTML='00:'+sec;
-    if (sec <= 0) {
-      $('#exampleModalCenter').modal({keyboard: false, backdrop: 'static'})
-      $('#exampleModalCenter').modal('show')
-      clearInterval(timer)
-    } else{
-      sec--;
-    }
     
-  }, 1000);
-}
-
-
-window.addEventListener('blur', function() {
-  clearInterval(timer);
-});
-
-window.addEventListener('focus', function() {
-  startTimer();
-});
-
-window.onload = function() {
-  startTimer();
-}
-
-      </script> --}}
-
-
-
-
-
-
-
 <script>
   var adStarted;
   var Clock = {
-      totalSeconds: 0, // initial value of the timer, will be updated later
-      start: function (seconds) {
-          // update the totalSeconds property with the parameter
-          this.totalSeconds = parseInt(seconds);
-          var self = this;
-          this.interval = setInterval(function () {
-              document.getElementById('safeTimerDisplay').innerHTML = '00:' + self.totalSeconds;
-              if (self.totalSeconds <= 0) {
-                  adStarted = 0;
-                  $('#exampleModalCenter').modal({keyboard: false, backdrop: 'static'})
-                  $('#exampleModalCenter').modal('show')
-                  clearInterval(self.interval);
-              }else{
-                  self.totalSeconds -= 1;
-              }
-          }, 1000);
-      },
-      pause: function () {
-          clearInterval(this.interval);
-          delete this.interval;
-      },
-      resume: function () {
-          if (!this.interval) this.start(this.totalSeconds); // pass the current value of totalSeconds
-      }
+    totalSeconds: 0,
+    start: function (seconds) {
+      this.totalSeconds = parseInt(seconds);
+      var self = this;
+      this.interval = setInterval(function () {
+        document.getElementById('safeTimerDisplay').innerHTML = '00:' + self.totalSeconds;
+        if (self.totalSeconds <= 0) {
+          adStarted = 0;
+          $('#exampleModalCenter').modal({keyboard: false, backdrop: 'static'})
+          $('#exampleModalCenter').modal('show')
+          clearInterval(self.interval);
+        } else {
+          self.totalSeconds -= 1;
+        }
+      }, 1000);
+    },
+    pause: function () {
+      clearInterval(this.interval);
+      delete this.interval;
+    },
+    resume: function () {
+      if (!this.interval) this.start(this.totalSeconds);
+    }
   };
 
   var timer = Object.create(Clock);
 
-
-  // pause the timer when the window gains focus
   window.addEventListener('blur', function() {
-      if(adStarted==1){
-          timer.pause();
-      }  
+    if (adStarted == 1) {
+      timer.pause();
+    }  
   });
 
-  // resume the timer when the window loses focus
   window.addEventListener('focus', function() {
-      if(adStarted==1){
-          timer.resume();
-      }
-
+    if (adStarted == 1) {
+      timer.resume();
+    }
   });
-
 
   window.onload = function() {
     adStarted = 1;
@@ -148,7 +103,25 @@ window.onload = function() {
     timer.start(seconds);
   }
 
-  </script>
+  // Function to check if at least half of the iframe content is loaded
+  function isHalfLoaded() {
+    var iframe = document.getElementById('adFrame');
+    if (iframe) {
+      var halfHeight = iframe.offsetHeight / 2;
+      var scrollHeight = iframe.contentWindow.document.body.scrollHeight;
+      return scrollHeight >= halfHeight;
+    }
+    return false;
+  }
+
+  // Listener for iframe load event
+  document.getElementById('adFrame').addEventListener('load', function() {
+    if (isHalfLoaded()) {
+      // If at least half of the iframe content is loaded, start the timer
+      timer.start({{ $seconds }});
+    }
+  });
+</script>
 
       
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> 
