@@ -36,8 +36,8 @@ class PtcAdController extends Controller
         $availableIframePtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
         ->where('status', 1)
         ->where('type', 0)
+        ->where('ad_balance', '>=', 0)
         ->orderBy('reward_per_view', 'desc')
-        ->where('employer_id', '<>', auth()->user()->id)
         ->get();
 
         foreach ($availableIframePtcAds as $ad) {
@@ -68,8 +68,8 @@ class PtcAdController extends Controller
         $availableWindowPtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
         ->where('status', 1)
         ->where('type', 1)
+        ->where('ad_balance', '>=', 0)
         ->orderBy('reward_per_view', 'desc')
-        ->where('employer_id', '<>', auth()->user()->id)
         ->get();
 
         foreach ($availableWindowPtcAds as $ad) {
