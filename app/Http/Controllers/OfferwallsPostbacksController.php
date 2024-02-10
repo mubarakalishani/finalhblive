@@ -855,15 +855,15 @@ class OfferwallsPostbacksController extends Controller
 
         if( $request->has('status') ) 
         {
-            if ($request->input('status') == 'COMPLETED' && $offerHold == 0 ) 
+            if ($request->input('status') == 'COMPLETE' && $offerHold == 0 ) 
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 'COMPLETED' && $finalReward <= $offerwall->tier1_hold_amount )
+            elseif ($request->input('status') == 'COMPLETE' && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 'COMPLETED' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 'COMPLETE' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
