@@ -28,8 +28,8 @@ class OffersAndSurveysLogsController extends AdminController
     {
         $grid = new Grid(new OffersAndSurveysLog());
 
-        $grid->column('id', __('Id'));
-        $grid->column('user_id', __('User id'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('user_id', __('User id'))->sortable();
         $grid->column('provider_name', __('Provider name'))->sortable();
         $grid->column('payout', __('Payout'))->sortable();
         $grid->column('reward', __('Reward'))->sortable();
@@ -57,8 +57,8 @@ class OffersAndSurveysLogsController extends AdminController
               }
         
         })->sortable();
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->sortable();
+        $grid->column('updated_at', __('Updated at'))->sortable();
 
         $grid->model()->orderBy('updated_at', 'desc');
 
