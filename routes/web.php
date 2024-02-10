@@ -183,7 +183,9 @@ Route::post('/faucetpay/callback', [DepositController::class, 'faucetpaySuccessC
 Route::post('/webhook/coinbase', [DepositController::class, 'handleCoinbaseWebhook'])->middleware('web');
 Route::post('/webhook/perfectmoney', [DepositController::class, 'handlePerfectMoneyWebhook'])->middleware('web');
 
-
+Route::get('/ads', function () {
+    return view('ads');
+});
 
 
 
