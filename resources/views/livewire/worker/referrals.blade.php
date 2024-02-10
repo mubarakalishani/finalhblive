@@ -12,7 +12,7 @@
         <div class="text-center">
             {{-- <h1>Refer a friend and get 10% off your next purchase!</h1>
             <p>Share your referral link with your friends and they will get a 5% discount on their first order. You will also get a 10% coupon code when they make a purchase.</p> --}}
-            <input id="referral-link" type="text" class="form-control" value="{{url('/').'?ref='.auth()->user()->username}}" readonly><br>
+            <input id="referral-link" type="text" class="form-control" value="{{url('/').'/?ref='.auth()->user()->username}}" readonly><br>
             <button id="copy-button" class="btn btn-outline-primary" onclick="copyLink()">Copy link</button>
           </div>
               <div class="row align-items-end mb-4 pb-2">
