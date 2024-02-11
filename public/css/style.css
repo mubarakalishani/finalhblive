@@ -2712,13 +2712,6 @@ Jobs page style start
     font-size: 12px;
 }
 
-.all-ptc-ads-page .badge {
-    padding: 4x 4px;
-    border-radius: 3px;
-    letter-spacing: 0.5px;
-    font-size: 8px;
-    margin-top: 5px;
-}
 
 .btn-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.focus, .btn-outline-primary:not(:disabled):not(.disabled):active {
     box-shadow: 0 3px 7px #577784 !important;
