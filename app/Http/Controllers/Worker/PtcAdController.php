@@ -65,7 +65,40 @@ class PtcAdController extends Controller
             }
         }
 
-        return view('worker.ptc.all-iframe', ['availableIframePtcAds' => $availableIframePtcAds]);
+
+        $availableWindowPtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
+        ->where('status', 1)
+        ->where('type', 1)
+        ->where('ad_balance', '>=', 0)
+        ->orderBy('reward_per_view', 'desc')
+        ->get();
+
+        foreach ($availableWindowPtcAds as $ad) {
+            $lastClaim = PtcLog::where('worker_id', auth()->user()->id)->where('ad_id', $ad->id)->latest()->first();
+            if ($lastClaim) {
+                $createdAt = Carbon::parse( $lastClaim->created_at);
+                // Calculate the time difference in hours and minutes
+                $timeDifference = now()->diff($createdAt);
+                // Calculate the total time difference in minutes
+                $totalSecondsDifference = $timeDifference->days * 24 * 60 * 60 + $timeDifference->h * 60 * 60 + $timeDifference->i * 60 + $timeDifference->s;
+                $totalMinutesDifference = $timeDifference->days * 24 * 60 + $timeDifference->h * 60 + $timeDifference->i;
+                $remainingHours = $ad->revision_interval - $timeDifference->h;
+                $remainingMinutes = 60 - $timeDifference->i;
+                $remainingSeconds = 60 - $timeDifference->s;
+                // Store the remaining time in a variable
+                $remainingTime = $remainingHours . ' hours ' . $remainingMinutes . ' minutes';
+
+                // You can now use $remainingTime as needed, for example, store it in the database
+                $ad->remaining_hours = $remainingHours;
+                $ad->remaining_time = $remainingTime;
+                $ad->totalMinutesDifference = $totalMinutesDifference;
+                $ad->totalSecondsDifference = $totalSecondsDifference;
+                $ad->remainingSeconds = $remainingSeconds;
+
+            }
+        }
+
+        return view('worker.ptc.all-iframe', ['availableIframePtcAds' => $availableIframePtcAds, 'availableWindowPtcAds' => $availableWindowPtcAds]);
     }
 
     public function showWindow(){
@@ -100,7 +133,41 @@ class PtcAdController extends Controller
 
             }
         }
-        return view('worker.ptc.all-window', ['availableWindowPtcAds' => $availableWindowPtcAds]);
+
+
+
+        $availableIframePtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
+        ->where('status', 1)
+        ->where('type', 0)
+        ->where('ad_balance', '>=', 0)
+        ->orderBy('reward_per_view', 'desc')
+        ->get();
+
+        foreach ($availableIframePtcAds as $ad) {
+            $lastClaim = PtcLog::where('worker_id', Auth::user()->id)->where('ad_id', $ad->id)->latest()->first();
+            if ($lastClaim) {
+                $createdAt = Carbon::parse( $lastClaim->created_at);
+                // Calculate the time difference in hours and minutes
+                $timeDifference = now()->diff($createdAt);
+                // Calculate the total time difference in minutes
+                $totalMinutesDifference = $timeDifference->days * 24 * 60 + $timeDifference->h * 60 + $timeDifference->i;
+                $totalSecondsDifference = $timeDifference->days * 24 * 60 * 60 + $timeDifference->h * 60 * 60 + $timeDifference->i * 60 + $timeDifference->s;
+                $remainingHours = $ad->revision_interval - $timeDifference->h;
+                $remainingMinutes = 60 - $timeDifference->i;
+                $remainingSeconds = 60 - $timeDifference->s;
+                // Store the remaining time in a variable
+                $remainingTime = $remainingHours . ' hours ' . $remainingMinutes . ' minutes';
+
+                // You can now use $remainingTime as needed, for example, store it in the database
+                $ad->remaining_hours = $remainingHours;
+                $ad->remaining_time = $remainingTime;
+                $ad->totalMinutesDifference = $totalMinutesDifference;
+                $ad->totalSecondsDifference = $totalSecondsDifference;
+                $ad->remainingSeconds = $remainingSeconds;
+
+            }
+        }
+        return view('worker.ptc.all-window', ['availableWindowPtcAds' => $availableWindowPtcAds, 'availableIframePtcAds' => $availableIframePtcAds]);
     }
 
     public function showYoutube(){

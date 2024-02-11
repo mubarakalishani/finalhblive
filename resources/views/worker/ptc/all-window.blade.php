@@ -1,13 +1,24 @@
 @extends('layouts.afterlogin')
 @section('content')
 @php
-    $count = 0;
+    $countWindows = 0;
 @endphp
-
 @foreach ($availableWindowPtcAds as $ad)
     @if (!$ad->totalSecondsDifference || $ad->totalSecondsDifference > ($ad->revision_interval * 60 * 60))
         @php
-            $count++;
+            $countWindows++;
+        @endphp
+    @endif
+@endforeach
+
+
+@php
+    $countIframe = 0;
+@endphp
+@foreach ($availableIframePtcAds as $ad)
+    @if (!$ad->totalSecondsDifference || $ad->totalSecondsDifference > ($ad->revision_interval * 60 * 60))
+        @php
+            $countIframe++;
         @endphp
     @endif
 @endforeach
@@ -15,10 +26,10 @@
         <div class="most-popular all-ptc-ads-page">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="/views/iframe">Iframe <span class="badge bg-primary">{{ $count }}</span></a>
+                  <a class="nav-link" aria-current="page" href="/views/iframe">Iframe <span class="badge bg-primary">{{ $countIframe }}</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/views/window">Windows</a>
+                    <a class="nav-link active" aria-current="page" href="/views/window">Windows <span class="badge bg-primary">{{ $countWindows }}</span></a>
                   </li>
                   {{-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/views/youtube">Youtube</a>
