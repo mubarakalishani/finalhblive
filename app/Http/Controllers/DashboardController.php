@@ -29,6 +29,7 @@ class DashboardController extends Controller
         $availableIframePtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', auth()->user()->country)
         ->where('status', 1)
         ->where('type', 0)
+        ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
         ->get();
 
@@ -40,8 +41,10 @@ class DashboardController extends Controller
                 $timeDifference = now()->diff($createdAt);
                 // Calculate the total time difference in minutes
                 $totalMinutesDifference = $timeDifference->days * 24 * 60 + $timeDifference->h * 60 + $timeDifference->i;
+                $totalSecondsDifference = $timeDifference->days * 24 * 60 * 60 + $timeDifference->h * 60 * 60 + $timeDifference->i * 60 + $timeDifference->s;
                 $remainingHours = $ad->revision_interval - $timeDifference->h;
                 $remainingMinutes = 60 - $timeDifference->i;
+                $remainingSeconds = 60 - $timeDifference->s;
                 // Store the remaining time in a variable
                 $remainingTime = $remainingHours . ' hours ' . $remainingMinutes . ' minutes';
 
@@ -49,6 +52,8 @@ class DashboardController extends Controller
                 $ad->remaining_hours = $remainingHours;
                 $ad->remaining_time = $remainingTime;
                 $ad->totalMinutesDifference = $totalMinutesDifference;
+                $ad->totalSecondsDifference = $totalSecondsDifference;
+                $ad->remainingSeconds = $remainingSeconds;
 
             }
         }

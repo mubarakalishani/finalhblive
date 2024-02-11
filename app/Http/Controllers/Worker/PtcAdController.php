@@ -36,7 +36,7 @@ class PtcAdController extends Controller
         $availableIframePtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
         ->where('status', 1)
         ->where('type', 0)
-        ->where('ad_balance', '>=', 0)
+        ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
         ->get();
 
@@ -69,7 +69,7 @@ class PtcAdController extends Controller
         $availableWindowPtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
         ->where('status', 1)
         ->where('type', 1)
-        ->where('ad_balance', '>=', 0)
+        ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
         ->get();
 
@@ -105,7 +105,7 @@ class PtcAdController extends Controller
         $availableWindowPtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
         ->where('status', 1)
         ->where('type', 1)
-        ->where('ad_balance', '>=', 0)
+        ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
         ->get();
 
@@ -139,7 +139,7 @@ class PtcAdController extends Controller
         $availableIframePtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', Auth::user()->country)
         ->where('status', 1)
         ->where('type', 0)
-        ->where('ad_balance', '>=', 0)
+        ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
         ->get();
 
