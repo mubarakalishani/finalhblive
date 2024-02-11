@@ -4,7 +4,7 @@
     $count = 0;
 @endphp
 
-@foreach ($availableIframePtcAds as $ad)
+@foreach ($availableWindowPtcAds as $ad)
     @if (!$ad->totalSecondsDifference || $ad->totalSecondsDifference > ($ad->revision_interval * 60 * 60))
         @php
             $count++;
