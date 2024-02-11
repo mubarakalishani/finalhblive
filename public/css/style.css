@@ -1546,29 +1546,8 @@ body {
 
 
 /*mycompaigns page*/
-.mycampaigns-page .alert{
-  background-color: #f8d7da !important;
-  color: #721c24 !important;
-  padding: 5px 10px;
-  margin-bottom: 22px; 
-}
-.mycampaigns-page .alert a{
-  text-decoration: none !important;
-}
-.mycampaigns-page alert i{
-  font-size: 15px;
-}
-.mycampaigns-page .d-inline-block a{
-  font-size: 12px;
-}
-.mycampaigns-page #search-term{
-  font-size: 10px;
-}
-.mycampaigns-page .password-change-link{
-  font-size: 10px;
-  font-weight: 500;
-  text-decoration: underline;
-}
+
+
 .results-bar .results-bar__total{
   font-size: 12px;
 }
@@ -1931,18 +1910,6 @@ Jobs page style start
 
 
 /*mycompaigns page*/
-.mycampaigns-page .alert{
-  /* background-color: #f8d7da !important;
-  color: #721c24 !important; */
-  padding: 5px 10px;
-  margin-bottom: 22px; 
-}
-.mycampaigns-page .alert a{
-  text-decoration: none !important;
-}
-.mycampaigns-page alert i{
-  font-size: 15px;
-}
 .mycampaigns-page .d-inline-block a{
   font-size: 12px;
 }
@@ -2844,28 +2811,10 @@ Jobs page style start
     margin: 10px;
   }
 /*Bonus page*/
-.bonus-page .alert{
-    color: #155724 !important;
-    background-color: #d4edda !important;
-    border-color: #c3e6cb;
-    padding: 5px 10px;
-    margin-bottom: 22px; 
-}
-.bonus-page .alert a{
-  text-decoration: none !important;
-}
-.bonus-page alert i{
-  font-size: 15px;
-}
+
 
 /*referral page*/
-.referral-page .alert{
-    color: #155724 !important;
-    background-color: #d4edda !important;
-    border-color: #c3e6cb;
-    padding: 5px 10px;
-    margin-bottom: 22px; 
-}
+
 
 /*contact page style start*/
 

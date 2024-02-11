@@ -53,8 +53,27 @@ class TaskSubmitController extends Controller
         return view('worker.tasks.submitted-proof-details', ['task' => $task, 'proof' => $proof]);
     }
     /*============================function to store the proof normally that the User will File=========================================  */
+
     public function store(Request $request, $taskId)
     {
+        // Validation rules for image proofs and text proofs
+        $rules = [
+            'image_proofs.*' => 'image|mimes:jpeg,png,jpg,gif|max:5048', // Assuming maximum file size is 2MB
+            'text_proofs.*' => 'string',
+        ];
+
+        // Custom error messages
+        $messages = [
+            'image_proofs.*.image' => 'The proof must be an image file.',
+            'image_proofs.*.mimes' => 'The proof must be a file of type: jpeg, png, jpg, gif.',
+            'image_proofs.*.max' => 'The proof must not be larger than 5MB.',
+            'text_proofs.*.string' => 'The proof must be a string.',
+        ];
+
+        // Validate the request data
+        $validatedData = $request->validate($rules, $messages);
+
+
         //check if the user has already submitted proof for the task
         $proofExists = SubmittedTaskProof::where('task_id', $taskId)->where('worker_id', auth()->user()->id)->whereIn('status', [0,1,2,4,5])->exists();
         if($proofExists){

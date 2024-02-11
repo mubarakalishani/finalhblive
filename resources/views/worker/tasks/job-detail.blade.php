@@ -124,7 +124,15 @@
                                 </div> --}}
                               </div>
                 
-                            
+                              @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                              @endif
                               <form action="{{ route('worker.submit_task', ['taskId' => $task->id]) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="job-info-list mb-8 mt-8 col-12">
