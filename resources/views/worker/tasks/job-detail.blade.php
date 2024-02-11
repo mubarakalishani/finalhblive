@@ -143,7 +143,7 @@
                                       @foreach($task->requiredProofs as $proof)
                                         @if ( $proof->proof_type == 1)
                                           <li class="py-1">{{ $proof->proof_text }}</li>
-                                            <textarea name="text_proofs[{{ $proof->proof_no }}]" class="form-control"required>{{ old('text_proofs.' . $proof->proof_no, '') }}</textarea>
+                                            <textarea name="text_proofs[{{ $proof->proof_no }}]" class="form-control" :value="old('text_proofs.' . $proof->proof_no)" required></textarea>
                                         @else
                                         <li class="py-1">{{ $proof->proof_text }}</li>
                                           <div class="form-group">
