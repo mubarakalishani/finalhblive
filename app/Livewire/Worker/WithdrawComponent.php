@@ -42,6 +42,12 @@ class WithdrawComponent extends Component
                 $this->amount = $this->amount;
                 break;
         }
+        if($this->amount > auth()->user()->balance){
+            $this->addError('errAmount', 'the amount is more than Your available balance '.auth()->user()->balance);
+        }
+        elseif($this->amount < $this->gateway->min_payout) {
+            $this->addError('errAmount', 'The minimum payout amount for '.$this->gateway->name.' is '.$this->gateway->min_payout);
+        }
         $this->processingFee = $this->gateway->fixed_fee + ($this->gateway->fee_percentage * $this->amount) / 100 ;
     }
 
