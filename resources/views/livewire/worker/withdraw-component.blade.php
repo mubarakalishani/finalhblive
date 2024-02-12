@@ -30,7 +30,7 @@
                         @if ($selectedGateway > 0)
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Amount: $</span>
-                                <input type="number" class="form-control" value="{{$amount}}" wire:model.lazy="amount">
+                                <input type="number" class="form-control" value="{{$amount}}" wire:model="amount">
                                 <span class="input-group-text">
                                     <a class="text-primary mx-2" wire:click="updateAmount('50')">50%</a>|
                                     <a class="text-primary mx-2" wire:click="updateAmount('100')">max</a>
