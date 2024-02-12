@@ -28,7 +28,7 @@
                         </div>
                         @endif
                         @if ($selectedGateway > 0)
-                            <label class="form-label">Enter Amount: Minimum Withdrawal is {{ $gateway-> }}</label>
+                            <label class="form-label">Enter Amount: Minimum Withdrawal is {{ $gateway->min_payout }}</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Amount: $</span>
                                 <input type="number" class="form-control" value="{{$amount}}" wire:model.lazy="amount">
