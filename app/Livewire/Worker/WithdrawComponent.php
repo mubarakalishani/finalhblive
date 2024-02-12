@@ -36,11 +36,8 @@ class WithdrawComponent extends Component
                 $this->amount = (50 * auth()->user()->balance) / 100;
                 break;
             case 100:
-                $this->amount = (100 * auth()->user()->balance) / 100;
+                $this->amount =  auth()->user()->balance;
                 break;    
-            default:
-                $this->amount = $this->amount;
-                break;
         }
         if($this->amount > auth()->user()->balance){
             $this->addError('errAmount', 'the amount is more than Your available balance '.auth()->user()->balance);
