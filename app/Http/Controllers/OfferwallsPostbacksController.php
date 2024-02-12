@@ -3532,13 +3532,13 @@ class OfferwallsPostbacksController extends Controller
             echo "offerwall is not enabled ";
         }
         /*===================================Get All common data from the postback==========================================================*/
-        $uniqueUserId = $request->input('subId');
+        $uniqueUserId = $request->input('user_id');
         $payout = $request->input('payout');
         $currencyAmount = $request->input('reward');
-        $transactionId = $request->input('transId');
-        $ipAddress = $request->has('userIp') ? $request->input('userIp') : null;
-        $offerName = $request->has('campaign_name') ? $request->input('campaign_name') : null;
-        $offerId = $request->has('campaign_id') ? $request->input('campaign_id') : null;
+        $transactionId = $request->input('transaction_id');
+        $ipAddress = $request->has('ip') ? $request->input('ip') : null;
+        $offerName = $request->has('offer_name') ? $request->input('offer_name') : null;
+        $offerId = $request->has('offer_id') ? $request->input('offer_id') : null;
         $hash = $request->input('signature');
         
      /*===================================check the hash security==========================================================*/
@@ -3587,15 +3587,15 @@ class OfferwallsPostbacksController extends Controller
 
         if( $request->has('status') ) 
         {
-            if ($request->input('status') == 1 && $offerHold == 0 ) 
+            if ($request->input('status') == 'credited' && $offerHold == 0 ) 
             {
                 $finalStatus = 0; //0, completed, 1 on hold / pending, 2 reversed.
             }
-            elseif ($request->input('status') == 1 && $finalReward <= $offerwall->tier1_hold_amount )
+            elseif ($request->input('status') == 'credited' && $finalReward <= $offerwall->tier1_hold_amount )
             {
                 $finalStatus = 0;
             }
-            elseif ( $request->input('status') == 1 && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
+            elseif ( $request->input('status') == 'credited' && $offerHold == 1 && $offerwall->tier1_hold_amount < $finalReward && $currencyAmount > 0 && $payout > 0 )  //the complete status value of the provider offerwall
             {
                 $finalStatus = 1;
             }
