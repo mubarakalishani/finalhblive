@@ -321,4 +321,23 @@ public function createPerfectMoneyPayLink(Request $request){
     ]);
 }
 
+// public function createPayeerPayLink(Request $request){
+//     $amount = $request->input('amount');
+//     $transactionId = Str::random(12);
+//     Deposit::create([
+//         'user_id' => auth()->user()->id,
+//         'method' => 'payeer',
+//         'amount' => $amount,
+//         'status' => 'Waiting For Payment',
+//         'internal_tx' => $transactionId,
+//         'description' => 'transaction Perfect Money id' . $transactionId . ' status not paid yet',
+//         'external_tx' => 'no external tx yet',
+//     ]);
+
+//     return view('advertiser.deposit.payeer', [
+//         'amount' => $amount,
+//         'transactionId' => $transactionId
+//     ]);
+// }
+
 }

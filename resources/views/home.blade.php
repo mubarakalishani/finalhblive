@@ -33,7 +33,7 @@
                               @csrf
                               <!-- Email input -->
                               <div class="form-outline mb-4">
-                                <input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" placeholder="email address" />
+                                <input id="email" class="form-control" type="text" name="email" :value="old('email')" required autofocus autocomplete="email" placeholder="email address or username" />
                               </div>
 
                               <!-- Password input -->
