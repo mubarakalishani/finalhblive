@@ -28,7 +28,7 @@
                         </div>
                         @endif
                         @if ($selectedGateway > 0)
-                            <label  class="form-label">Min Withdrawal for {{ $updatedGateway->name }} is {{ $updatedGateway->$this->gateway }}</label>
+                            <label  class="form-label">Min Withdrawal for {{ $updatedGateway->name }} is {{ $updatedGateway->min_payout }}</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Amount: $</span>
                                 <input type="number" class="form-control" wire:model.live.debounce.500ms="amount">
