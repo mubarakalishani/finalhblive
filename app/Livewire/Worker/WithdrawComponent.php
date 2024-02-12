@@ -231,7 +231,7 @@ class WithdrawComponent extends Component
         return view('livewire.worker.withdraw-component', [
             'withdrawalHistories' => $withdrawalHistories,
             'payoutGateways' => $payoutGateways,
-            'amount' => $this->amount,
+            'updatedAmount' => $this->amount,
             'updatedGateway' => $this->gateway
         ]);
     }
