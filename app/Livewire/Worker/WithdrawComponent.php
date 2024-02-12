@@ -224,7 +224,8 @@ class WithdrawComponent extends Component
         ->paginate($this->perPage);
         return view('livewire.worker.withdraw-component', [
             'withdrawalHistories' => $withdrawalHistories,
-            'payoutGateways' => $payoutGateways
+            'payoutGateways' => $payoutGateways,
+            'amount' => $this->amount
         ]);
     }
 }

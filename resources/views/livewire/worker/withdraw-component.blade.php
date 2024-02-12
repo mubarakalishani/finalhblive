@@ -28,15 +28,16 @@
                         </div>
                         @endif
                         @if ($selectedGateway > 0)
+                            <label class="form-label">Enter Amount: Minimum Withdrawal is {{ $gateway-> }}</label>
                             <div class="input-group mb-3">
-                            <span class="input-group-text">Amount: $</span>
-                            <input type="number" class="form-control" value="{{$amount}}" wire:model.live.debounce.500ms="amount">
-                            <span class="input-group-text">
-                                <a class="text-primary mx-2" wire:click="updateAmount('50')">50%</a>|
-                                <a class="text-primary mx-2" wire:click="updateAmount('100')">max</a>
-                            </span>
-                            @error('errAmount') <span class="text-danger">{{ $message }}</span> @enderror
-                            @error('amount') <span class="text-danger">{{ $message }}</span> @enderror
+                                <span class="input-group-text">Amount: $</span>
+                                <input type="number" class="form-control" value="{{$amount}}" wire:model.lazy="amount">
+                                <span class="input-group-text">
+                                    <a class="text-primary mx-2" wire:click="updateAmount('50')">50%</a>|
+                                    <a class="text-primary mx-2" wire:click="updateAmount('100')">max</a>
+                                </span>
+                                @error('errAmount') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('amount') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         @endif    
                         @if ($selectedGateway > 0 && $amount > 0)
