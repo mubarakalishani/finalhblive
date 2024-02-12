@@ -156,7 +156,9 @@
                         <a href="/withdraw" class="sidebar-link"><i class="fa-solid fa-money-bill-trend-up"></i> Withdraw</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="/referral" class="sidebar-link"><i class="fa-solid fa-people-group"></i> Referrals</a>
+                        <a href="/referral" class="sidebar-link"><i class="fa-solid fa-people-group"></i> Referrals
+                            <span class="badge bg-primary">{{ auth()->user()->referrals }}</span>
+                        </a>
                     </li>
                     {{-- <li class="sidebar-item">
                         <a href="bonus.html" class="sidebar-link"><i class="fa-solid fa-gift"></i> Bonus</a>
