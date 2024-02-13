@@ -9,7 +9,7 @@
             <!-- Account page navigation-->
             <nav class="nav nav-borders">
                 {{-- <a class="nav-link  ms-0" href="/profile">Profile</a> --}}
-                <a class="nav-link" href="/profile/payout-methods">Billing</a>
+                <a class="nav-link" href="/profile/payout-methods">Payout Methods</a>
                 <a class="nav-link active" href="/profile/security">Security</a>
             </nav>
             <hr class="mt-0 mb-4">
