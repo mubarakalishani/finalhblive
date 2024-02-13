@@ -8,7 +8,7 @@
         <div class="container-xl px-4 mt-4">
             <!-- Account page navigation-->
             <nav class="nav nav-borders">
-                <a class="nav-link  ms-0" href="/profile">Profile</a>
+                {{-- <a class="nav-link  ms-0" href="/profile">Profile</a> --}}
                 <a class="nav-link" href="/profile/payout-methods">Billing</a>
                 <a class="nav-link active" href="/profile/security">Security</a>
             </nav>

@@ -12,7 +12,7 @@
         <input type="hidden" name="m_orderid" value="{{ $transactionId }}">
         <input type="hidden" name="m_amount" value="{{ $amount }}">
         <input type="hidden" name="m_curr" value="USD">
-        <input type="hidden" name="m_desc" value="<?=$m_desc?>">
+        <input type="hidden" name="m_desc" value="Deposit to handbucks.com for advertisement">
         <input type="hidden" name="m_sign" value="<?=$sign?>">
         <input type="submit" name="m_process" value="send" />
     </form>
