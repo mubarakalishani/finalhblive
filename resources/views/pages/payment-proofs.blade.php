@@ -26,7 +26,7 @@
                   </span>
                 </td>
                 <td>
-                  <span class="text-warning">{{ $withdrawal->updated_at->diffForHumans() }}</span>
+                  <span class="text-dark">{{ $withdrawal->updated_at->diffForHumans() }}</span>
                 </td>
               </tr>
             @endforeach
