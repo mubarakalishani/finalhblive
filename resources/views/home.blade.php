@@ -267,6 +267,10 @@
                   </div>
                 </div>
               </div>
+              <div class="mt-5 text-center" style="border: 1px solid floralwhite;border-radius: 10px;">
+                <p>Advertisement</p>
+                <iframe data-aa='2301691' src='//ad.a-ads.com/2301691?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+              </div>
               <!-- ***** Most Popular Provider End ***** -->
               <!-- ***** Most Popular payment gateways start ***** -->
               <div class="container">
@@ -320,12 +324,12 @@
                   </div>
                 </div>
               </div>
+              <div class="mt-5 text-center" style="border: 1px solid floralwhite;border-radius: 10px;">
+                <p>Advertisement</p>
+                <iframe data-aa='2301815' src='//ad.a-ads.com/2301815?size=468x60' style='width:468px; height:60px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+              </div>
               <!-- ***** Most Popular payment gateways End ***** -->
               <!-- ***** Withdraw and task history Start ***** -->
-              <div class="mt-5 text-center">
-                <iframe data-aa='2301691' src='//ad.a-ads.com/2301691?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
-              </div>
-              
               <div class="gaming-library">
                 <div class="row">
                   <div class="col-lg-6">
@@ -441,12 +445,7 @@
                   </div>
                 </div>
               </div>
-
-              <div class="mt-5 text-center">
-                <iframe data-aa='2301815' src='//ad.a-ads.com/2301815?size=468x60' style='width:468px; height:60px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
-              </div>
               
-
               <!-- ***** Withdraw and task history End ***** -->
               <div class="most-popular-1 faqs-page">
                 <div class="py-4 draggable">
