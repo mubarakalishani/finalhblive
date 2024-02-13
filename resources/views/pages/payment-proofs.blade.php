@@ -22,7 +22,7 @@
                 </td>
                 <td>
                   <span class="text-info">
-                    <img style="width: 150px; height:40px;" src="{{ $withdrawal->image }}" >
+                    <img style="width: 100px; height:25px;" src="{{ $withdrawal->image }}" >
                   </span>
                 </td>
                 <td>
