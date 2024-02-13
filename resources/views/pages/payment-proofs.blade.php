@@ -1,6 +1,6 @@
 @include('includes.header-before-login')
  <div class="container">
-    <h4>latest 100 payouts history</h4>
+    <h4 class="text-center mt-4 mb-4">Latest 100 payouts history</h4>
     <div class="table-responsive">
         <table class="table no-wrap">
           <thead>

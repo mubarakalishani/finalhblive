@@ -25,7 +25,7 @@
                       <h5>Browse</h5>
                       <li><a href="#">Ranking</a></li>
                       <li><a href="#">Advertiser</a></li>
-                      <li><a href="/dashboard">Browse</a></li>
+                      <li><a href="/payment-proofs">Payment Proofs</a></li>
                     </ul>
                   </div>
                   <div class="col-sm-2 my-sm-0 mt-5 link-items">
