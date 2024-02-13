@@ -28,7 +28,7 @@
 
                         <div class="card-1 home-signup-card">
                           <div class="card-body px-4 py-5 px-md-5">
-                            <x-validation-errors class="mb-4" />
+                            <x-validation-errors class="text-danger mb-4" />
                             <form method="POST" action="{{ route('login') }}">
                               @csrf
                               <!-- Email input -->
