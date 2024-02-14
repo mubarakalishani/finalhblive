@@ -4,6 +4,7 @@
 <div class="container-fluid">
     <div class="mt-3 mb-5">
         <h3>Welcome {{auth()->user()->username}}</h3>
+        <p>Your Level: <b>Starter</b> <a href="/guides-and-announcements/1" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></p>
     </div>
 
     <!-- dashboard status cards start -->
@@ -31,7 +32,7 @@
                           <h6 class="mb-0">Expert Level Balance</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          {{ auth()->user()->diamond_level_balance }} <a href="/">Learn More</a>
+                          {{ auth()->user()->diamond_level_balance }} <a href="/guides-and-announcements/2">Learn More</a>
                         </div>
                       </div>
                       <hr>
