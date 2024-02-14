@@ -177,6 +177,9 @@ class WithdrawComponent extends Component
             case 'Polygon USDT':
                 $this->validateEthereumAddress();
                 break;
+            case 'USDT Polygon':
+                $this->validateEthereumAddress();
+                break;
             case 'USDT':
                 $this->validateEthereumAddress();
                 break;    
