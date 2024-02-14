@@ -44,6 +44,8 @@ Route::group([
     $router->resource('social-links', SocialLinksController::class);
     $router->resource('support-tickets', SupportTicketController::class);
     $router->resource('deposits', DepositController::class);
+    $router->resource('news-and-announcements', NewsAndAnnouncementController::class);
+
 
 
 

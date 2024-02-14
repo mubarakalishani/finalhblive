@@ -65,9 +65,9 @@ class NewsAndAnnouncementController extends AdminController
     {
         $form = new Form(new NewsAndAnnouncement());
 
-        $form->switch('type', __('Type'));
+        $form->select('type','type')->options([0 => 'Guide', 1 => 'Announcement']);
         $form->text('title', __('Title'));
-        $form->textarea('content', __('Content'));
+        $form->ckeditor('content');
 
         return $form;
     }
