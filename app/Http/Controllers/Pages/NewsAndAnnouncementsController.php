@@ -14,7 +14,9 @@ class NewsAndAnnouncementsController extends Controller
     public function index()
     {
         $latestNews = NewsAndAnnouncement::orderBy('id', 'DESC')->latest()->first();
-        $news = NewsAndAnnouncement::orderBy('id', 'DESC')->get();
+        $news = NewsAndAnnouncement::orderBy('id', 'DESC')
+        ->where('id', '<>', $latestNews->id)
+        ->get();
         return view('pages.news.news', [
             'latestNews' => $latestNews,
             'news' => $news
