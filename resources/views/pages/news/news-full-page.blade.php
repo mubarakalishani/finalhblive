@@ -6,6 +6,7 @@
         <p>Last Updated: {{ $newsToShow->updated_at->diffForHumans() }}</p>
         {!! $newsToShow->content !!}
     </div>
+    <h6>More Guides and Announcements:</h6>
     @foreach ($news as $item)
         <ul>
             <li>
