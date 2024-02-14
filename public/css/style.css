@@ -1854,9 +1854,6 @@ Dashboard-status-card style start
 .dashboard-status-card .shadow-none {
     box-shadow: none!important;
 }
-.dashboard-status-card h6{
-    font-size: 10px;
-}
 .dashboard-status-card .view-all-btn{
     font-size: 10px;
 }
