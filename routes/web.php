@@ -27,6 +27,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\ContactPageController;
 use App\Http\Controllers\Pages\FaqController;
+use App\Http\Controllers\Pages\NewsAndAnnouncementsController;
 use App\Http\Controllers\Pages\PaymentProofsController;
 use App\Http\Controllers\Pages\PrivacyPolicyController;
 use App\Http\Controllers\Pages\TermsController;
@@ -206,8 +207,8 @@ Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 Route::get('/terms', [TermsController::class, 'index'])->name('terms-and-conditions.index');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('/payment-proofs', [PaymentProofsController::class, 'index'])->name('payout-proofs.index');
-Route::get('/guides-and-announcements', [NewsAndAnnouncementController::class, 'index'])->name('news.index');
-Route::get('/guides-and-announcements/{id}', [NewsAndAnnouncementController::class, 'show'])->name('news.show');
+Route::get('/guides-and-announcements', [NewsAndAnnouncementsController::class, 'index'])->name('news.index');
+Route::get('/guides-and-announcements/{id}', [NewsAndAnnouncementsController::class, 'show'])->name('news.show');
 Route::get('/privacy-policy', [App\Http\Controllers\Pages\PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
 
 
