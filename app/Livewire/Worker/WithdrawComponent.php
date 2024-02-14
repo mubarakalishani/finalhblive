@@ -72,7 +72,7 @@ class WithdrawComponent extends Component
                 case 'Payeer':
                     $this->placeholder = 'Your Payeer Account ID e.g, Pxxxxxx';
                     break;
-                case 'USDT Polygon':
+                case 'Polygon USDT':
                     $this->placeholder = 'USDT Address on polygon e.g, 0x.......';
                     break;
                 case 'USDT':
@@ -174,7 +174,7 @@ class WithdrawComponent extends Component
     public function submit(){
         $this->validate();
         switch ($this->gateway->name) {
-            case 'USDT Polygon':
+            case 'Polygon USDT':
                 $this->validateEthereumAddress();
                 break;
             case 'USDT':
