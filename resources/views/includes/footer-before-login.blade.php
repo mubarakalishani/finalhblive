@@ -24,7 +24,7 @@
                     <ul class="list-unstyled">
                       <h5>Browse</h5>
                       <li><a href="#">Ranking</a></li>
-                      <li><a href="#">Advertiser</a></li>
+                      <li><a href="/guides-and-announcements">Guides and News</a></li>
                       <li><a href="/payment-proofs">Payment Proofs</a></li>
                     </ul>
                   </div>
