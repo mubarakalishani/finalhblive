@@ -35,7 +35,7 @@
         <nav class="navbar navbar-expand-lg navbar-light">
           <div class="container-fluid  mx-2">
               <a href="/" class="navbar-brand">
-                  <img src="images/logo.png"  alt="CoolBrand" style="">
+                  <img src="/images/logo.png"  alt="CoolBrand" style="">
                   <!-- <h5><span> <img src="images/logo1.png" height="28" alt="CoolBrand" style="width: 10%;"></span><b> Hand<em>Bucks</em></b></h5> -->
               </a>
               <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
