@@ -1,7 +1,7 @@
 @include('includes.header-before-login')
 <div class="container mt-3 mb-3">
     <div class="row">
-        <div class="col-lg-8 col-sm-12 col-md-12">
+        <div class="col-lg-8 col-sm-12 col-md-12" style="   border-left: 2px solid aliceblue;">
             <h5>{{ $latestNews->title }}</h5>
             <p>Last Updated: {{ $latestNews->updated_at->diffForHumans() }}</p>
             {!! $latestNews->content !!}
