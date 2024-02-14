@@ -30,6 +30,7 @@ use App\Http\Controllers\Pages\PaymentProofsController;
 use App\Http\Controllers\Pages\PrivacyPolicyController;
 use App\Http\Controllers\Pages\TermsController;
 use App\Http\Controllers\TestFaucetPayWithdraw;
+use App\Models\NewsAndAnnouncement;
 use App\Models\Offerwall;
 use App\Models\SocialLink;
 use Illuminate\Http\RedirectResponse;
@@ -204,6 +205,8 @@ Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 Route::get('/terms', [TermsController::class, 'index'])->name('terms-and-conditions.index');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('/payment-proofs', [PaymentProofsController::class, 'index'])->name('payout-proofs.index');
+Route::get('/guides-and-announcements', [NewsAndAnnouncement::class, 'index'])->name('news.index');
+Route::get('/guides-and-announcements/{id}', [NewsAndAnnouncement::class, 'show'])->name('news.show');
 Route::get('/privacy-policy', [App\Http\Controllers\Pages\PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
 
 
