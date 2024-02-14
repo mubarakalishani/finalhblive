@@ -161,12 +161,6 @@ Banner Style
 /*  padding: 50px 60px;*/
 }
 
-.main-banner h6 {
-  font-size: 20px;
-  color: black;
-  font-weight: 400;
-  margin-bottom: 25px;
-}
 
 .main-banner h4 {
   font-size: 45px;
@@ -759,25 +753,9 @@ Featured Games Style
   bottom: 15px;
 }
 
-.featured-games .item .thumb .hover-effect h6 {
-  background-color: rgba(31,33,34,0.95);
-  display: inline-block;
-  color: #0098d8;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 10px 20px;
-  border-radius: 25px;
-}
 
 .featured-games .item img {
   border-radius: 23px;
-}
-
-.featured-games .item h4 {
-  font-size: 15px;
-  margin-top: 20px;
-  margin-bottom: 0px;
-  display: inline-block;
 }
 
 .featured-games .item span {
@@ -860,13 +838,6 @@ Featured Games Style
   padding-top: 7px;
 }
 
-.top-downloaded ul li h6 {
-  font-size: 15px;
-  color: #666;
-  font-weight: 400;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
 
 .top-downloaded ul li span {
   color: #fff;
@@ -1257,25 +1228,6 @@ Top Streamers Style
   margin-right: 10px;
 }
 
-.top-streamers ul li h6 {
-  display: inline;
-  font-size: 14px;
-  color: #0098d8;
-  font-weight: 400;
-}
-
-.top-streamers ul li h6 i {
-  color: #fff;
-  background-color: #0098d8;
-  border-radius: 50%;
-  font-size: 12px;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  text-align: center;
-  line-height: 20px;
-  margin-right: 3px;
-}
 
 .top-streamers ul li .main-button {
   float: right;
