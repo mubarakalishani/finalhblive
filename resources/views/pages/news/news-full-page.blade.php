@@ -1,6 +1,6 @@
 @include('includes.header-before-login')
 <div class="container mt-3 mb-3">
-    <div class="row">
+    <div class="row most-popular-1">
         <div class="col-lg-8 col-sm-12 col-md-12">
             <h4>{{ $newsToShow->title }}</h4>
             <p>Last Updated: {{ $newsToShow->updated_at->diffForHumans() }}</p>
