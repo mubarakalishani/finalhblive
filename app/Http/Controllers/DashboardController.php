@@ -31,7 +31,6 @@ class DashboardController extends Controller
         ->where('type', 0)
         ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
-        ->where('views_completed', '<=', 'views_needed')
         ->get();
 
         foreach ($availableIframePtcAds as $ad) {

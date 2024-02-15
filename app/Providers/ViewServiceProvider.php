@@ -32,7 +32,7 @@ class ViewServiceProvider extends ServiceProvider
             ->where('type', 0)
             ->where('ad_balance', '>', 0)
             ->orderBy('reward_per_view', 'desc')
-            ->where('views_completed', '<=', 'views_needed')
+            
             ->get();
 
             foreach ($availableIframePtcAds as $ad) {
@@ -53,7 +53,7 @@ class ViewServiceProvider extends ServiceProvider
             ->where('type', 1)
             ->where('ad_balance', '>', 0)
             ->orderBy('reward_per_view', 'desc')
-            ->where('views_completed', '<=', 'views_needed')
+            
             ->get();
 
             foreach ($availableWindowPtcAds as $ad) {
