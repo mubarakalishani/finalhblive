@@ -38,6 +38,7 @@ class PtcAdController extends Controller
         ->where('type', 0)
         ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
+        ->where('views_completed', '<=', 'views_needed')
         ->get();
 
         foreach ($availableIframePtcAds as $ad) {
@@ -70,6 +71,7 @@ class PtcAdController extends Controller
         ->where('status', 1)
         ->where('type', 1)
         ->where('ad_balance', '>', 0)
+        ->where('views_completed', '<=', 'views_needed')
         ->orderBy('reward_per_view', 'desc')
         ->get();
 
@@ -107,6 +109,7 @@ class PtcAdController extends Controller
         ->where('type', 1)
         ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
+        ->where('views_completed', '<=', 'views_needed')
         ->get();
 
         foreach ($availableWindowPtcAds as $ad) {
@@ -141,6 +144,7 @@ class PtcAdController extends Controller
         ->where('type', 0)
         ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
+        ->where('views_completed', '<=', 'views_needed')
         ->get();
 
         foreach ($availableIframePtcAds as $ad) {

@@ -67,7 +67,9 @@ class OffersAndSurveysLogsController extends AdminController
 
             // Add a column filter
             $offerwalls = Offerwall::pluck('name', 'name')->toArray();
-            $filter->like('name', 'name');
+            $filter->like('offer_name', 'Offer Name');
+            $filter->like('ip_address', 'IP Address');
+            $filter->equal('offer_id', 'Offer ID');
             $filter->equal('user_id', 'User ID');
             $filter->in('status', 'Status')->multipleSelect(['0' => 'Completed', '1' => 'Pending' , '2' => 'Reversed']);
             $filter->in('provider_name', 'Offerwall')->multipleSelect($offerwalls);
@@ -76,7 +78,7 @@ class OffersAndSurveysLogsController extends AdminController
         $grid->quickSearch(function ($model, $query) {
             $model->where('provider_name', 'like', "%{$query}%")
             ->orWhere('status', 'like', "%{$query}%")
-            ->orWhere('user_id', 'like', "%{$query}%");
+            ->orWhere('user_id', "%{$query}%");
         });
 
         return $grid;
