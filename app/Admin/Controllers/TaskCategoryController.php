@@ -47,6 +47,15 @@ class TaskCategoryController extends AdminController
             $tools->append(new \App\Admin\Actions\TaskCategory\AddCountryRewards());
         });
 
+
+        $grid->filter(function($filter){
+
+            // Add a column filter
+            $parentCategories = TaskCategory::whereNull('parent_id')->pluck('name', 'id')->toArray();
+            $filter->like('name', 'Category Name');
+            $filter->equal('parent_id', 'Category')->select($parentCategories);
+        });
+
         return $grid;
     }
 
