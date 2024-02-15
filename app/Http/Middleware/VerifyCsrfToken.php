@@ -17,5 +17,6 @@ class VerifyCsrfToken extends Middleware
         '/webhook/perfectmoney',
         '/postback/offers4crypto',
         '/postback/bitcotasks',
+        '/postback/revlum'
     ];
 }
