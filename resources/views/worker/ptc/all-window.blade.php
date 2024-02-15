@@ -135,6 +135,16 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-body">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : 'ba877e7ce13ca00fb9e65ae3db928841',
+                        'format' : 'iframe',
+                        'height' : 60,
+                        'width' : 468,
+                        'params' : {}
+                    };
+                    document.write('<scr' + 'ipt type="text/javascript" src="//www.topcreativeformat.com/ba877e7ce13ca00fb9e65ae3db928841/invoke.js"></scr' + 'ipt>');
+                </script>
               <form method="POST" {{ route('worker.ptc.window.submit') }}>
                 @csrf
                 <div class="mb-3 text-center">
