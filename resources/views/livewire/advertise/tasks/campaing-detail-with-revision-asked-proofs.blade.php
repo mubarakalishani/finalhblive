@@ -326,7 +326,7 @@
                                                 <strong>Image/Screenshots:</strong>
                                                 <ol>
                                                   @foreach ($proof->imageProofs as $imageProof)
-                                                    <li><img src="{{ asset('storage/proofs/'.$imageProof->url)}}" alt="proof img" width="320px"></li>
+                                                    <li><img style="max-width: 320px;" src="{{ asset('storage/proofs/'.$imageProof->url)}}" alt="proof img" width="320px"></li>
                                                   @endforeach
                                                 </ol>
                                                 <strong class="text-danger">Revision Reason You selected:</strong>
