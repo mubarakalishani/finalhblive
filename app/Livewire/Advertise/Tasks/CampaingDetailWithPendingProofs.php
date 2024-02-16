@@ -61,24 +61,26 @@ class CampaingDetailWithPendingProofs extends Component
         // dd($proofId);
         // $this->tab = $tab;
         $submittedTaskProof = SubmittedTaskProof::find($proofId);
-        $amount = $submittedTaskProof->amount;
-        $workerId = $submittedTaskProof->worker_id;
-        $worker = User::find($workerId);
-        $advertiseId = auth()->user()->id;
-        $advertiser = User::find($advertiseId);
-        //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
-        if($submittedTaskProof->status !=0 ){
-            if ($advertiser->deposit_balance < $amount) {
-                return back()->with('error', 'your have insufficient funds, please top up first');
+        if ($submittedTaskProof->status != 1) {
+            $amount = $submittedTaskProof->amount;
+            $workerId = $submittedTaskProof->worker_id;
+            $worker = User::find($workerId);
+            $advertiseId = auth()->user()->id;
+            $advertiser = User::find($advertiseId);
+            //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
+            if($submittedTaskProof->status !=0 ){
+                if ($advertiser->deposit_balance < $amount) {
+                    return back()->with('error', 'your have insufficient funds, please top up first');
+                }
+                $advertiser->deductAdvertiserBalance($amount);
             }
-            $advertiser->deductAdvertiserBalance($amount);
-        }
-        $worker->addWorkerBalance($amount);
-        $worker->increment('total_earned', $amount);
-        $worker->increment('total_tasks_completed');
-        $worker->increment('earned_from_tasks', $amount);
+            $worker->addWorkerBalance($amount);
+            $worker->increment('total_earned', $amount);
+            $worker->increment('total_tasks_completed');
+            $worker->increment('earned_from_tasks', $amount);
 
-        $submittedTaskProof->update([ 'status' => 1 ]);
+            $submittedTaskProof->update([ 'status' => 1 ]);
+        }
 
         session()->flash('message', 'Proof Approve Successfully!');
     }
