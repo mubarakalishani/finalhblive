@@ -9,7 +9,7 @@
               </a>
             </div>
             <div class="heading-section">
-              <h4>Lolsurveys</h4>
+              <h4>{{ $task->title }}</h4>
             </div>
           </div>
           <div class="results-bar mb-4">
@@ -249,7 +249,7 @@
           <div class=" mycampaigns-page">
             <div class="col-lg-12 pt-2">
               <div class="heading-section mt-3">
-                  <h4>Pending Tasks</h4>
+                  <h4>Rejected Tasks</h4>
               </div>
               {{-- <div class="alert alert-with-icon pw-badge-danger fade show font-weight-medium" role="alert">
                   <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>

@@ -8,6 +8,7 @@ use App\Models\OffersAndSurveysLog;
 use App\Models\OfferwallsSetting;
 use App\Models\DepositMethodSetting;
 use App\Models\PayoutGateway;
+use App\Models\SubmittedTaskProof;
 use App\Models\User;
 use App\Models\WithdrawalHistory;
 use Illuminate\Http\Request;
@@ -110,5 +111,35 @@ class EveryMinuteController extends Controller
                 }
             }
         }  
+    }
+
+
+
+    protected function updateTasks(){
+        //get all the proofs for whose the resubmission allowed time is passed and mark them as resubmit time exhausted
+        $resubmitExhaustedProofs = SubmittedTaskProof::where('status', 3)->whereDate('updated_at', '<=', now()->subDays(3))->get();
+        foreach ($resubmitExhaustedProofs as $resubmitExhaustedProof) {
+            $resubmitExhaustedProof->update([
+                'status' => 7,
+            ]);
+        }
+
+        //now get all the pending proofs that are passed the employer allowed review time
+        $employerReviewPassedProofs = SubmittedTaskProof::whereHas('task', function ($query) {
+            $query->whereRaw('DATEDIFF(CURRENT_DATE, submitted_task_proofs.updated_at) >= tasks.rating_time');
+        })
+        ->where('status', 0)
+        ->get();
+
+        foreach ($employerReviewPassedProofs as $employerReviewPassedProof) {
+            $worker = User::findOrFail($employerReviewPassedProof->user_id);
+            $worker->increment('balance', $employerReviewPassedProof->amount);
+            $worker->increment('earned_from_tasks', $employerReviewPassedProof->amount);
+            $worker->increment('total_tasks_completed');
+
+            $employerReviewPassedProof->update([
+                'status' => 1
+            ]);
+        }
     }
 }
