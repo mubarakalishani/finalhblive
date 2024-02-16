@@ -122,6 +122,7 @@ class CampaingDetailWithPendingProofs extends Component
     public function approveAllSelected(){
         foreach ($this->batchSelectedProofs as $proofId) {
             $submittedTaskProof = SubmittedTaskProof::find($proofId);
+            if ($submittedTaskProof->status != 1){
             $amount = $submittedTaskProof->amount;
             $workerId = $submittedTaskProof->worker_id;
             $worker = User::find($workerId);
@@ -141,6 +142,7 @@ class CampaingDetailWithPendingProofs extends Component
             $submittedTaskProof->update([ 'status' => 1 ]);
             session()->flash('message', 'all selected Tasks has been Approved');
             $this->batchSelectedProofs = [];
+            }
         }
         $this->selectedMultiple = 'no';
     }
