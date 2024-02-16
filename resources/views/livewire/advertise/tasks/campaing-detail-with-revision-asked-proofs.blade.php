@@ -295,7 +295,7 @@
                       </div>
                   </nav>
                   <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade" id="nav-revision" role="tabpanel" aria-labelledby="nav-revision-tab">
+                    <div class="tab-pane fade show active" id="nav-revision" role="tabpanel" aria-labelledby="nav-revision-tab">
                       <div class="pendding-task-area mt-2">
                           <div class="table-responsive">
                             <table class="table table-bordered">
