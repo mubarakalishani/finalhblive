@@ -105,7 +105,13 @@
                                 <div class=" list-da--style">
                                   <ol>
                                     @foreach($task->stepDetails as $step)
-                                        <li>{{ $step->step_details }}</li>
+                                      <li>
+                                        @php
+                                            $pattern = '/(https?:\/\/\S+)/';
+                                            $stepDetailsWithLinks = preg_replace($pattern, '<a href="$1" target="_blank">$1</a>', $step->step_details); 
+                                        @endphp
+                                        {!! $stepDetailsWithLinks !!}
+                                      </li>  
                                     @endforeach
                                   </ol>
                                 </div>
