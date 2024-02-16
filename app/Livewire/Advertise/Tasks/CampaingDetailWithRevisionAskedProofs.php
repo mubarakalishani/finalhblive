@@ -214,7 +214,7 @@ class CampaingDetailWithRevisionAskedProofs extends Component
     {
         return view('livewire.advertise.tasks.campaing-detail-with-revision-asked-proofs', [
             'proofs' => $this->task->submittedProofs()
-                ->where('status', 3)
+                ->whereIn('status', [3])
                 ->orderByDesc('id')
                 ->paginate($this->perPage),
         ]);
