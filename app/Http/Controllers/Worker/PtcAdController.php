@@ -108,7 +108,6 @@ class PtcAdController extends Controller
         ->where('type', 1)
         ->where('ad_balance', '>', 0)
         ->orderBy('reward_per_view', 'desc')
-        
         ->get();
 
         foreach ($availableWindowPtcAds as $ad) {

@@ -32,7 +32,6 @@ class ViewServiceProvider extends ServiceProvider
             ->where('type', 0)
             ->where('ad_balance', '>', 0)
             ->orderBy('reward_per_view', 'desc')
-            
             ->get();
 
             foreach ($availableIframePtcAds as $ad) {
@@ -48,12 +47,18 @@ class ViewServiceProvider extends ServiceProvider
                 }
             }
 
+            $countIframe = 0;
+            foreach ($availableIframePtcAds as $IframeAd) {
+                if (!$IframeAd->totalSecondsDifference || $IframeAd->totalSecondsDifference > ($IframeAd->revision_interval * 60 * 60)) {
+                    $countIframe++;
+                }
+            }
+
             $availableWindowPtcAds = PtcAd::whereJsonDoesntContain('excluded_countries', auth()->user()->country)
             ->where('status', 1)
             ->where('type', 1)
             ->where('ad_balance', '>', 0)
-            ->orderBy('reward_per_view', 'desc')
-            
+            ->orderBy('reward_per_view', 'desc') 
             ->get();
 
             foreach ($availableWindowPtcAds as $ad) {
@@ -66,6 +71,13 @@ class ViewServiceProvider extends ServiceProvider
                     $totalSecondsDifference = $timeDifference->days * 24 * 60 * 60 + $timeDifference->h * 60 * 60 + $timeDifference->i * 60 + $timeDifference->s;
                     $ad->totalSecondsDifference = $totalSecondsDifference;
 
+                }
+            }
+
+            $countWindows = 0;
+            foreach ($availableWindowPtcAds as $windowAd) {
+                if (!$windowAd->totalSecondsDifference || $windowAd->totalSecondsDifference > ($windowAd->revision_interval * 60 * 60)) {
+                    $countWindows++;
                 }
             }
 
@@ -86,7 +98,7 @@ class ViewServiceProvider extends ServiceProvider
                         })->count();
 
             $sidebarData = [
-                'availablePtcAds' => $availableWindowPtcAds->count() + $availableIframePtcAds->count(),
+                'availablePtcAds' => $countIframe + $countWindows,
                 'availableTasks' => $availableTasks,
             ];
 
