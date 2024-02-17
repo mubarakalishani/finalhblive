@@ -35,8 +35,8 @@
 
     <hr>
     <h4>Geo Targeting: </h4>
-    <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" wire:click.prevent="addPredefinedCountries([@foreach($arabCountries as $country)'{{ $country->country_name }}',@endforeach])">Arab Countries</a>
-    <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover p-2" wire:click.prevent="addPredefinedCountries([@foreach($europianCountries as $country)'{{$country}}',@endforeach])">Europian Countries</a>
+    {{-- <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" wire:click.prevent="addPredefinedCountries([@foreach($arabCountries as $country)'{{ $country->country_name }}',@endforeach])">Arab Countries</a>
+    <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover p-2" wire:click.prevent="addPredefinedCountries([@foreach($europianCountries as $country)'{{$country}}',@endforeach])">Europian Countries</a> --}}
     <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover p-2" wire:click.prevent="removeAllCountries">Remove All</a>
     <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover p-2" wire:click.prevent="addAllCountries">Add All</a>
     

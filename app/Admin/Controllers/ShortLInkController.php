@@ -7,6 +7,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\ShortLink;
+use App\Models\ShortLinksHistory;
 
 class ShortLinkController extends AdminController
 {
@@ -28,6 +29,14 @@ class ShortLinkController extends AdminController
         
         $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->sortable()->text();
+        $grid->column('id', __('Total Views'))->display( function($id){
+            $totalViews = ShortLinksHistory::where('link_id', $id)->count();
+            return "<span>$totalViews</span>";;
+        })->sortable();
+        $grid->column('id', __('Total Paid'))->display( function($id){
+            $totalPaid = ShortLinksHistory::where('link_id', $id)->sum('reward');
+            return "<span>$totalPaid</span>";;
+        })->sortable();
         $grid->column('url', __('Url'))->text();
         $grid->column('unique_id', __('Unique id'));
         $grid->column('reward', __('Reward'))->sortable()->text();

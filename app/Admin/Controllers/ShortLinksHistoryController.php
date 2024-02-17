@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\ShortLink;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
@@ -35,6 +36,17 @@ class ShortLinksHistoryController extends AdminController
         $grid->column('updated_at', __('Updated at'))->sortable();
 
         $grid->model()->orderBy('updated_at', 'desc');
+
+        $grid->filter(function($filter){
+            $shortlinks = ShortLink::pluck('id', 'name')->toArray();
+            $filter->equal('user_id', 'User Id');
+            $filter->equal('link_id', 'Link Id');
+            $filter->in('link_id', 'Short Link')->multipleSelect($shortlinks);
+        });
+
+        // $grid->quickSearch(function ($model, $query) {
+        //     $model->where('name', 'like', "%{$query}%")->orWhere('value', 'like', "%{$query}%");
+        // });
 
         return $grid;
     }
