@@ -29,7 +29,8 @@ class ShortLinkController extends AdminController
         
         $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->sortable()->text();
-        $grid->column('id', __('Total Views'))->display( function($id){
+        $grid->column('total_views')->display( function(){
+            $id = $this->id;
             $totalViews = ShortLinksHistory::where('link_id', $id)->count();
             return "<span>$totalViews</span>";;
         })->sortable();
