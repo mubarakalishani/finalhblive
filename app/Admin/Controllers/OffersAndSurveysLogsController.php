@@ -73,6 +73,8 @@ class OffersAndSurveysLogsController extends AdminController
             $filter->equal('user_id', 'User ID');
             $filter->in('status', 'Status')->multipleSelect(['0' => 'Completed', '1' => 'Pending' , '2' => 'Reversed']);
             $filter->in('provider_name', 'Offerwall')->multipleSelect($offerwalls);
+
+            $filter->gt('reward', 'Reward Greater than')->select(['0.01' => '$0.01', '0.1' => '$0.1', '1' => '$1']);
         });
 
         $grid->quickSearch(function ($model, $query) {
