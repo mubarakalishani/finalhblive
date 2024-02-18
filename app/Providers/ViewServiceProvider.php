@@ -84,6 +84,7 @@ class ViewServiceProvider extends ServiceProvider
             $userCountry = auth()->user()->country;
             $availableTasks = Task::with(['targetedCountries' => function ($query) use ($userCountry) {
                             $query->where('country', $userCountry);
+                            $query->whereColumn('amount_per_task', '<', 'users.deposit_balance');
                         }])
                         ->whereDoesntHave('submittedProofs', function ($query) {
                             $query->where('worker_id', auth()->user()->id);

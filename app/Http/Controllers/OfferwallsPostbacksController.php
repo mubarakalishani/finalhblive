@@ -73,6 +73,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -333,6 +338,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -581,6 +591,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -844,6 +859,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1090,6 +1110,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1337,6 +1362,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1583,6 +1613,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1831,6 +1866,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2078,6 +2118,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2325,6 +2370,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2570,6 +2620,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2830,6 +2885,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -3084,6 +3144,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -3330,6 +3395,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -3576,6 +3646,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
+//credit full if less than $0.01
+if($payout <= 0.01){
+     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+     $addToExpertLevel = 0;
+}
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
