@@ -45,7 +45,7 @@ class CreateNewUser implements CreatesNewUsers
                 'secret_key' => bin2hex(random_bytes(32)),
                 'signup_ip' => request()->ip(),
                 'last_ip' => request()->ip(),
-                'country' => 'India',
+                'country' => $this->getCountryCode(),
                 'upline' => $this->getUplineId(),
                 'utm_source' => $this->getTrafficSource(),
             ]), function (User $user) {
@@ -71,7 +71,7 @@ class CreateNewUser implements CreatesNewUsers
         $client = new Client();
     
         try {
-            $response = $client->get('https://ipinfo.io/' . request()->ip() . '/country');
+            $response = $client->get('https://ipinfo.io/' . request()->ip() . '/country?token=31864a8810b4cb');
             $countryCode = trim(strtoupper($response->getBody()->getContents()));
     
             // Fetch country name from the database
