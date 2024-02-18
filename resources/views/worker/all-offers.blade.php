@@ -9,8 +9,8 @@
                 @foreach ($offerwalls as $offerwall)
                     <div class="col-lg-2 col-md-3 col-sm-12 mt-3">
                         <div class="all-offers-area-fixed">
-                            <a @if($offerwall->is_target_blank !=0 ) target="_blank" @endif
-                                class="offerwall-button" data-toggle="modal" data-target="#myModal" data-header="{{ $offerwall->name }}" data-url="{{ $offerwall->url }}">
+                            <a href="{{ $offerwall->url }}" target="_blank"
+                                class="offerwall-button">
                                 <img width="100px" src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
                             </a>
                         </div>
