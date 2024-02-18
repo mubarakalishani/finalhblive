@@ -45,7 +45,7 @@ class CreateNewUser implements CreatesNewUsers
                 'secret_key' => bin2hex(random_bytes(32)),
                 'signup_ip' => request()->ip(),
                 'last_ip' => request()->ip(),
-                'country' => $this->getCountryCode(),
+                'country' => 'India',
                 'upline' => $this->getUplineId(),
                 'utm_source' => $this->getTrafficSource(),
             ]), function (User $user) {
