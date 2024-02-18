@@ -48,7 +48,7 @@ class CustomAuthController extends Controller
             $user->secret_key = bin2hex(random_bytes(32));
             $user->signup_ip = request()->ip();
             $user->last_ip = request()->ip();
-            $user->country = $this->getCountryCode();
+            $user->country = 'India';
             $user->upline = $this->getUplineId();
             $user->username = $username;
             $user->password = Hash::make(bin2hex(random_bytes(6)));
