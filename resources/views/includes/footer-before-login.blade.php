@@ -6,7 +6,7 @@
                   <div class="col-sm-3 ">
                     <div class="footer-logo">
                       <a href="/">
-                        <img src="images/logo.png"  alt="CoolBrand" style="">
+                        <img src="/images/logo.png"  alt="CoolBrand" style="">
                       </a>
                     </div>
                     <p>Handbucks, a heaven for online workers</p>
