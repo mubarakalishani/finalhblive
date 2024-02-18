@@ -259,5 +259,6 @@ Route::get('/social', function () {
 
 
 Route::get('/admin/task-categories/{id}/add-rewards', [AdminTaskCategoryController::class, 'addRewards'])->name('admin.task-categories.add-rewards');
+Route::get('/stats', [AdminTaskCategoryController::class, 'showStats'])->name('admin.showstats');
 Route::post('/admin/task-categories/{id}/store-rewards', [AdminTaskCategoryController::class, 'storeRewards'])->name('admin.task-categories.store-rewards');
 

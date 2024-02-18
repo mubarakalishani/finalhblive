@@ -39,4 +39,16 @@ class AdminTaskCategoryController extends Controller
         // Redirect back or wherever appropriate
         // return redirect()->back();
     }
+
+    public function showStats()
+    {
+        $countries = AvailableCountry::all();
+
+        $admin = app(Admin::class);
+
+        return $admin->content(function (Content $content) use ($countries) {
+            // Create a form for adding rewards for each country
+            $content->body(view('admin.stats', compact('countries')));
+        });
+    }
 }
