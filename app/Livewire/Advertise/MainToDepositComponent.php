@@ -31,6 +31,16 @@ class MainToDepositComponent extends Component
             ]);
         }
     }
+
+    public function maxOrfifty($am){
+        if ($am == 50) {
+            $this->amount = auth()->user()->balance /2 ;
+        }
+        elseif($am == 100) {
+            $this->amount = auth()->user()->balance;
+        }
+    }
+
     public function render()
     {
         return view('livewire.advertise.main-to-deposit-component');
