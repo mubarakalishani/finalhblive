@@ -170,6 +170,7 @@
                 this.totalSeconds = parseInt(seconds);
                 var self = this;
                 this.interval = setInterval(function () {
+                    document.title = self.totalSeconds + ' seconds left';
                     document.getElementById('safeTimerDisplay').innerHTML = '00:' + self.totalSeconds;
                     if (self.totalSeconds <= 0) {
                         adStarted = 0;
