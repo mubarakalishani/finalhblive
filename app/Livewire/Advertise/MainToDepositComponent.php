@@ -21,6 +21,7 @@ class MainToDepositComponent extends Component
     }
 
     public function mainToDepositBalance(){
+        dd();
         if ($this->amount > auth()->user()->balance) {
             $advertiser = User::findOrFail(auth()->user()->id);
             $advertiser->decrement('balance', $this->amount);
