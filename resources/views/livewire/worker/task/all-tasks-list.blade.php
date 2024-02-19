@@ -74,7 +74,6 @@
                 </div>
             </nav>
             <div class="results-bar d-flex align-items-center justify-content-center justify-content-md-between flex-wrap">
-                    <p class="mb-0 mr-4 results-bar__total pb-2 pb-md-0"><span id="job-search-results">2</span> results</p>
                     <div class="d-flex flex-wrap mb-2">
                         <div class="list-filter d-flex align-items-center col-12 col-md-auto p-0" data-job-filter="search">
                             <button class="btn btn-icon text-danger clear-search" style="display:none"><i
