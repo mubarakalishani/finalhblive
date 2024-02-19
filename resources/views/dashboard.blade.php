@@ -19,11 +19,20 @@
                         <h5 class="d-flex align-items-center mb-3">Balance Status</h5>
                       <div class="row">
                         <div class="col-sm-6">
-                          <h6 class="mb-0">Main/Advertising Balance</h6>
+                          <h6 class="mb-0">Main Balance</h6>
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
-                          ${{ auth()->user()->balance }} <a href="/withdraw">withdraw</a>
-                           / ${{ auth()->user()->deposit_balance }}
+                          ${{ auth()->user()->balance }} <a href="/withdraw">withdraw</a> 
+                          <a href="/advertiser/transfer">Tranfer to Advertise</a>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <h6 class="mb-0">Advertising Balance</h6>
+                        </div>
+                        <div class="col-sm-6 text-secondary view-all-btn">
+                          ${{ auth()->user()->deposit_balance }}
                         </div>
                       </div>
                       <hr>
@@ -43,7 +52,7 @@
                         <div class="col-sm-6 text-secondary view-all-btn">
                           ${{ \App\Models\SubmittedTaskProof::where('status', 0)->where('worker_id', auth()->user()->id)->sum('amount') }} / 
                           ${{ \App\Models\OffersAndSurveysLog::where('status', 1)->where('user_id', auth()->user()->id)->sum('reward') }}
-                           <a href="/withdraw">View</a>
+                           <a href="/history/offers-and-surveys">View</a>
                         </div>
                       </div>
                       <hr>
