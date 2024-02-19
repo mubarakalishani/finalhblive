@@ -22,15 +22,15 @@ class MainToDepositComponent extends Component
 
     public function mainToDepositBalance(){
         
-        if ($this->amount > auth()->user()->balance) {
-            $advertiser = User::findOrFail(auth()->user()->id);
+        if ($this->amount <= auth()->user()->balance) {
+            $userId = auth()->user()->id;
+            $advertiser = User::find($userId);
             $advertiser->decrement('balance', $this->amount);
             $advertiser->increment('deposit_balance', $this->amount);
             Log::create([
                 'user_id' => auth()->user()->id,
                 'description' => 'transfered '.$this->amount.' from main balance to advertising balance',
             ]);
-            dd($advertiser->balance);
         }
     }
 
