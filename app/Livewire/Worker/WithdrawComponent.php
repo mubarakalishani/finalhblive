@@ -29,11 +29,11 @@ class WithdrawComponent extends Component
         'amount' => 'required|numeric|min:0|max:1000',
     ];
 
-    public function updateAmount($amount)
+    public function maxOrfifty($am)
     {
-        switch ($amount) {
+        switch ($am) {
             case 50:
-                $this->amount = (50 * auth()->user()->balance) / 100;
+                $this->amount = auth()->user()->balance / 2;
                 break;
             case 100:
                 $this->amount =  auth()->user()->balance;

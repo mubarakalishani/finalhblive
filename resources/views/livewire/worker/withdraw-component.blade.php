@@ -33,8 +33,8 @@
                                 <span class="input-group-text">Amount: $</span>
                                 <input type="number" class="form-control" wire:model.live.debounce.500ms="amount" value="{{$updatedAmount}}">
                                 <span class="input-group-text">
-                                    <a class="text-primary mx-2" wire:click="updateAmount('50')">50%</a>|
-                                    <a class="text-primary mx-2" wire:click="updateAmount('100')">max</a>
+                                    <a class="text-primary mx-2" wire:click="maxOrfifty('50')">50%</a>|
+                                    <a class="text-primary mx-2" wire:click="maxOrfifty('100')">max</a>
                                 </span>
                                 @error('errAmount') <span class="text-danger">{{ $message }}</span> @enderror
                                 @error('amount') <span class="text-danger">{{ $message }}</span> @enderror
