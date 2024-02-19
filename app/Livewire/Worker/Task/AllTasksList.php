@@ -44,26 +44,6 @@ class AllTasksList extends Component
         $this->addTaskCaps();    
     }
 
-//     public function mount()
-// {
-//     $userCountry = auth()->user()->country;
-
-//     // Retrieve tasks with targeted countries for the user's country, status 1, and employer's deposit balance greater than 0
-//     $this->availableTasks = Task::with(['targetedCountries' => function ($query) use ($userCountry) {
-//             $query->where('country', $userCountry);
-//     }])
-//     ->where('status', 1)
-//     ->whereHas('employer', function ($query) {
-//         $query->where('deposit_balance', '>', 0);
-//     })
-//     // Filter the tasks by the user's country and the amount_per_task column
-//     ->whereHas('targetedCountries', function ($query) use ($userCountry) {
-//         $query->where('country', $userCountry);
-//     })
-//     ->orderBy($this->sortField, $this->sortDirection)
-//     ->get();    
-// }
-
     public function selectCategory($id){
         $this->selectedCategory = TaskCategory::find($id);
         $this->subCategories = TaskCategory::whereNotNull('parent_id')->where('parent_id', $id)->get();
@@ -407,28 +387,4 @@ class AllTasksList extends Component
         return view('livewire.worker.task.all-tasks-list');
     }
 
-
-     // public function mount()
-    // {
-    //     $userCountry = auth()->user()->country;
-
-    //     // Retrieve tasks with targeted countries for the user's country, status 1, and employer's deposit balance greater than 0
-    //     $this->availableTasks = Task::with(['targetedCountries' => function ($query) use ($userCountry) {
-    //             $query->where('country', $userCountry);
-    //     }])
-    //     ->where('status', 1)
-    //     ->whereHas('employer', function ($query) {
-    //         $query->where('deposit_balance', '>', 0);
-    //     })
-    //     ->orderBy($this->sortField, $this->sortDirection)
-    //     ->get();
-
-    //     // Add the amount_per_task for each task
-    //     $this->availableTasks->each(function ($task) use ($userCountry) {
-    //         $task->amount_per_task = $task->targetedCountries
-    //             ->where('country', $userCountry)
-    //             ->first()
-    //             ->amount_per_task ?? 0;
-    //     });
-    // }
 }

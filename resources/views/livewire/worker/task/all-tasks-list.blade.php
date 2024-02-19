@@ -100,7 +100,7 @@
             </div>
             <div class="row">
                 @foreach ($availableTasks as $task)
-                @if ($task->hourly_submit_exceed == 0 && $task->daily_submit_exceed ==0 && $task->weekly_submit_exceed == 0 && $task->hourly_budget_exceed ==0 && $task->daily_budget_exceed == 0 && $task->weekly_budget_exceed == 0)
+                @if ( $task->targetedCountries->first()->amount_per_task <= auth()->user()->deposit_balance && $task->hourly_submit_exceed == 0 && $task->daily_submit_exceed ==0 && $task->weekly_submit_exceed == 0 && $task->hourly_budget_exceed ==0 && $task->daily_budget_exceed == 0 && $task->weekly_budget_exceed == 0)
                   <div class="col-lg-6 col-md-12 col-sm-12">
                   <div class="p-3 p-sm-6 bg-gray mb-6 detail-campaign-area clickable-div" onclick="navigateToPage('/jobs/{{ $task->id }}')">
                     <div class="job-bar__header d-flex align-items-top justify-content-between mb-3">
