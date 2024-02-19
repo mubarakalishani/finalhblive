@@ -135,6 +135,14 @@ class EveryMinuteController extends Controller
         }
     }
 
+    protected function markTasksBudgetExceeded(){
+        $tasks = Task::where('status', 1)->get();
+        foreach ($tasks as $task) {
+            $employer = User::where($task->employer_id);
+            
+        }
+    }
+
     protected function updateTasks(){
 
         //now get all the pending proofs that are passed the employer allowed review time
