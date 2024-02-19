@@ -27,7 +27,6 @@ class AllTasksList extends Component
         // Retrieve tasks with targeted countries for the user's country, status 1, and employer's deposit balance greater than 0
         $this->availableTasks = Task::with(['targetedCountries' => function ($query) use ($userCountry) {
                 $query->where('country', $userCountry);
-                $query->whereColumn('amount_per_task', '<', 'users.deposit_balance');
         }])
         ->whereDoesntHave('submittedProofs', function ($query) {
             $query->where('worker_id', auth()->user()->id);
