@@ -63,7 +63,7 @@
                       <p class="mb-0"><strong>Job ID</strong></p>
                     </div>
                     <div class="col-sm-7 col-md-8 details-text-style">
-                      <p class="mb-0 font-weight-bold" id="jid">a947fb210b44</p>
+                      <p class="mb-0 font-weight-bold" id="jid">{{$task->id}}</p>
                     </div>
                   </div>
                   <div class="row mb-4 mb-sm-2">

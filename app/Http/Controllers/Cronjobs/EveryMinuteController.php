@@ -9,6 +9,7 @@ use App\Models\OfferwallsSetting;
 use App\Models\DepositMethodSetting;
 use App\Models\PayoutGateway;
 use App\Models\SubmittedTaskProof;
+use App\Models\Task;
 use App\Models\User;
 use App\Models\WithdrawalHistory;
 use Illuminate\Http\Request;
@@ -62,6 +63,7 @@ class EveryMinuteController extends Controller
         }
 
         $this->processFaucetPayPayments();
+        $this->resolveResubmitExhaustTasks();
     }
 
 
@@ -114,15 +116,26 @@ class EveryMinuteController extends Controller
     }
 
 
-
-    protected function updateTasks(){
+    protected function resolveResubmitExhaustTasks(){
         //get all the proofs for whose the resubmission allowed time is passed and mark them as resubmit time exhausted
-        $resubmitExhaustedProofs = SubmittedTaskProof::where('status', 3)->whereDate('updated_at', '<=', now()->subDays(3))->get();
+        $resubmitExhaustedProofs = SubmittedTaskProof::where(function ($query) {
+            $query->whereRaw('NOW() > DATE_ADD(updated_at, INTERVAL 3 DAY)');
+        })->where('status', 3)->get();
         foreach ($resubmitExhaustedProofs as $resubmitExhaustedProof) {
+            $task= Task::find($resubmitExhaustedProof->task_id);
+            $employer = User::where($task->employer_id);
             $resubmitExhaustedProof->update([
                 'status' => 7,
             ]);
+            $employer->increment('deposit_balance', $resubmitExhaustedProof->amount);
+            Log::create([
+                'user_id' => $task->employer_id,
+                'description' => 'resubmit time passed amount for proof id '.$resubmitExhaustedProof->id.' for task # '. $resubmitExhaustedProof->task_id,
+            ]);
         }
+    }
+
+    protected function updateTasks(){
 
         //now get all the pending proofs that are passed the employer allowed review time
         $employerReviewPassedProofs = SubmittedTaskProof::whereHas('task', function ($query) {
