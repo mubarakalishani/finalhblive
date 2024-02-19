@@ -31,7 +31,7 @@ class MainToDepositComponent extends Component
                 'user_id' => auth()->user()->id,
                 'description' => 'transfered '.$this->amount.' from main balance to advertising balance',
             ]);
-            redirect()->back()->with('success', 'Successfully Transfered $'.$this->amount.' from main balance to advertising balance');
+            return redirect()->back()->with('success', 'Successfully Transfered $'.$this->amount.' from main balance to advertising balance');
         }
     }
 
