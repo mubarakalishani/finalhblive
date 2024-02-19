@@ -22,7 +22,9 @@
                                         @error('minamount') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     @if ($amount < auth()->user()->balance && $amount > 0)
-                                        <a class="btn btn-primary text-center my-3" wire:click="updateDepositBalance">Transfer</a>
+                                        <a class="btn btn-primary text-center my-3" wire:click="mainToDepositBalance">Transfer</a>
+                                    @else   
+                                        <a class="btn btn-secondary text-center my-3">Transfer</a> 
                                     @endif
                                 </div>
                             </div>   

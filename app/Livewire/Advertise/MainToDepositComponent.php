@@ -14,13 +14,13 @@ class MainToDepositComponent extends Component
         $amount = auth()->user()->balance;
     }
 
-    public function update(){
+    public function updatedAmount(){
         if ($this->amount > auth()->user()->balance) {
             $this->addError('minamount', 'Your selected amount $'.$this->amount.' cannot be your Main Balance $'.auth()->user()->balance);
         }
     }
 
-    public function updateDepositBalance(){
+    public function mainToDepositBalance(){
         if ($this->amount > auth()->user()->balance) {
             $advertiser = User::findOrFail(auth()->user()->id);
             $advertiser->decrement('balance', $this->amount);
