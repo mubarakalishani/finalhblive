@@ -18,14 +18,14 @@
                                 <div class="my-5">
                                     <div class="input-group mb-3 mt-3 py-2">
                                         <span class="input-group-text" id="basic-addon1">$</span>
-                                        <input type="number" class="form-control" placeholder="amount in usd" wire:model="amount" value="{{ $amount }}">
+                                        <input type="number" class="form-control" placeholder="amount in usd" wire:model.live.debounce.500ms="amount" value="{{ $amount }}">
                                         <span class="input-group-text">
                                             <a class="text-primary mx-2" wire:click="maxOrfifty('50')">50%</a>|
                                             <a class="text-primary mx-2" wire:click="maxOrfifty('100')">max</a>
                                         </span>
                                         @error('minamount') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
-                                    @if ($amount < auth()->user()->balance && $amount > 0)
+                                    @if ($amount <= auth()->user()->balance && $amount > 0)
                                         <a class="btn btn-primary text-center my-3" wire:click="mainToDepositBalance">Transfer</a>
                                     @else   
                                         <a class="btn btn-secondary text-center my-3">Transfer</a> 
