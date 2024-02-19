@@ -18,7 +18,7 @@
                                 <div class="my-5">
                                     <div class="input-group mb-3 mt-3 py-2">
                                         <span class="input-group-text" id="basic-addon1">$</span>
-                                        <input type="number" class="form-control" placeholder="amount in usd" wire:model.live.debounce.500ms="amount">
+                                        <input type="number" class="form-control" placeholder="amount in usd" wire:model="amount" value="{{ $amount }}">
                                         <span class="input-group-text">
                                             <a class="text-primary mx-2" wire:click="maxOrfifty('50')">50%</a>|
                                             <a class="text-primary mx-2" wire:click="maxOrfifty('100')">max</a>
