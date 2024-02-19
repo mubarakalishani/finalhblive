@@ -11,7 +11,7 @@ class MainToDepositComponent extends Component
     public $amount;
 
     public function mount(){
-        $amount = auth()->user()->balance;
+        $this->amount = auth()->user()->balance;
     }
 
     public function updatedAmount(){
