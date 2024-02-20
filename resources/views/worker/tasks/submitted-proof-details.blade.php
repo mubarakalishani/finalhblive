@@ -124,19 +124,7 @@
                               </div>
 
                               <h6>Your Submitted Proof:</h6>
-                                  <strong>Text Proofs:</strong>
-                                  <ol>
-                                    @foreach ($proof->textProofs as $textProof)
-                                      <li><p>{{ $textProof->proof_text }}</p></li>
-                                    @endforeach
-                                  </ol>
-                                  <strong>Image/Screenshots:</strong>
-                                  <ol>
-                                    @foreach ($proof->imageProofs as $imageProof)
-                                      <li><img src="{{ asset('storage/proofs/'.$imageProof->url)}}" alt="proof img"></li>
-                                    @endforeach
-                                  </ol>
-                                  <strong>Date Submitted : {{ $proof->created_at }}</strong>
+                              <strong>Date Submitted : {{ $proof->created_at }}</strong>
                                   <strong>Status :  <span class="badge text-bg-primary py-2 px-2 rounded-pill
                                     @if($proof->status == 0)
                                     bg-warning
@@ -171,6 +159,19 @@
                                 </span>
 
                                   </strong>
+                                  <strong>Text Proofs:</strong>
+                                  <ol>
+                                    @foreach ($proof->textProofs as $textProof)
+                                      <li><p>{{ $textProof->proof_text }}</p></li>
+                                    @endforeach
+                                  </ol>
+                                  <strong>Image/Screenshots:</strong>
+                                  <ol>
+                                    @foreach ($proof->imageProofs as $imageProof)
+                                      <li><img src="{{ asset('storage/proofs/'.$imageProof->url)}}" style="max-width: 320px;" alt="proof img"></li>
+                                    @endforeach
+                                  </ol>
+                                  
                                  @if ($proof->revisionApprovalReason)
                                  <div>
                                     <h6 class="mt-4">Employer Comment:</h6>
