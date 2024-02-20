@@ -33,6 +33,7 @@
                         </div>
                         <div class="col-sm-6 text-secondary view-all-btn">
                           ${{ auth()->user()->deposit_balance }}
+                          <a href="/advertiser/deposit">Deposit</a>
                         </div>
                       </div>
                       <hr>
