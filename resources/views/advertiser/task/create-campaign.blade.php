@@ -13,7 +13,11 @@
                     <i class="fa-solid fa-triangle-exclamation"></i> Join support group for advertisers at <a
                     href="/social?name=telegram" target="_blank">telegram</a>.
                 </div>
-
+                @if (auth()->user()->deposit_balance < \App\Models\Setting::where('name', 'min_advertising_balance_task')->value('value'))
+                  <div class="alert alert-danger" role="alert">
+                    Your advertising balance is less than ${{\App\Models\Setting::where('name', 'min_advertising_balance_task')->value('value')}}. That's why you cannot Submit this job for Review. Please <a href="/advertiser/deposit">Deposit</a> first or <a href="/advertiser/transfer">Transfer</a> your earned account balance to advertising balance.
+                  </div> 
+                @endif
                 <form action="{{ route('advertiser.create_task') }}" method="POST" wire:submit.prevent="submit">
                     @csrf
                     <div class="mb-3">
@@ -89,9 +93,16 @@
                       </div>
                     @livewire('dynamic-list')
                     @livewire('advertise.tasks.required-proofs')
-                    <div class="d-grid gap-2 mt-3 mb-3">
+                    @if (auth()->user()->deposit_balance < \App\Models\Setting::where('name', 'min_advertising_balance_task')->value('value'))
+                      <div class="alert alert-danger" role="alert">
+                        Your advertising balance is less than ${{\App\Models\Setting::where('name', 'min_advertising_balance_task')->value('value')}}. That's why you cannot Submit this job for Review. Please <a href="/advertiser/deposit">Deposit</a> first or <a href="/advertiser/transfer">Transfer</a> your earned account balance to advertising balance.
+                      </div> 
+                    @else 
+                      <div class="d-grid gap-2 mt-3 mb-3">
                         <button class="btn btn-primary">Submit</button>
-                    </div>
+                      </div> 
+                    @endif
+                    
                 </form>
             </div>
         </div>
