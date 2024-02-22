@@ -12,6 +12,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Task;
+use App\Models\TaskCategory;
 use \App\Models\User;
 
 class TaskController extends AdminController
@@ -33,30 +34,12 @@ class TaskController extends AdminController
         $grid = new Grid(new Task());
 
         $grid->column('id', __('Id'));
-        $grid->column('employer_id', __('Employer id'))->modal(function ($model) {
-
-            $comments = $model->employer()->get()->map(function ($comment) {
-                return $comment->only(['username', 'name', 'created_at']);
-            });
-        
-            return new Table(['Username', 'name', 'release time'], $comments->toArray());
-        });
+        $grid->column('employer_id', __('Employer id'))->display( function($userid){
+            $username = User::where('id', $userid)->value('username');
+            return "<span class='badge bg-warning'>$username</span>";
+        })->sortable();
         
         $grid->column('title', __('Title'))->sortable();
-        $grid->column('worker_level', __('Worker level'))->sortable();
-        $grid->column('category', __('Category'))->sortable();
-        $grid->column('sub_category', __('Sub category'))->sortable();
-        $grid->column('task_balance', __('Task balance'))->sortable();
-        $grid->column('approval_fee', __('Approval fee'));
-        $grid->column('rating_time', __('Rating time'))->sortable();
-        $grid->column('hold_time', __('Hold time'))->sortable();
-        $grid->column('max_budget', __('Max budget'))->sortable();
-        $grid->column('daily_budget', __('Daily budget'))->sortable();
-        $grid->column('weekly_budget', __('Weekly budget'))->sortable();
-        $grid->column('hourly_budget', __('Hourly budget'))->sortable();
-        $grid->column('submission_per_hour', __('Submission per hour'))->sortable();
-        $grid->column('submission_per_day', __('Submission per day'))->sortable();
-        $grid->column('submission_per_week', __('Submission per week'))->sortable();
         $grid->column('status', __('Status'))->display( function($status){
             switch ($status) {
                 case 0:
@@ -90,8 +73,17 @@ class TaskController extends AdminController
                 return "<span class='badge bg-primary'>$status</span>";
               }
         })->sortable();
-
-
+        $grid->column('category', __('Category'))->display( function($categoryID){
+            $category = TaskCategory::where('id', $categoryID)->value('name');
+            return "<span class='badge bg-warning'>$category</span>";
+        })->sortable();
+        $grid->column('sub_category', __('Sub category'))->display( function($categoryID){
+            $category = TaskCategory::where('id', $categoryID)->value('name');
+            return "<span class='badge bg-warning'>$category</span>";
+        })->sortable();
+        $grid->column('task_balance', __('Task balance'))->sortable();
+        $grid->column('approval_fee', __('Approval fee'));
+        $grid->column('rating_time', __('Rating time'))->sortable();
         $grid->column('created_at', __('Created at'))->sortable();
         $grid->column('updated_at', __('Updated at'));
 
@@ -159,7 +151,7 @@ class TaskController extends AdminController
 
         $show->stepDetails('stepDetails', function ($stepDetails) {
             // If you need to set the resource URL for steps
-            $stepDetails->setResource('/admin/task-steps');
+            $stepDetails->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/task-steps');
         
             $stepDetails->step_no();
             $stepDetails->step_details();
@@ -168,7 +160,7 @@ class TaskController extends AdminController
         });
         $show->requiredProofs('requiredProofs', function ($requiredProofs) {
             // If you need to set the resource URL for steps
-            $requiredProofs->setResource('/admin/task-required-proofs');
+            $requiredProofs->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/task-required-proofs');
         
             $requiredProofs->id();
             $requiredProofs->proof_type()->display( function($proof_type){
@@ -190,7 +182,7 @@ class TaskController extends AdminController
 
         $show->declineReason('declineReason', function ($declineReason) {
             // If you need to set the resource URL for steps
-            $declineReason->setResource('/admin/admin-task-decline-reasons');
+            $declineReason->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/admin-task-decline-reasons');
         
             $declineReason->id();
             $declineReason->reason();

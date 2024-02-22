@@ -12,6 +12,7 @@ use App\Admin\Actions\Withdrawals\SingleApprove;
 use App\Admin\Actions\Withdrawals\SingleCancel;
 use App\Admin\Actions\Withdrawals\SingleRefund;
 use App\Models\PayoutGateway;
+use App\Models\User;
 
 class WithdrawalHistoryController extends AdminController
 {
@@ -32,7 +33,11 @@ class WithdrawalHistoryController extends AdminController
         $grid = new Grid(new WithdrawalHistory());
 
         $grid->column('id', __('Id'))->sortable();
-        $grid->column('user_id', __('User id'))->sortable();
+        $grid->column('user_id', __('Username'))->display( function($userid){
+            $username = User::where('id', $userid)->value('username');
+            return "<span class='badge bg-warning'>$username</span>";
+        })->sortable();    
+                  
         $grid->column('method', __('Method'))->sortable();
         $grid->column('wallet', __('Wallet'))->sortable();
         $grid->column('amount_after_fee', __('Amount after fee'))->sortable();
@@ -67,6 +72,11 @@ class WithdrawalHistoryController extends AdminController
             // Add a column filter
             $methods = PayoutGateway::pluck('name', 'name')->toArray();
             $filter->like('user_id', 'User ID');
+            $filter->where(function ($query) {
+                $query->whereHas('user', function ($query) {
+                    $query->where('username', 'like', "%{$this->input}%");
+                });
+            }, 'Username');
             $filter->in('status', 'Status')->multipleSelect(['0' => 'Pending', '1' => 'Completed' , '2' => 'Refunded', '3' => 'Cancelled']);
             $filter->in('method', 'method')->multipleSelect($methods);
         });

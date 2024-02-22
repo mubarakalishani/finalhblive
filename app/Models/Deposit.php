@@ -11,4 +11,8 @@ class Deposit extends Model
     protected $fillable = [
         'user_id', 'method', 'amount', 'status', 'internal_tx', 'description', 'external_tx'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

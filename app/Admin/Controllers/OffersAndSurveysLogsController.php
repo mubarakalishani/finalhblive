@@ -29,18 +29,13 @@ class OffersAndSurveysLogsController extends AdminController
         $grid = new Grid(new OffersAndSurveysLog());
 
         $grid->column('id', __('Id'))->sortable();
-        $grid->column('user_id', __('User id'))->sortable();
+        $grid->column('user_id', __('Username'))->display( function($userid){
+            $username = User::where('id', $userid)->value('username');
+            return "<span class='badge bg-warning'>$username</span>";
+        })->sortable();
         $grid->column('provider_name', __('Provider name'))->sortable();
         $grid->column('payout', __('Payout'))->sortable();
         $grid->column('reward', __('Reward'))->sortable();
-        $grid->column('added_expert_level', __('Added expert level'))->sortable();
-        $grid->column('upline_commision', __('Upline commision'))->sortable();
-        $grid->column('transaction_id', __('Transaction id'));
-        $grid->column('offer_id', __('Offer id'))->sortable();
-        $grid->column('offer_name', __('Offer name'))->sortable();
-        $grid->column('hold_time', __('Hold time'))->sortable();
-        $grid->column('instant_credit', __('Instant credit'));
-        $grid->column('ip_address', __('Ip address'));
         $grid->column('status', __('Status'))->display(function ($status) {
             switch ($status) {
                 case 0:
@@ -57,6 +52,10 @@ class OffersAndSurveysLogsController extends AdminController
               }
         
         })->sortable();
+        $grid->column('upline_commision', __('Upline commision'))->sortable();
+        $grid->column('offer_name', __('Offer name'))->sortable();
+        $grid->column('hold_time', __('Hold time'))->sortable();
+        $grid->column('ip_address', __('Ip address'));
         $grid->column('created_at', __('Created at'))->sortable();
         $grid->column('updated_at', __('Updated at'))->sortable();
 
@@ -64,16 +63,19 @@ class OffersAndSurveysLogsController extends AdminController
 
 
         $grid->filter(function($filter){
-
             // Add a column filter
             $offerwalls = Offerwall::pluck('name', 'name')->toArray();
             $filter->like('offer_name', 'Offer Name');
             $filter->like('ip_address', 'IP Address');
             $filter->equal('offer_id', 'Offer ID');
             $filter->equal('user_id', 'User ID');
+            $filter->where(function ($query) {
+                $query->whereHas('worker', function ($query) {
+                    $query->where('username', 'like', "%{$this->input}%");
+                });
+            }, 'Username');
             $filter->in('status', 'Status')->multipleSelect(['0' => 'Completed', '1' => 'Pending' , '2' => 'Reversed']);
             $filter->in('provider_name', 'Offerwall')->multipleSelect($offerwalls);
-
             $filter->gt('reward', 'Reward Greater than')->select(['0.01' => '$0.01', '0.1' => '$0.1', '1' => '$1']);
         });
 

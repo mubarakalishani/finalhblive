@@ -7,6 +7,8 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Deposit;
+use App\Models\DepositMethod;
+use App\Models\User;
 
 class DepositController extends AdminController
 {
@@ -27,8 +29,9 @@ class DepositController extends AdminController
         $grid = new Grid(new Deposit());
 
         $grid->column('id', __('Id'))->sortable();
-        $grid->column('user_id', __('User id'))->display( function($userid){
-            return "<a href='/hbmanagement/users/$userid' target='_blank'>$userid</a>";
+        $grid->column('user_id', __('Username'))->display( function($userid){
+            $username = User::where('id', $userid)->value('username');
+            return "<span class='badge bg-warning'>$username</span>";
         })->sortable();
         $grid->column('method', __('Method'))->sortable();
         $grid->column('amount', __('Amount'))->sortable();
@@ -41,6 +44,17 @@ class DepositController extends AdminController
 
         $grid->model()->orderBy('updated_at', 'desc');
 
+        $grid->filter(function($filter){
+            // Add a column filter
+            $depositMethods = DepositMethod::pluck('name', 'name')->toArray();
+            $filter->equal('user_id', 'User ID');
+            $filter->where(function ($query) {
+                $query->whereHas('user', function ($query) {
+                    $query->where('username', 'like', "%{$this->input}%");
+                });
+            }, 'Username');
+            $filter->in('method', 'Deposit Method')->multipleSelect($depositMethods);
+        });
         return $grid;
     }
 

@@ -2,11 +2,13 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\DepositMethod;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\PtcAd;
+use App\Models\User;
 
 class PtcAdController extends AdminController
 {
@@ -55,8 +57,10 @@ class PtcAdController extends AdminController
         $grid->column('title', __('Title'));
         $grid->column('description', __('Description'));
         $grid->column('url', __('Url'));
-        $grid->column('unique_id', __('Unique id'));
-        $grid->column('employer_id', __('Employer id'))->sortable();
+        $grid->column('employer_id', __('Employer'))->display( function($userid){
+          $username = User::where('id', $userid)->value('username');
+          return "<span class='badge bg-warning'>$username</span>";
+      })->sortable();
         $grid->column('ad_balance', __('Ad balance'))->sortable();
         $grid->column('temp_locked_balance', __('Temp locked balance'))->sortable();
         $grid->column('reward_per_view', __('Reward per view'))->sortable();
@@ -79,6 +83,16 @@ class PtcAdController extends AdminController
         })->sortable();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
+
+        $grid->filter(function($filter){
+          $filter->equal('employer_id', 'employer ID');
+          $filter->where(function ($query) {
+              $query->whereHas('user', function ($query) {
+                  $query->where('username', 'like', "%{$this->input}%");
+              });
+          }, 'Employer Username');
+          $filter->equal('type', 'Type')->select(['0' => 'iframe', '1' => 'window']);
+      });
 
         $grid->quickSearch(function ($model, $query) {
             $model->where('url', 'like', "%{$query}%")
