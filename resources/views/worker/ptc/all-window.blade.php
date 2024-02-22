@@ -163,6 +163,7 @@
     </div>
     <script>
         var adStarted;
+        var sound = new Audio('https://handbucks.com/uploads/music/credit_soubd.mp3');
         var Clock = {
             totalSeconds: 0, // initial value of the timer, will be updated later
             start: function (seconds, id) {
@@ -181,6 +182,7 @@
                         $('#exampleModalCenter').modal({keyboard: false, backdrop: 'static'})
                         $('#exampleModalCenter').modal('show')
                         clearInterval(self.interval);
+                        sound.play();
                     }else{
                         self.totalSeconds -= 1;
                     }
