@@ -32,9 +32,9 @@
               </script>
               <form method="POST" {{ route('worker.ptc_iframe.submit', ['uniqueId' => $uniqueId]) }}>
                 @csrf
-                <div class="mb-3 text-center">
+                {{-- <div class="mb-3 text-center">
                   <div class="h-captcha" data-sitekey="{{ \App\Models\Setting::where('name', 'hcaptcha_site_key')->value('value') }}"></div>
-                </div>
+                </div> --}}
                 <div class="d-grid gap-2">
                   <button type="submit" class="btn btn-primary" type="button">Submit</button>
                 </div>
