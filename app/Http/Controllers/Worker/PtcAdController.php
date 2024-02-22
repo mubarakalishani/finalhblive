@@ -131,6 +131,9 @@ class PtcAdController extends Controller
                 $ad->totalMinutesDifference = $totalMinutesDifference;
                 $ad->totalSecondsDifference = $totalSecondsDifference;
                 $ad->remainingSeconds = $remainingSeconds;
+                if ($totalSecondsDifference < 10) {
+                    $ad->remainingSeconds = 10;
+                }
 
             }
         }
