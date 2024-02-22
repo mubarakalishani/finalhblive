@@ -31,7 +31,7 @@ class SubmittedTaskProofController extends AdminController
         $grid->column('task_id', __('Task id'))->sortable();
         $grid->column('worker_id', __('Worker'))->display( function($userid){
             $username = User::where('id', $userid)->value('username');
-            return "<span class='badge bg-warning'>$username</span>";
+            return "<span>$username</span>";
         })->sortable();
         $grid->column('amount', __('Amount'))->sortable();
         $grid->column('status', __('Status'))->display( function($status){

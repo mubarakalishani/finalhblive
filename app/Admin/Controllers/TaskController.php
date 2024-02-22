@@ -36,7 +36,7 @@ class TaskController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('employer_id', __('Employer id'))->display( function($userid){
             $username = User::where('id', $userid)->value('username');
-            return "<span class='badge bg-warning'>$username</span>";
+            return "<span>$username</span>";
         })->sortable();
         
         $grid->column('title', __('Title'))->sortable();

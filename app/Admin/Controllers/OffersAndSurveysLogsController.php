@@ -31,7 +31,7 @@ class OffersAndSurveysLogsController extends AdminController
         $grid->column('id', __('Id'))->sortable();
         $grid->column('user_id', __('Username'))->display( function($userid){
             $username = User::where('id', $userid)->value('username');
-            return "<span class='badge bg-warning'>$username</span>";
+            return "<span>$username</span>";
         })->sortable();
         $grid->column('provider_name', __('Provider name'))->sortable();
         $grid->column('payout', __('Payout'))->sortable();

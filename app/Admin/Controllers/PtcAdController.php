@@ -59,7 +59,7 @@ class PtcAdController extends AdminController
         $grid->column('url', __('Url'));
         $grid->column('employer_id', __('Employer'))->display( function($userid){
           $username = User::where('id', $userid)->value('username');
-          return "<span class='badge bg-warning'>$username</span>";
+          return "<span>$username</span>";
       })->sortable();
         $grid->column('ad_balance', __('Ad balance'))->sortable();
         $grid->column('temp_locked_balance', __('Temp locked balance'))->sortable();
