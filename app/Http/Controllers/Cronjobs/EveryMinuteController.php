@@ -64,6 +64,7 @@ class EveryMinuteController extends Controller
 
         $this->processFaucetPayPayments();
         $this->resolveResubmitExhaustTasks();
+        $this->updateTasks();
     }
 
 
