@@ -265,22 +265,22 @@ class PtcAdController extends Controller
         $viewsCompleted = $ad->views_completed;
         $employer = User::find($ad->employer_id);
         $worker = User::find(Auth::user()->id);
-        $validate = Validator::make($request->all(), [
-            'h-captcha-response' => 'required|captcha'
-        ]);
-        $data = array(
-            'secret' => Setting::where('name', 'hcaptcha_secret')->value('value'),
-            'response' => $request->input('h-captcha-response'),
-        );
-        $verify = curl_init();
-        curl_setopt($verify, CURLOPT_URL, "https://hcaptcha.com/siteverify");
-        curl_setopt($verify, CURLOPT_POST, true);
-        curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($verify);
-        // var_dump($response);
-        $responseData = json_decode($response);
-        if($responseData->success) {
+        // $validate = Validator::make($request->all(), [
+        //     'h-captcha-response' => 'required|captcha'
+        // ]);
+        // $data = array(
+        //     'secret' => Setting::where('name', 'hcaptcha_secret')->value('value'),
+        //     'response' => $request->input('h-captcha-response'),
+        // );
+        // $verify = curl_init();
+        // curl_setopt($verify, CURLOPT_URL, "https://hcaptcha.com/siteverify");
+        // curl_setopt($verify, CURLOPT_POST, true);
+        // curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+        // curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+        // $response = curl_exec($verify);
+        // // var_dump($response);
+        // $responseData = json_decode($response);
+        // if($responseData->success) {
             //check if the user has already claimed the max allowed times of this link within 24hrs
             $claimsCount = PtcLog::where('worker_id', Auth::user()->id)->where('created_at', '>', now()->subHours($ad->revision_interval))->where('ad_id', $adId)->count();
             if ($claimsCount > 0) {
@@ -322,8 +322,8 @@ class PtcAdController extends Controller
                 ]);
             }
             return redirect(url('/views/window'))->with('success', $ad->reward_per_view.' added to your balance successfully');
-        }else{
-            return back()->with('error', 'Invalid Captcha');
-        }
+        // }else{
+        //     return back()->with('error', 'Invalid Captcha');
+        // }
     }
 }
