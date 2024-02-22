@@ -83,7 +83,7 @@
                                                         bg-warning
                                                     @elseif($proof->status == 5)
                                                         bg-info
-                                                    @elseif($proof->status == 6)
+                                                    @elseif($proof->status == 6 || $proof->status == 7)
                                                         bg-danger
                                                     @endif">
                                                     @if($proof->status == 0)
@@ -100,6 +100,8 @@
                                                         Dispute Filed
                                                     @elseif($proof->status == 6)
                                                         Dispute Rejected
+                                                    @elseif($proof->status == 7) 
+                                                        Resubmission time Expired   
                                                     @endif
                                                 </span>
                                             </td>
