@@ -154,7 +154,7 @@ class EveryMinuteController extends Controller
         ->get();
 
         foreach ($employerReviewPassedProofs as $employerReviewPassedProof) {
-            $worker = User::findOrFail($employerReviewPassedProof->user_id);
+            $worker = User::findOrFail($employerReviewPassedProof->worker_id);
             $worker->increment('balance', $employerReviewPassedProof->amount);
             $worker->increment('earned_from_tasks', $employerReviewPassedProof->amount);
             $worker->increment('total_tasks_completed');
