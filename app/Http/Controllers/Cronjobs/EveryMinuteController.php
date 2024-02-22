@@ -148,7 +148,7 @@ class EveryMinuteController extends Controller
 
         //now get all the pending proofs that are passed the employer allowed review time
         $employerReviewPassedProofs = SubmittedTaskProof::whereHas('task', function ($query) {
-            $query->whereRaw('DATEDIFF(CURRENT_DATE, submitted_task_proofs.updated_at) >= tasks.rating_time');
+            $query->whereRaw('DATEDIFF(CURRENT_DATE, submitted_task_proofs.updated_at) > tasks.rating_time');
         })
         ->where('status', 0)
         ->get();
