@@ -95,6 +95,7 @@ class ViewServiceProvider extends ServiceProvider
                         // Filter the tasks by the user's country and the amount_per_task column
                         ->whereHas('targetedCountries', function ($query) use ($userCountry) {
                             $query->where('country', $userCountry);
+                            $query->whereRaw('task_targeted_countries.amount_per_task < users.deposit_balance');
                         })->count();
 
             $sidebarData = [
