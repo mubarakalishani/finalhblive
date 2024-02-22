@@ -321,7 +321,7 @@ class PtcAdController extends Controller
                     'description' => 'received Referral commission from '.$worker->username.' for completing a task'
                 ]);
             }
-            return back()->with('success', $ad->reward_per_view.' added to your balance successfully');
+            return redirect(url('/views/window'))->with('success', $ad->reward_per_view.' added to your balance successfully');
         }else{
             return back()->with('error', 'Invalid Captcha');
         }
