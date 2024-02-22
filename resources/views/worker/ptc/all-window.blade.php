@@ -38,6 +38,7 @@
               <div class="row">
                 @foreach ($availableWindowPtcAds as $ad)
                     @if (!$ad->totalSecondsDifference || $ad->totalSecondsDifference > ($ad->revision_interval * 60 * 60))
+                        @if ($ad->totalSecondsDifference != 0)
                         <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-2">
                             <div class="card-body ">
                                 <div class="ads-para-description text-center" style="height: 100px;">
@@ -78,6 +79,7 @@
                                 <h6 id="safeTimerDisplay" class="text-center" style="display: none;">Time Left: seconds</h6>
                             </div>
                         </div>
+                        @endif
                     @endif
                 @endforeach
             </div>
