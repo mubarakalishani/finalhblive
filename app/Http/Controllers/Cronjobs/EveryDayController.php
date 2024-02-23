@@ -17,7 +17,7 @@ class EveryDayController extends Controller
         foreach ($resubmitExhaustedProofs as $resubmitExhaustedProof) {
             $task= Task::find($resubmitExhaustedProof->task_id);
             $employer = User::where($task->employer_id);
-            dd('employer id is '.$employer->id.' for task'. $task->id);
+            dd('employer id is '.$employer);
             $resubmitExhaustedProof->update([
                 'status' => 7,
             ]);
