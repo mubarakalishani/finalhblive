@@ -7,7 +7,48 @@
         <div class="all-history-page">
             <div class="container">
                 <div class="pt-3">
-            <h4><em>Referrals</em></h4>
+                  <div class="row ">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="referral-detail-cards">
+                            <div class="card l-bg-cherry">
+                                <div class="card-statistic-3 p-4">
+                                    <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                                    <div class="mb-4">
+                                        <h5 class="card-title mb-0">Total Referrals</h5>
+                                    </div>
+                                    <div class="row align-items-center mb-2 d-flex">
+                                        <div class="col-8">
+                                            <h2 class="d-flex align-items-center mb-0">
+                                                3,243
+                                            </h2>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="referral-detail-cards">
+                            <div class="card l-bg-cherry">
+                                <div class="card-statistic-3 p-4">
+                                    <div class="card-icon card-icon-large"><i class="fas fa-dollar"></i></div>
+                                    <div class="mb-4">
+                                        <h5 class="card-title mb-0">Total Referrals</h5>
+                                    </div>
+                                    <div class="row align-items-center mb-2 d-flex">
+                                        <div class="col-8">
+                                            <h2 class="d-flex align-items-center mb-0">
+                                                3,243
+                                            </h2>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
         <div class="text-center">
             {{-- <h1>Refer a friend and get 10% off your next purchase!</h1>
