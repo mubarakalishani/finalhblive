@@ -22,12 +22,12 @@
         <div class="card-body ">
           <div class="row mt-3 mb-3">
 
-            <div class="col-4">
+            {{-- <div class="col-4">
               <span class="text-info" data-bs-toggle="tooltip" data-bs-placement="right" title="average time required to solve this shortlink">
                 <i class="fa-solid fa-clock" aria-hidden="true"></i> ~{{ $shortLink->min_seconds }} sec
               </span>
-            </div>
-            <div class="col-4">
+            </div> --}}
+            <div class="col-8">
               <span class="text-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="The Amount You will earn after completing this shortlink">
                 <i class="fa-solid fa-sack-dollar" aria-hidden="true"></i> {{ $shortLink->reward }}
               </span>
