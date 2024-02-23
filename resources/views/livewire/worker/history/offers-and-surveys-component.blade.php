@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="all-history-page">
-        <div class="container">
+        <div class="container py-4">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                   <a class="nav-link" aria-current="page" href="/history/jobs">Jobs History</a>

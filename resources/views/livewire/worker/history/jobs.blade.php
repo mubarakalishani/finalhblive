@@ -5,7 +5,7 @@
 
         <!-- all games start -->
         <div class="all-history-page">
-            <div class="container">
+            <div class=" py-4">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                       <a class="nav-link active" aria-current="page" href="/history/jobs">Jobs History</a>
@@ -23,44 +23,41 @@
                   <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <div class="history-data mt-3">
-                            <div>
-                                
+                            <div> 
                                 <div class="results-bar d-flex align-items-center justify-content-between flex-wrap mb-2">
                                     <div class="d-flex results-bar__search">
                                         <input type="text" id="search-term" class="form-control" placeholder="search here" wire:model.live.debounce.300ms="search">
                                     </div>
-                                  <div class="d-flex flex-wrap">
-                                      <select wire:model.live="status">
-                                            <option value="">All</option>
-                                            <option value="0">Pending</option>
-                                            <option value="1">Approved</option>
-                                            <option value="2">Rejected</option>
-                                            <option value="3">Resubmit Requested</option>
-                                            <option value="4">Resubmited</option>
-                                            <option value="5">Dispute Filed</option>
-                                            <option value="6">Dispute Rejected</option>
-                                        </select>
-                                  </div>
+                                    <div class="d-flex flex-wrap">
+                                        <select wire:model.live="status">
+                                              <option value="">All</option>
+                                              <option value="0">Pending</option>
+                                              <option value="1">Approved</option>
+                                              <option value="2">Rejected</option>
+                                              <option value="3">Resubmit Requested</option>
+                                              <option value="4">Resubmited</option>
+                                              <option value="5">Dispute Filed</option>
+                                              <option value="6">Dispute Rejected</option>
+                                          </select>
+                                    </div>
                                 </div>
                                 <!-- top area-before-table end-->
 
                                 <div class="table-responsive-lg">
                                     <table class="table table-big table-hover table-middle table-striped">
-                                      <thead>
-                                        <tr class="table-row" >
-                                          <!-- <th scope="col" class="white-space-pre text-center">Status</th> -->
-
-                                          <th scope="col" class="white-space-pre">Job ID</th>
-                                          <th scope="col" class="white-space-pre text-center">Job Title</th>
-                                          <th scope="col" class="white-space-pre text-center">Reward</th>
-                                          <th scope="col" class="white-space-pre text-center">Status</th>
-                                          <th scope="col" class="white-space-pre text-center">Submitted</th>
-                                          <th scope="col" class="white-space-pre text-center">Last Updated</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody id="jobs-list">
-                                        @foreach ($proofs as $proof)
-                                          <tr class="table-row clickable">
+                                        <thead>
+                                            <tr class="table-row" >
+                                                <th scope="col" class="white-space-pre">Job ID</th>
+                                                <th scope="col" class="white-space-pre text-center">Job Title</th>
+                                                <th scope="col" class="white-space-pre text-center">Reward</th>
+                                                <th scope="col" class="white-space-pre text-center">Status</th>
+                                                <th scope="col" class="white-space-pre text-center">Submitted</th>
+                                                <th scope="col" class="white-space-pre text-center">Last Updated</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="jobs-list">
+                                            @foreach ($proofs as $proof)
+                                                <tr class="table-row clickable">
                                             <!-- <td scope="row" class="table-cell-status text-center">
                                               <i class="fa fa-times" aria-hidden="true"></i>
                                             </td> -->
@@ -114,9 +111,9 @@
                                             </td>
                                             <td class="table-cell-rated text-center">{{ $proof->created_at->diffForHumans() }}</td>
                                             <td class="table-cell-rated text-center">{{ $proof->updated_at->diffForHumans() }}</td>
-                                          </tr>
-                                        @endforeach  
-                                      </tbody>
+                                                </tr>
+                                            @endforeach  
+                                        </tbody>
                                     </table>
                                 </div>
                                 <div class="d-flex">

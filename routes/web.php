@@ -129,9 +129,6 @@ Route::middleware([
         return view('worker.ptc.allptc-ads');
     });
     //worker histories routes
-    Route::get('/history', function () {
-        return view('worker.history.overall');
-    });
     Route::get('/history/jobs', function () {
         return view('worker.history.jobs');
     });
