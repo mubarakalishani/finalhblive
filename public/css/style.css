@@ -1810,7 +1810,7 @@ Dashboard-status-card style start
     font-size: 10px;
 }
 .dashboard-status-card .view-all-btn a{
-    margin-left: 8px;
+    /* margin-left: 8px; */
     background: #6886e3;
     color: white;
     padding: 3px;

@@ -18,52 +18,65 @@
                     <div class="card-body">
                         <h5 class="d-flex align-items-center mb-3">Balance Status</h5>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Main Balance</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
-                          ${{ auth()->user()->balance }} <a href="/withdraw">withdraw</a> 
-                          <a href="/advertiser/transfer">Tranfer to Advertise</a>
+                        <div class="col text-secondary view-all-btn">
+                          ${{ auth()->user()->balance }}
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/withdraw">withdraw</a>
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/advertiser/transfer">Tranfer</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Advertising Balance</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           ${{ auth()->user()->deposit_balance }}
+                        </div>
+                        <div class="col text-secondary view-all-btn">
                           <a href="/advertiser/deposit">Deposit</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Expert Level Balance</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
-                          {{ auth()->user()->diamond_level_balance }} <a href="/guides-and-announcements/2">Learn More</a>
+                        <div class="col text-secondary view-all-btn">
+                          {{ auth()->user()->diamond_level_balance }} 
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/guides-and-announcements/2">Learn More</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
-                          <h6 class="mb-0">Pending: from tasks/offers and surveys</h6>
+                        <div class="col">
+                          <h6 class="mb-0">Pending Balance</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
-                          ${{ \App\Models\SubmittedTaskProof::where('status', 0)->where('worker_id', auth()->user()->id)->sum('amount') }} / 
-                          ${{ \App\Models\OffersAndSurveysLog::where('status', 1)->where('user_id', auth()->user()->id)->sum('reward') }}
-                           <a href="/history/offers-and-surveys">View</a>
+                        <div class="col text-secondary view-all-btn">
+                          ${{ \App\Models\SubmittedTaskProof::where('status', 0)->where('worker_id', auth()->user()->id)->sum('amount') + \App\Models\OffersAndSurveysLog::where('status', 1)->where('user_id', auth()->user()->id)->sum('reward') }}
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/history/offers-and-surveys">View all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Total withdrawn</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           ${{ \App\Models\WithdrawalHistory::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }} 
-                          <a href="/withdraw">View</a>
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/withdraw">View all</a>
                         </div>
                       </div>
                     </div>
@@ -74,41 +87,49 @@
                     <div class="card-body">
                       <h5 class="d-flex align-items-center mb-3">Micro Tasks Status</h5>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Total Submitted</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->count() }} 
+                        </div>
+                        <div class="col text-secondary view-all-btn">
                           <a href="/history/jobs">View all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Approved+Paid</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 1)->count() }}
-                           <a href="/history/jobs">View all</a>
                         </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <h6 class="mb-0">Rejected</h6>
-                        </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
-                          {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 2)->count() }}
+                        <div class="col text-secondary view-all-btn">
                           <a href="/history/jobs">View all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
+                          <h6 class="mb-0">Rejected</h6>
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 2)->count() }}
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/history/jobs">View all</a>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col">
                           <h6 class="mb-0">Pending Approval</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 0)->count() }}
+                        </div>
+                        <div class="col text-secondary view-all-btn">
                           <a href="/history/jobs">View all</a>
                         </div>
                       </div>
@@ -120,39 +141,50 @@
                     <div class="card-body">
                       <h5 class="d-flex align-items-center mb-3">All Jobs</h5>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Total Offer/Surveys Completed</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_offers_completed }} 
+                        </div>
+                        <div class="col text-secondary view-all-btn">
                           <a href="/history/offers-and-surveys">view all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Total PTC Completed</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_ptc_completed }}
                         </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/history/offers-and-surveys">view all</a>
+                        </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Total Faucet Completed</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_faucet_completed }}
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/history/offers-and-surveys">view all</a>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                           <h6 class="mb-0">Total Shorterlinks Completed</h6>
                         </div>
-                        <div class="col-sm-6 text-secondary view-all-btn">
+                        <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_shortlinks_completed }}
+                        </div>
+                        <div class="col text-secondary view-all-btn">
+                          <a href="/history/offers-and-surveys">view all</a>
                         </div>
                       </div>
                     </div>
