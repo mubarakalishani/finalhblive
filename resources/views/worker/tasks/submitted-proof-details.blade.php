@@ -138,7 +138,7 @@
                                         bg-warning
                                     @elseif($proof->status == 5)
                                         bg-primary
-                                    @elseif($proof->status == 6 || @elseif($proof->status == 7)
+                                    @elseif($proof->status == 6 || $proof->status == 7)
                                         bg-danger
                                     @endif">
                                     @if($proof->status == 0)
