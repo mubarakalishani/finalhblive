@@ -136,6 +136,7 @@ class UserController extends AdminController
             $countries = AvailableCountry::pluck('country_name', 'country_name')->toArray();
             $filter->like('name', 'name');
             $filter->like('username', 'username');
+            $filter->equal('upline', 'Upline Id');
             $filter->like('unique_user_id', 'Unique User Id');
             $filter->like('email', 'email');
             $filter->like('signup_ip', 'signup ip');
