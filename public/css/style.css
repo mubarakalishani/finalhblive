@@ -1807,7 +1807,12 @@ Dashboard-status-card style start
     box-shadow: none!important;
 }
 .dashboard-status-card .view-all-btn{
-    font-size: 10px;
+    font-size: 8px;
+    font-weight: 800;
+}
+.dashboard-status-card .dashboard-data-head{
+  font-size: 10px;
+  font-weight: 600;
 }
 .dashboard-status-card .view-all-btn a{
     /* margin-left: 8px; */
