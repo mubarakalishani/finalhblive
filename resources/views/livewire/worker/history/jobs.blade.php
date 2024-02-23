@@ -6,7 +6,7 @@
         <!-- all games start -->
         <div class="all-history-page">
             <div class="container">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs mt-3">
                     <li class="nav-item">
                       <a class="nav-link active" aria-current="page" href="/history/jobs">Jobs</a>
                     </li>
@@ -15,7 +15,6 @@
                     </li>
                 </ul>
                 <div class="pt-3">
-            <h4><em>Jobs History</em></h4>
         </div>
               <div class="row align-items-end mb-4 pb-2">
                   <div class="col-md-8">
