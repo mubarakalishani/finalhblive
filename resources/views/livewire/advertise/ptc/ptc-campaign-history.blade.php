@@ -29,13 +29,12 @@
                     <thead>
                         <tr class="table-row">
                             <th scope="col" class="white-space-pre text-center">Status</th>
-
-                            <th scope="col" class="white-space-pre">Title</th>
-                            <th scope="col" class="white-space-pre">description</th>
-                            <th scope="col" class="white-space-pre">Url</th>
                             <th scope="col" class="white-space-pre text-center">clicks</th>
                             <th scope="col" class="white-space-pre text-center">Spent/Remaining</th>
                             <th scope="col" class="white-space-pre text-center">Pause/Resume</th>
+                            <th scope="col" class="white-space-pre">Title</th>
+                            <th scope="col" class="white-space-pre">description</th>
+                            <th scope="col" class="white-space-pre">Url</th>
                             {{-- <th scope="col" class="white-space-pre text-center">view</th> --}}
                         </tr>
                     </thead>
@@ -60,13 +59,6 @@
                                 <span class="badge rounded-pill text-bg-danger p-2">Admin stopped</span>    
                                 @endif
                             </td>
-
-                            <td class="table-cell-name">
-                                {{-- <a href="/advertiser/ptc/campaign/{{ $ad->id }}">{{ $ad->title }}</a> --}}
-                                <span>{{ $ad->title }}</span>
-                            </td>
-                            <td class="table-cell-name"><span>{{ $ad->description }}</span></td>
-                            <td class="table-cell-name"><span><a href="{{ $ad->url }}" target="_blank">{{ $ad->url }}</span></td>
                             <td class="table-cell-rated text-center">{{ $ad->views_completed }} / {{ $ad->views_needed }}</td>
                             <td class="table-cell-rated text-center">
                                 <b>${{ $ad->views_completed * $ad->reward_per_view }}<b> / 
@@ -86,6 +78,12 @@
                                     @endif
                                 </a>
                             </td>
+                            <td class="table-cell-name">
+                                {{-- <a href="/advertiser/ptc/campaign/{{ $ad->id }}">{{ $ad->title }}</a> --}}
+                                <span>{{ $ad->title }}</span>
+                            </td>
+                            <td class="table-cell-name"><span>{{ $ad->description }}</span></td>
+                            <td class="table-cell-name"><span><a href="{{ $ad->url }}" target="_blank">{{ $ad->url }}</span></td>
                             {{-- <td class="table-cell-settings p-0 text-center">
                                 <a href="/advertiser/ptc/campaign/{{ $ad->id }}">
                                     <i class="fa fa-eye side-icons" aria-hidden="true"></i>
