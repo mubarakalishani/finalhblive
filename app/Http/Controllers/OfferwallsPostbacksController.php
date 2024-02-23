@@ -1579,6 +1579,11 @@ if($payout <= 0.01){
         
      /*===================================check the hash security==========================================================*/
         $secretKey = $offerwall->secret_key;
+        if ($request->has('placement')) {
+            if ($request->input('placement') == 'old') {
+               $secretKey = 'DGqQlZq1FBLGhJbCERkfBQ1S1lCx7nZfcRxUGJcmq2PGhmBlwco37J0707FP4VlScpI7qZBLgVYQxpoylDHQ';
+            }
+        }
         $security = hash("sha256", $uniqueUserId . $ipAddress . $payout . $currencyAmount . $secretKey);
         if($security !== $hash){
             echo 0;
