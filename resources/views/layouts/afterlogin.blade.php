@@ -10,7 +10,6 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
         <!-- dashboard status cards cdn -->
@@ -287,77 +286,16 @@
     </footer>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 
-    
-    <script>
-            var splide1 = new Splide('.splide1', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide1.mount();
-        </script>
-        <script>
-            var splide4 = new Splide('.splide4', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.5rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.5rem',
-                    },
-                },
-            });
-            splide4.mount();
-        </script>
-        <script>
-            var splide6 = new Splide('.splide6', {
-                type: 'loop',
-                perPage: 3,
-                rewind: true,
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                    480: {
-                        perPage: 1,
-                        gap: '.7rem',
-                        height: '12rem',
-                    },
-                },
-            });
-            splide6.mount();
-        </script>
-
         @if(session()->has('success'))
-        <script>
-            Swal.fire({
-                title: "Good job!",
-                text: "{{ session('success')}} ",
-                icon: "success"
-            });
-        </script>
+            <script>
+                Swal.fire({
+                    title: "Good job!",
+                    text: "{{ session('success')}} ",
+                    icon: "success"
+                });
+            </script>
         @endif 
 
         @if(session()->has('error'))
