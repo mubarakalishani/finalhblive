@@ -330,8 +330,8 @@
                                 </td>
                                 <td>
                                     <button id="proof{{$proof->id}}" class="btn btn-success" wire:click="approve('{{ $proof->id }}')">Approve</button> 
-                                    <button class="btn btn-danger my-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="rejection" data-bs-proof-id="{{ $proof->id }}">Reject</button> <br>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="revision" data-bs-proof-id="{{ $proof->id }}">Ask For Revision</button> <br>
+                                    <button id="proof{{$proof->id}}" class="btn btn-danger my-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="rejection" data-bs-proof-id="{{ $proof->id }}">Reject</button> <br>
+                                    <button id="proof{{$proof->id}}" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="revision" data-bs-proof-id="{{ $proof->id }}">Ask For Revision</button> <br>
                                     <strong>user :</strong>
                                     <p>{{ $proof->worker->username }}</p>
                                     <strong>Date Submitted :</strong>

@@ -336,7 +336,7 @@
                                                 <p>{{ $proof->revisionApprovalReason->employer_comment }}</p>
                                               </td>
                                               <td>
-                                                  <button class="btn btn-outline-primary" wire:click="approve('{{ $proof->id }}', 'rejected')">Approve</button> <br>
+                                                  <button id="proof{{$proof->id}}" class="btn btn-outline-primary" wire:click="approve('{{ $proof->id }}')">Approve</button> <br>
                                                   <strong>user :</strong>
                                                   <p>{{ $proof->worker->username }}</p>
                                                   <strong>Date Submitted :</strong>
