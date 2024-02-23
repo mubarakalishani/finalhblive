@@ -8,10 +8,10 @@
             <div class="container">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="/history/jobs">Jobs</a>
+                      <a class="nav-link active" aria-current="page" href="/history/jobs">Jobs History</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/history/offers-and-surveys">Offers & Surveys </span></a>
+                        <a class="nav-link" aria-current="page" href="/history/offers-and-surveys">Offers & Surveys History</span></a>
                     </li>
                 </ul>
                 <div class="pt-3">
