@@ -158,6 +158,7 @@
                                     @elseif($proof->status == 7)
                                         Resubmission Expired    
                                     @endif
+                                    >
                                 </span>
 
                                   </strong>
@@ -182,7 +183,7 @@
                                  </div> 
                                  @endif
 
-                                 @if ($proof->status==2)
+                                @if ($proof->status==2)
                                  <p>
                                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                       File A Dispute
@@ -203,46 +204,45 @@
                                         </form>
                                     </div>
                                   </div>
-                                 @endif
+                                @endif
 
 
-                                 @if ($proof->status == 5)
-                                    <h6 class="mt-3">Your Dispute Description:</h6>
-                                    <p>{{ $proof->dispute->description }}</p>
-                                 @endif
+                                @if ($proof->status == 5)
+                                  <h6 class="mt-3">Your Dispute Description:</h6>
+                                  <p>{{ $proof->dispute->description }}</p>
+                                @endif
                                  
-                                     @if ($proof->status == 3)
-                                            <h1>Resubmit Proof:</h1> 
-                                            <form action="{{ route('worker.submit_revised_task', ['taskId' => $task->id]) }}" method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                <div class="job-info-list mb-8 mt-8 col-12">
-                                                  <span class="job-info-list-heading"><span class="symbol--primary">?</span>Submit your proofs below
-                                                  </span>
-                                                  <div class=" list-da--style">
-                                                    <ol>
-                                                      @foreach($task->requiredProofs as $requiredProof)
-                                                        @if ( $requiredProof->proof_type == 1)
-                                                          <li class="py-1">{{ $requiredProof->proof_text }}</li>
-                                                            <textarea name="text_proofs[{{ $requiredProof->proof_no }}]" class="form-control"required></textarea>
-                                                        @else
-                                                        <li class="py-1">{{ $requiredProof->proof_text }}</li>
-                                                          <div class="form-group">
-                                                            <input type="file" name="image_proofs[{{ $requiredProof->proof_no }}]" class="form-control" required>
-                                                          </div>
-                                                        @endif  
-                                                      @endforeach  
-                                                    </ol>
-                                                    <input type="hidden" name="proof_id" value="{{ $proof->id }}">
-                                                  </div>
-                                                  <div class="job-info-submit-btn px-4 py-4">
-                                                    <span class="d-flex justify-content-between">
-                                                      <span class="d-block"><button type="submit" class="btn btn-primary py-2"> SUBMIT TASK</button></span>
-                                                    </span>
-                                                  </div>
+                                  @if ($proof->status == 3)
+                                    <h1>Resubmit Proof:</h1> 
+                                    <form action="{{ route('worker.submit_revised_task', ['taskId' => $task->id]) }}" method="POST" enctype="multipart/form-data">
+                                      @csrf
+                                      <div class="job-info-list mb-8 mt-8 col-12">
+                                        <span class="job-info-list-heading"><span class="symbol--primary">?</span>Submit your proofs below
+                                        </span>
+                                        <div class=" list-da--style">
+                                          <ol>
+                                            @foreach($task->requiredProofs as $requiredProof)
+                                              @if ( $requiredProof->proof_type == 1)
+                                                <li class="py-1">{{ $requiredProof->proof_text }}</li>
+                                                  <textarea name="text_proofs[{{ $requiredProof->proof_no }}]" class="form-control"required></textarea>
+                                              @else
+                                              <li class="py-1">{{ $requiredProof->proof_text }}</li>
+                                                <div class="form-group">
+                                                  <input type="file" name="image_proofs[{{ $requiredProof->proof_no }}]" class="form-control" required>
                                                 </div>
-                                            </form>
-                                        @endif
-                                
+                                              @endif  
+                                            @endforeach  
+                                          </ol>
+                                          <input type="hidden" name="proof_id" value="{{ $proof->id }}">
+                                        </div>
+                                        <div class="job-info-submit-btn px-4 py-4">
+                                          <span class="d-flex justify-content-between">
+                                            <span class="d-block"><button type="submit" class="btn btn-primary py-2"> SUBMIT TASK</button></span>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  @endif    
                             </div>
                           </div>
                         </div>

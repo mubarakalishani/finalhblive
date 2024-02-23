@@ -28,7 +28,7 @@ class AddUserBalance extends Action
     }
 
     // Handling the form submission
-    public function handle(App\Models\User $model, Request $request)
+    public function handle(\App\Models\User $model, Request $request)
     {
         // dd($request->all());
         // $model->balance += $request->input('balance');

@@ -56,7 +56,7 @@ class CampaingDetailWithPendingProofs extends Component
         $this->submissionPerWeek    = $this->task->submission_per_week;
     }
 
-    public function approve($proofId , $tab)
+    public function approve($proofId)
     {
         // dd($proofId);
         // $this->tab = $tab;
