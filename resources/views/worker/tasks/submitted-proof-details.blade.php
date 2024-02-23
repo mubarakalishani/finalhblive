@@ -140,7 +140,8 @@
                                         bg-primary
                                     @elseif($proof->status == 6 || $proof->status == 7)
                                         bg-danger
-                                    @endif">
+                                    @endif"
+                                    >
                                     @if($proof->status == 0)
                                         Pending
                                     @elseif($proof->status == 1)
@@ -158,7 +159,6 @@
                                     @elseif($proof->status == 7)
                                         Resubmission Expired    
                                     @endif
-                                    >
                                 </span>
 
                                   </strong>
