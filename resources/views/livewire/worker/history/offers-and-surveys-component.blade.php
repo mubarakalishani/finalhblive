@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="all-history-page">
         <div class="container">
-            <ul class="nav nav-tabs mt-3">
+            <ul class="nav nav-tabs">
                 <li class="nav-item">
                   <a class="nav-link" aria-current="page" href="/history/jobs">Jobs</a>
                 </li>
