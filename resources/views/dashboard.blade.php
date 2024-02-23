@@ -19,7 +19,7 @@
                         <h5 class="d-flex align-items-center mb-3">Balance Status</h5>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Main Balance</h6>
+                          <div class="mb-0 dashboard-data-head">Main Balance</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           ${{ auth()->user()->balance }}
@@ -34,7 +34,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Advertising Balance</h6>
+                          <div class="mb-0 dashboard-data-head">Advertising Balance</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           ${{ auth()->user()->deposit_balance }}
@@ -46,7 +46,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Expert Level Balance</h6>
+                          <div class="mb-0 dashboard-data-head">Expert Level Balance</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->diamond_level_balance }} 
@@ -58,7 +58,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Pending Balance</h6>
+                          <div class="mb-0 dashboard-data-head">Pending Balance</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           ${{ \App\Models\SubmittedTaskProof::where('status', 0)->where('worker_id', auth()->user()->id)->sum('amount') + \App\Models\OffersAndSurveysLog::where('status', 1)->where('user_id', auth()->user()->id)->sum('reward') }}
@@ -70,7 +70,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Total withdrawn</h6>
+                          <div class="mb-0 dashboard-data-head">Total withdrawn</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           ${{ \App\Models\WithdrawalHistory::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }} 
@@ -88,7 +88,7 @@
                       <h5 class="d-flex align-items-center mb-3">Micro Tasks Status</h5>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Total Submitted</h6>
+                          <div class="mb-0 dashboard-data-head">Total Submitted</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->count() }} 
@@ -100,7 +100,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Approved+Paid</h6>
+                          <div class="mb-0 dashboard-data-head">Approved+Paid</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 1)->count() }}
@@ -112,7 +112,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Rejected</h6>
+                          <div class="mb-0 dashboard-data-head">Rejected Task</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 2)->count() }}
@@ -124,7 +124,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Pending Approval</h6>
+                          <div class="mb-0 dashboard-data-head">Pending Approval</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 0)->count() }}
@@ -142,7 +142,7 @@
                       <h5 class="d-flex align-items-center mb-3">All Jobs</h5>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Total Offer/Surveys Completed</h6>
+                          <div class="mb-0 dashboard-data-head">Total Offers</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_offers_completed }} 
@@ -154,7 +154,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Total PTC Completed</h6>
+                          <div class="mb-0 dashboard-data-head">PTC Completed</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_ptc_completed }}
@@ -166,7 +166,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Total Faucet Completed</h6>
+                          <div class="mb-0 dashboard-data-head">Faucet Completed</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_faucet_completed }}
@@ -178,7 +178,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <h6 class="mb-0">Total Shorterlinks Completed</h6>
+                          <div class="mb-0 dashboard-data-head">Shorterlinks Completed</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
                           {{ auth()->user()->total_shortlinks_completed }}
