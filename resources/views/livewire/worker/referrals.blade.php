@@ -14,12 +14,12 @@
                                 <div class="card-statistic-3 p-4">
                                     <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
                                     <div class="mb-4">
-                                        <h5 class="card-title mb-0">Total Referrals</h5>
+                                        <h5 class="card-title mb-0">{{Total Referrals}}</h5>
                                     </div>
                                     <div class="row align-items-center mb-2 d-flex">
                                         <div class="col-8">
                                             <h2 class="d-flex align-items-center mb-0">
-                                                3,243
+                                              {{ auth()->user()->referrals }}
                                             </h2>
                                         </div>
                                     </div>
@@ -34,12 +34,12 @@
                                 <div class="card-statistic-3 p-4">
                                     <div class="card-icon card-icon-large"><i class="fas fa-dollar"></i></div>
                                     <div class="mb-4">
-                                        <h5 class="card-title mb-0">Total Referrals</h5>
+                                        <h5 class="card-title mb-0">Referral Commission Earned</h5>
                                     </div>
                                     <div class="row align-items-center mb-2 d-flex">
                                         <div class="col-8">
                                             <h2 class="d-flex align-items-center mb-0">
-                                                3,243
+                                                ${{ auth->user()->earned_from_referrals }}
                                             </h2>
                                         </div>
                                     </div>
