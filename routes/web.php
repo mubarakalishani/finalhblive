@@ -231,7 +231,7 @@ Route::get('/views/youtube', [PtcAdController::class, 'showYoutube'])->name('wor
 
 
 Route::get('/cronjob/everyminute', [EveryMinuteController::class, 'index']);
-Route::get('/cronjob/everyday', [EveryDayController::class, 'resolveResubmitExhaustTasks']);
+Route::get('/cronjob/everyday', [EveryDayController::class, 'runCronJob']);
 
 
 Route::get('/social', function () {
