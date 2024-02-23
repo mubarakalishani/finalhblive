@@ -17,15 +17,14 @@ class EveryDayController extends Controller
         foreach ($resubmitExhaustedProofs as $resubmitExhaustedProof) {
             $task= Task::find($resubmitExhaustedProof->task_id);
             $employer = User::find($task->employer_id);
-            dd('employer id is ' . $employer->id);
-            $resubmitExhaustedProof->update([
-                'status' => 7,
-            ]);
-            // $employer->increment('deposit_balance', $resubmitExhaustedProof->amount);
-            // Log::create([
-            //     'user_id' => $task->employer_id,
-            //     'description' => 'resubmit time passed amount for proof id '.$resubmitExhaustedProof->id.' for task # '. $resubmitExhaustedProof->task_id,
+            // $resubmitExhaustedProof->update([
+            //     'status' => 7,
             // ]);
+            $employer->increment('deposit_balance', $resubmitExhaustedProof->amount);
+            Log::create([
+                'user_id' => $task->employer_id,
+                'description' => 'resubmit time passed amount for proof id '.$resubmitExhaustedProof->id.' for task # '. $resubmitExhaustedProof->task_id,
+            ]);
         }
     }
 }

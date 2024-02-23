@@ -119,21 +119,21 @@ class EveryMinuteController extends Controller
 
     protected function resolveResubmitExhaustTasks(){
         //get all the proofs for whose the resubmission allowed time is passed and mark them as resubmit time exhausted
-        $resubmitExhaustedProofs = SubmittedTaskProof::where(function ($query) {
-            $query->whereRaw('NOW() > DATE_ADD(updated_at, INTERVAL 3 DAY)');
-        })->where('status', 3)->get();
-        foreach ($resubmitExhaustedProofs as $resubmitExhaustedProof) {
-            $task= Task::find($resubmitExhaustedProof->task_id);
-            $employer = User::where($task->employer_id);
-            $resubmitExhaustedProof->update([
-                'status' => 7,
-            ]);
-            $employer->increment('deposit_balance', $resubmitExhaustedProof->amount);
-            Log::create([
-                'user_id' => $task->employer_id,
-                'description' => 'resubmit time passed amount for proof id '.$resubmitExhaustedProof->id.' for task # '. $resubmitExhaustedProof->task_id,
-            ]);
-        }
+        // $resubmitExhaustedProofs = SubmittedTaskProof::where(function ($query) {
+        //     $query->whereRaw('NOW() > DATE_ADD(updated_at, INTERVAL 3 DAY)');
+        // })->where('status', 3)->get();
+        // foreach ($resubmitExhaustedProofs as $resubmitExhaustedProof) {
+        //     $task= Task::find($resubmitExhaustedProof->task_id);
+        //     $employer = User::find($task->employer_id);
+        //     $resubmitExhaustedProof->update([
+        //         'status' => 7,
+        //     ]);
+        //     $employer->increment('deposit_balance', $resubmitExhaustedProof->amount);
+        //     Log::create([
+        //         'user_id' => $task->employer_id,
+        //         'description' => 'resubmit time passed amount for proof id '.$resubmitExhaustedProof->id.' for task # '. $resubmitExhaustedProof->task_id,
+        //     ]);
+        // }
     }
 
     protected function markTasksBudgetExceeded(){
