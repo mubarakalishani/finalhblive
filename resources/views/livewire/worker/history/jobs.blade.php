@@ -6,6 +6,14 @@
         <!-- all games start -->
         <div class="all-history-page">
             <div class="container">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/history/jobs">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/history/offers-and-surveys">Offers & Surveys </span></a>
+                    </li>
+                </ul>
                 <div class="pt-3">
             <h4><em>Jobs History</em></h4>
         </div>
