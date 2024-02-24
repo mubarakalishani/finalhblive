@@ -6,6 +6,7 @@ use Illuminate\Support\Carbon;
 use App\Models\PtcAd;
 use App\Models\PtcLog;
 use App\Models\Task;
+use App\Models\User;
 use App\View\Composers\ProfileComposer;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
@@ -95,11 +96,18 @@ class ViewServiceProvider extends ServiceProvider
                         // Filter the tasks by the user's country and the amount_per_task column
                         ->whereHas('targetedCountries', function ($query) use ($userCountry) {
                             $query->where('country', $userCountry);
-                        })->count();
+                        })->get();
+            $countTasks = 0;
+            foreach ($availableTasks as $availableTask) {
+                $employer = User::find($availableTask->employer_id);
+                if ($availableTask->targetedCountries->first()->amount_per_task < $employer->deposit_balance) {
+                    $countTasks++;
+                }
+            }            
 
             $sidebarData = [
                 'availablePtcAds' => $countIframe + $countWindows,
-                'availableTasks' => $availableTasks,
+                'countTasks' => $countTasks,
             ];
 
             $view->with('sidebarData', $sidebarData);

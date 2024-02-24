@@ -84,7 +84,7 @@
                         {{-- <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"> --}}
                             <li class="sidebar-item">
                                 <a href="/jobs" class="sidebar-link"><i class="fa-solid fa-list-check"></i> Micro Tasks
-                                    <span class="badge bg-primary">{{ $sidebarData['availableTasks'] }}</span>
+                                    <span class="badge bg-primary">{{ $sidebarData['countTasks'] }}</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
