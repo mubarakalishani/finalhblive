@@ -29,6 +29,10 @@ class ShortLinkController extends AdminController
         
         $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->sortable()->text();
+        $grid->column('status', __('Status'))->switch([
+            'enable' => ['value' => 1, 'text' => 'open', 'color' => 'primary'],
+            'disable' => ['value' => 0, 'text' => 'close', 'color' => 'default'],
+        ])->sortable();
         $grid->column('total_views')->display( function(){
             $id = $this->id;
             $totalViews = ShortLinksHistory::where('link_id', $id)->count();
@@ -99,6 +103,7 @@ class ShortLinkController extends AdminController
         $form = new Form(new ShortLink());
 
         $form->text('name', __('Name'));
+        $form->switch('status', __('Status'))->default(1);
         $form->url('url', __('Url'));
         $form->text('unique_id', __('Unique id'))->value(bin2hex(random_bytes(16)));
         $form->decimal('reward', __('Reward'))->default(0.0000);
