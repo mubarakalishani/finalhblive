@@ -24,6 +24,7 @@ class CustomAuthController extends Controller
         $user = User::where('email', $data->email)->first();
         $nameParts = explode(' ', $data->name);
         $username = implode('', $nameParts);
+        $username = strtolower($username);
         $usernameExists = User::where('username', $username)->first();
         //if username exists, add a 4 char random string next to it
         while ($usernameExists) {
