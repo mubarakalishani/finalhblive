@@ -21,7 +21,7 @@ class WorkerShortLinkController extends Controller
      */
     public function index()
     {
-        $shortLinks = ShortLink::all();
+        $shortLinks = ShortLink::where('status', 1)->get();
         foreach ($shortLinks as $shortLink) {
             $viewsCount = ShortLinksHistory::where('user_id', Auth::user()->id)
             ->where('link_id', $shortLink->id)
