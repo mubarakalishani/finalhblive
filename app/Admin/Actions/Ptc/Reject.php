@@ -20,12 +20,15 @@ class Reject extends Action
 
         //Pause each task by admin i.e put status to 2
         foreach ($ads as $ad) {
-            $user = User::find($ad->employer_id);
-            $ad->update(['status' => 2]);
-            $user->addAdvertiserBalance($ad->ad_balance);
-            
+            if ($ad->status != 2) {
+                $user = User::find($ad->employer_id);
+                $ad->update(['status' => 2]);
+                $adBalance = $ad->ad_balance;
+                $ad->decrement('ad_balance', $adBalance);
+                $user->addAdvertiserBalance($ad->ad_balance); 
+            }
         }
-        return $this->response()->success('Selected Ad Approved Successfully')->refresh();
+        return $this->response()->success('Selected Ad Rejected Successfully')->refresh();
     }
 
     public function html()

@@ -37,7 +37,7 @@ class PtcCampaignHistory extends Component
         $ad = PtcAd::find($this->adId);
         $user = User::find(auth()->user()->id);
         if (auth()->user()->deposit_balance < $this->budgetToAdd) {
-            return;
+            return redirect(url('/advertiser/ptc-campaigns-list'))->with('error', 'Your advertising balance is less than the amount you entered');
         }
         else{
             $this->validate();

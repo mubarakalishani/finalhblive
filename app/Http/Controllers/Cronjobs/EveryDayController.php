@@ -47,6 +47,7 @@ class EveryDayController extends Controller
             $worker = User::find($employerReviewPassedProof->worker_id);
             $worker->increment('balance', $employerReviewPassedProof->amount);
             $worker->increment('earned_from_tasks', $employerReviewPassedProof->amount);
+            $worker->increment('total_earned', $employerReviewPassedProof->amount);
             $worker->increment('total_tasks_completed');
 
             $employerReviewPassedProof->update([

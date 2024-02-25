@@ -43,6 +43,9 @@ class EveryMinuteController extends Controller
             if (!$completedOfferExist) {
                 $offerUser->addWorkerBalance($offer->reward);
                 $offerUser->increment('diamond_level_balance', $offer->added_expert_level);
+                $offerUser->increment('earned_from_offers', $offer->reward);
+                $offerUser->increment('total_earned', $offer->reward);
+                $offerUser->increment('total_offers_completed');
                 $uplineId = $offerUser->upline;
                 if($uplineId > 0)
                 {
