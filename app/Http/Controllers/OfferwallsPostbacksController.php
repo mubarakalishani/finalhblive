@@ -73,11 +73,11 @@ class OfferwallsPostbacksController extends Controller
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -231,17 +231,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by Adscendmedia',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -338,11 +339,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -497,17 +498,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by ayetstudios',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -591,11 +593,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -750,17 +752,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by adbreakmedia',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -859,11 +862,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1019,17 +1022,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by bitlabs',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -1110,11 +1114,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1269,17 +1273,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by bitcotasks',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -1362,11 +1367,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1521,17 +1526,17 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by cpxsresearch',
                 ]);
-            }
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -1618,11 +1623,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -1777,17 +1782,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by lootably',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -1871,11 +1877,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2030,17 +2036,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by offers4crypto',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -2123,11 +2130,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2282,17 +2289,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by excentiv',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -2375,11 +2383,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2534,17 +2542,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by kiwiwall',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -2625,11 +2634,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -2784,17 +2793,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by monlix',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -2890,11 +2900,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -3049,17 +3059,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by notik',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -3149,11 +3160,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -3308,17 +3319,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by revlum',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -3400,11 +3412,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -3559,17 +3571,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by timewall',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
@@ -3651,11 +3664,11 @@ if($payout <= 0.01){
                 'description' => 'user level is not specified',
             ]);
         }
-//credit full if less than $0.01
-if($payout <= 0.01){
-     $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
-     $addToExpertLevel = 0;
-}
+        //credit full if less than $0.01
+        if($payout <= 0.01){
+            $finalReward = ( $payout / 100 ) * $offerwall->expert_cp;
+             $addToExpertLevel = 0;
+        }
 
         // if the transactionId starts with r- , it is a reverse transaction
         if (preg_match('/^r-(.*)/', $transactionId, $matches)) {
@@ -3810,17 +3823,18 @@ if($payout <= 0.01){
                     'user_id' => $user->id,
                     'description' =>  $offer->reward . ' reversed by wannads',
                 ]);
-            }
+            
 
-            if($uplineId != 0)
-            {
-                $uplineToDeduct = User::find($uplineId);
-                $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
-                $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
-                Log::create([
-                    'user_id' => $uplineId, 
-                    'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
-                ]);
+                if($uplineId != 0)
+                {
+                    $uplineToDeduct = User::find($uplineId);
+                    $uplineToDeduct->deductWorkerBalance( abs($offer->upline_commision) );
+                    $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
+                    Log::create([
+                        'user_id' => $uplineId, 
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                    ]);
+                }
             }
             $offer->update([ 'status' => 2 ]);
         }
