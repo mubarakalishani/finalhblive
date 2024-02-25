@@ -200,7 +200,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by Adscendmedia',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -229,7 +229,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by Adscendmedia',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -467,7 +467,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by ayetstudios',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -496,7 +496,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by ayetstudios',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -721,7 +721,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by adbreakmedia',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -750,7 +750,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by adbreakmedia',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -991,7 +991,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by bitlabs',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -1020,7 +1020,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by bitlabs',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -1242,7 +1242,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by bitcotasks',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -1271,7 +1271,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by bitcotasks',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -1495,7 +1495,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by cpxsresearch',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -1524,7 +1524,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by cpxsresearch',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
 
                 if($uplineId != 0)
@@ -1751,7 +1751,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by lootably',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -1780,7 +1780,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by lootably',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -2005,7 +2005,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by offers4crypto',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -2034,7 +2034,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by offers4crypto',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -2258,7 +2258,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by excentiv',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -2287,7 +2287,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by excentiv',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -2511,7 +2511,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by kiwiwall',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -2540,7 +2540,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by kiwiwall',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -2762,7 +2762,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by monlix',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -2791,7 +2791,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by monlix',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -3028,7 +3028,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by notik',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -3057,7 +3057,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by notik',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -3288,7 +3288,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by revlum',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -3317,7 +3317,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by revlum',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -3540,7 +3540,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by timewall',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -3569,7 +3569,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by timewall',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 
@@ -3792,7 +3792,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $userId,
-                    'description' =>  $finalReward . ' reversed by wannads',
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
                 ]);
                 if($uplineId != 0)
                 {
@@ -3821,7 +3821,7 @@ class OfferwallsPostbacksController extends Controller
                 $user->decrement('total_offers_completed');
                 Log::create([
                     'user_id' => $user->id,
-                    'description' =>  $offer->reward . ' reversed by wannads',
+                    'description' =>  $offer->reward . ' reversed by '.$offerwall->name,
                 ]);
             
 

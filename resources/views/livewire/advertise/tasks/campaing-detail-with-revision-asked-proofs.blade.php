@@ -339,7 +339,7 @@
                                                   <p>{{ $proof->worker->username }}</p>
                                                   <strong>Date Submitted :</strong>
                                                   <p>{{ $proof->created_at }}</p>
-                                                  <strong>Date Approved :</strong>
+                                                  <strong>Date Asked For Revision :</strong>
                                                   <p>{{ $proof->updated_at }}</p>
                                                   <strong>Country :</strong>
                                                   <p>{{ $proof->worker->country }}</p>
