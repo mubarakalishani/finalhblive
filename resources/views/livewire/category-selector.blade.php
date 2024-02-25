@@ -45,7 +45,7 @@
             <h6>Excluded Countries</h6>
             <select id="excludeselect" name="excludedCountries[]" size="12" style="width: 100%; background-color: transparent;" wire:change="toggleCountry($event.target.value, 'excluded')" multiple>
                 @foreach($excludedCountries as $country)
-                    <option style="background-color: transparent;" value="{{ $country }}" selected>{{ $country }}</option>
+                    <option id="option{{$country}}" style="background-color: transparent;" value="{{ $country }}" selected>{{ $country }}</option>
                 @endforeach
             </select>
         </div>
@@ -54,7 +54,7 @@
             <h6>Included Countries</h6>
             <select id="includeselect" size="12" style="width: 100%" wire:change="toggleCountry($event.target.value, 'included')" multiple>
                 @foreach($includedCountries as $country)
-                    <option style="background-color: transparent;" value="{{ $country }}" selected>{{ $country }}</option>
+                    <option id="option{{$country}}" style="background-color: transparent;" value="{{ $country }}" selected>{{ $country }}</option>
                 @endforeach
             </select>
         </div>
