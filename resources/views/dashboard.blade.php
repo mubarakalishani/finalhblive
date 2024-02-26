@@ -70,10 +70,10 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <div class="mb-0 dashboard-data-head">Total withdrawn</div>
+                          <div class="mb-0 dashboard-data-head">Earned/Withrawn</div>
                         </div>
                         <div class="col text-secondary view-all-btn">
-                          ${{ \App\Models\WithdrawalHistory::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }} 
+                          ${{ \App\Models\WithdrawalHistory::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }} / ${{ auth()->user()->total_earned }}
                         </div>
                         <div class="col text-secondary view-all-btn">
                           <a href="/withdraw">View all</a>

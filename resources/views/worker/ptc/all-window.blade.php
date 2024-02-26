@@ -183,6 +183,7 @@
                         $('#exampleModalCenter').modal('show')
                         clearInterval(self.interval);
                         sound.play();
+                        document.title = 'completed';
                     }else{
                         self.totalSeconds -= 1;
                     }
