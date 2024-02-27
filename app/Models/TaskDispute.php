@@ -31,6 +31,6 @@ class TaskDispute extends Model
 
     public function proof()
     {
-        return $this->belongsTo(Task::class, 'proof_id', 'id');
+        return $this->belongsTo(SubmittedTaskProof::class, 'proof_id', 'id');
     }
 }

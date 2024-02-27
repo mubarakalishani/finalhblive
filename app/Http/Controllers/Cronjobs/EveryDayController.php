@@ -66,6 +66,24 @@ class EveryDayController extends Controller
             $employer = User::find( $expiredDispute->employer_id );
             $worker = User::find( $expiredDispute->worker_id );
             $proof = SubmittedTaskProof::find( $expiredDispute->proof_id );
+
+            $employer->decrement('deposit_balance', $expiredDispute->proof->amount);
+            $worker->increment('balance', $expiredDispute->proof->amount);
+            $worker->increment('earned_from_tasks', $expiredDispute->proof->amount);
+            $worker->increment('total_earned', $expiredDispute->proof->amount);
+            $worker->increment('total_tasks_completed');
+            $proof->update([
+                'status' => 1
+            ]);
+
+            $expiredDispute->update([
+                'status' => 1
+            ]);
+
+            Log::create([
+                'user_id' => $expiredDispute->employer_id,
+                'description' => 'dispute expired to respond to added '.$expiredDispute->proof->amount.' to user '.$expiredDispute->worker_id.' for task#'.$expiredDispute->task_id
+            ]);
         }
     }
 }
