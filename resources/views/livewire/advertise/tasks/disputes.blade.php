@@ -79,8 +79,8 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <button class="btn btn-success" wire:click="approve('{{ $proof->id }}')">Approve</button> <button
-                                                    class="btn btn-danger my-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-proof-id="{{ $proof->id }}">Reject</button> <br>
+                                                <button id="approvebtn{{ $proof->id }}" class="btn btn-success" wire:click="approve('{{ $proof->id }}')">Approve</button> 
+                                                <button id="rejectbtn{{ $proof->id }}" class="btn btn-danger my-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-proof-id="{{ $proof->id }}">Reject</button> <br>
                                                 <strong>username :</strong>
                                                 <p>{{ $proof->worker->username }}</p>
                                                 <strong>Date Submitted :</strong>
@@ -128,7 +128,7 @@
                       <input type="hidden" class="form-control proof-id" wire:model.lazy="proofId" autofocus>
                     <div class="mb-3">
                       <label for="reasonExplained" class="col-form-label">Explain Your Rejection Reason:</label>
-                      <textarea name="reasonExplained" class="form-control" id="message-text" wire:model.live="reasonExplained"></textarea>
+                      <textarea name="reasonExplained" class="form-control" id="message-text" wire:model.live.debounce.2000ms="reasonExplained"></textarea>
                       @error('reasonExplained') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                   </form>

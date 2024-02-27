@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Log;
 use App\Models\SubmittedTaskProof;
 use App\Models\Task;
+use App\Models\TaskDispute;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -53,6 +54,18 @@ class EveryDayController extends Controller
             $employerReviewPassedProof->update([
                 'status' => 1
             ]);
+        }
+    }
+
+    protected function creditDisputesNotResponded(){
+        $expiredDisputes = TaskDispute::where(function ($query) {
+            $query->whereRaw('NOW() > DATE_ADD(updated_at, INTERVAL 3 DAY)');
+        })->where('status', 0)->get();
+
+        foreach ($expiredDisputes as $expiredDispute) {
+            $employer = User::find( $expiredDispute->employer_id );
+            $worker = User::find( $expiredDispute->worker_id );
+            $proof = SubmittedTaskProof::find( $expiredDispute->proof_id );
         }
     }
 }

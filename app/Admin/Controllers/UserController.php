@@ -61,23 +61,23 @@ class UserController extends AdminController
                 return "<span class='badge bg-primary'>$level</span>";
               }
         });
-        $grid->column('utm_source', __('Utm source'));
-        $grid->column('bonus_balance', __('Bonus balance'));
-        $grid->column('diamond_level_balance', __('Diamond level balance'));
-        $grid->column('instant_withdrawable_balance', __('Instant withdrawable balance'));
-        $grid->column('total_earned', __('Total earned'));
-        $grid->column('earned_from_referrals', __('Earned from referrals'));
-        $grid->column('earned_from_offers', __('Earned from offers'));
-        $grid->column('earned_from_tasks', __('Earned from tasks'));
-        $grid->column('earned_from_surveys', __('Earned from surveys'));
-        $grid->column('earned_from_ptc', __('Earned from ptc'));
-        $grid->column('earned_from_faucet', __('Earned from faucet'));
-        $grid->column('earned_from_shortlinks', __('Earned from shortlinks'));
-        $grid->column('total_tasks_completed', __('Total tasks completed'));
-        $grid->column('total_offers_completed', __('Total offers completed'));
-        $grid->column('total_surveys_completed', __('Total surveys completed'));
-        $grid->column('total_faucet_completed', __('Total faucet completed'));
-        $grid->column('total_shortlinks_completed', __('Total shortlinks completed'));
+        $grid->column('utm_source', __('Utm source'))->sortable();
+        $grid->column('bonus_balance', __('Bonus balance'))->sortable();
+        $grid->column('diamond_level_balance', __('Diamond level balance'))->sortable();
+        $grid->column('instant_withdrawable_balance', __('Instant withdrawable balance'))->sortable();
+        $grid->column('total_earned', __('Total earned'))->sortable();
+        $grid->column('earned_from_referrals', __('Earned from referrals'))->sortable();
+        $grid->column('earned_from_offers', __('Earned from offers'))->sortable();
+        $grid->column('earned_from_tasks', __('Earned from tasks'))->sortable();
+        $grid->column('earned_from_surveys', __('Earned from surveys'))->sortable();
+        $grid->column('earned_from_ptc', __('Earned from ptc'))->sortable();
+        $grid->column('earned_from_faucet', __('Earned from faucet'))->sortable();
+        $grid->column('earned_from_shortlinks', __('Earned from shortlinks'))->sortable();
+        $grid->column('total_tasks_completed', __('Total tasks completed'))->sortable();
+        $grid->column('total_offers_completed', __('Total offers completed'))->sortable();
+        $grid->column('total_surveys_completed', __('Total surveys completed'))->sortable();
+        $grid->column('total_faucet_completed', __('Total faucet completed'))->sortable();
+        $grid->column('total_shortlinks_completed', __('Total shortlinks completed'))->sortable();
         $grid->column('kyc_status', __('Kyc status'))->display(function($kyc_status){
             switch ($kyc_status) {
                 case 0:
@@ -96,8 +96,8 @@ class UserController extends AdminController
                     break;
             }
         });
-        $grid->column('created_at', __('SignUp Date'));
-        $grid->column('updated_at', __('Last Activity'));
+        $grid->column('created_at', __('SignUp Date'))->sortable();
+        $grid->column('updated_at', __('Last Activity'))->sortable();
         $grid->column('status', __('Status'))->display(function ($status) {
             switch ($status) {
                 case 0:
