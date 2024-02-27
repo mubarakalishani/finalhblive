@@ -32,6 +32,7 @@ class PtcCampaignHistory extends Component
 
     public function showEditBudget($id){
         $this->editBudget = true;
+        $this->editClicks = false;
         $this->adId = $id;
     }
 
