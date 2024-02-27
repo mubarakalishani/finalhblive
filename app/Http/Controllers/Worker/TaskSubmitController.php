@@ -163,6 +163,7 @@ class TaskSubmitController extends Controller
         $employerId = $task->employer_id;
 
         TaskDispute::create([
+            'status' => 0,
             'worker_id' => auth()->user()->id,
             'task_id' => $taskId,
             'proof_id' => $request->input('proofId'),
