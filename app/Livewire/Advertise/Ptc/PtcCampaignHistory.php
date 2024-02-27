@@ -20,7 +20,9 @@ class PtcCampaignHistory extends Component
     public $adId;
 
     public $editBudget = false;
+    public $editClicks = false;
     public $budgetToAdd = 0;
+    public $clicksToAdd = 0;
 
     protected function rules(){
         return [
@@ -31,6 +33,17 @@ class PtcCampaignHistory extends Component
     public function showEditBudget($id){
         $this->editBudget = true;
         $this->adId = $id;
+    }
+
+    public function showEditClicks($id){
+        $this->editBudget = false;
+        $this->editClicks = true;
+        $this->adId = $id;
+    }
+
+    public function updatedClicksToAdd(){
+        $ad = PtcAd::find($this->adId);
+        $this->budgetToAdd = $this->clicksToAdd * $ad->reward_per_view;
     }
 
     public function submitUpdatedBudget(){

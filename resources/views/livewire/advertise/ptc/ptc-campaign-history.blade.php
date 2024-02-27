@@ -59,15 +59,22 @@
                                 <span class="badge rounded-pill text-bg-danger p-2">Admin stopped</span>    
                                 @endif
                             </td>
-                            <td class="table-cell-rated text-center">{{ $ad->views_completed }} / {{ $ad->views_needed }}</td>
-                            <td class="table-cell-rated text-center">
-                                <b>${{ $ad->views_completed * $ad->reward_per_view }}<b> / 
-                                @if ($editBudget && $adId == $ad->id)
+                            <td class="table-cell-rated text-center">{{ $ad->views_completed }} / {{ $ad->views_needed }}
+                                @if ($editClicks && $adId == $ad->id)
                                     <div  class="input-group">
-                                        <input type="number" wire:model.live="budgetToAdd" class="form-control" placeholder="0.00">
+                                        <input id="clicksInput" type="number" wire:model.live="clicksToAdd" class="form-control" placeholder="0">
                                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">save</button>
                                     </div>
-                                @else${{ $ad->views_needed * $ad->reward_per_view }} <a wire:click="showEditBudget('{{ $ad->id }}')"><i class="fa fa-plus-circle text-success"></i></a>@endif</b>
+                                @else <a id="clicksEdit" wire:click="showEditClicks('{{ $ad->id }}')"><i class="fa fa-plus-circle text-success"></i></a>@endif</b>
+                            </td>
+                            <td class="table-cell-rated text-center">
+                                <b>${{ $ad->views_completed * $ad->reward_per_view }}<b> / ${{ $ad->views_needed * $ad->reward_per_view }}
+                                @if ($editBudget && $adId == $ad->id)
+                                    <div  class="input-group">
+                                        <input id="budgetInput" type="number" wire:model.live="budgetToAdd" class="form-control" placeholder="0.00">
+                                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">save</button>
+                                    </div>
+                                @else <a id="budgetEdit" wire:click="showEditBudget('{{ $ad->id }}')"><i class="fa fa-plus-circle text-success"></i></a>@endif</b>
                             </td>
                             <td class="table-cell-settings p-0 text-center">
                                 <a wire:click="pauseResume('{{ $ad->id }}')">
