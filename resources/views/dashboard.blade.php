@@ -10,7 +10,7 @@
             You have <b>{{\App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 3)->count()}}</b> tasks asked to resubmit by the employer, kindly check your <a href="/history/jobs">history</a> and resubmit them within 3 days from the last updated time.
           </div> 
         @endif
-        @if (\App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 3)->count() > 0)
+        @if (\App\Models\TaskDispute::where('employer_id', auth()->user()->id)->where('status', 0)->count() > 0)
           <div class="alert alert-danger" role="alert">
             You have <b>{{ \App\Models\TaskDispute::where('employer_id', auth()->user()->id)->where('status', 0)->count() }}</b> tasks disputes to waiting for resolution, go to <a href="/advertiser/disputes">history</a> and respond to the filed disputes within 3 days of the dispute submission date.
           </div> 
