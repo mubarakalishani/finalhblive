@@ -15,6 +15,7 @@ class EveryDayController extends Controller
     public function runCronJob(){
         $this->resolveResubmitExhaustTasks();
         $this->updateTasks();
+        $this->creditDisputesNotResponded();
     }
 
     protected function resolveResubmitExhaustTasks(){
