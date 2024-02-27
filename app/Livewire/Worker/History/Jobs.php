@@ -13,15 +13,15 @@ class Jobs extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-
+    #[Url]
     public $search = '';
-
+    #[Url]
     public $sortBy = 'updated_at';
-
+    #[Url]
     public $sortDir = 'DESC';
-
+    #[Url]
     public $perPage = 10;
-
+    #[Url]
     public $status = '';
 
 

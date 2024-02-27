@@ -5,6 +5,11 @@
     <div class="mt-3 mb-5">
         <h3>Welcome {{auth()->user()->username}}</h3>
         <p>Your Level: <b>Starter</b> <a href="/guides-and-announcements/1" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></p>
+        @if (\App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 3)->count() > 0)
+          <div class="alert alert-danger" role="alert">
+            You have <b>{{\App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 3)->count()}}<b> tasks asked to resubmit by the employer, kindly check your <a href="/history/jobs">history</a> and resubmit them within 3 days from the last updated time.
+          </div> 
+        @endif
     </div>
 
     <!-- dashboard status cards start -->

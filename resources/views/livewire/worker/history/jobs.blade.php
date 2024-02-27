@@ -30,14 +30,14 @@
                                     </div>
                                     <div class="d-flex flex-wrap">
                                         <select wire:model.live="status">
-                                              <option value="">All</option>
-                                              <option value="0">Pending</option>
-                                              <option value="1">Approved</option>
-                                              <option value="2">Rejected</option>
-                                              <option value="3">Resubmit Requested</option>
-                                              <option value="4">Resubmited</option>
-                                              <option value="5">Dispute Filed</option>
-                                              <option value="6">Dispute Rejected</option>
+                                              <option id="all" value="">All</option>
+                                              <option id="pending" value="0">Pending</option>
+                                              <option id="approved" value="1">Approved</option>
+                                              <option id="rejected" value="2">Rejected</option>
+                                              <option id="resubmit requested" value="3">Resubmit Requested</option>
+                                              <option id="resubmitted" value="4">Resubmited</option>
+                                              <option id="dispute-filed" value="5">Dispute Filed</option>
+                                              <option id="dispute-filed" value="6">Dispute Rejected</option>
                                           </select>
                                     </div>
                                 </div>

@@ -10,8 +10,9 @@ class TaskDispute extends Model
     use HasFactory;
 
     protected $fillable = [
-        'task_id', 'worker_id', 'proof_id', 'description', 'employer_id'
+        'task_id', 'worker_id', 'proof_id', 'description', 'employer_id', 'status'
     ];
+    //status 0=employer unresponded yet , 1=responded
 
     public function worker()
     {
