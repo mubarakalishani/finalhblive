@@ -6,6 +6,7 @@ use App\Models\SubmittedTaskProof;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\RejectApprovalReason;
+use App\Models\TaskDispute;
 use Livewire\WithPagination;
 use Livewire\Component;
 
@@ -48,6 +49,11 @@ class Disputes extends Component
 
         $submittedTaskProof->update([ 'status' => 1 ]);
 
+        $disputeToUpdate = TaskDispute::where('proof_id', $proofId)->latest()->first();
+        $disputeToUpdate->update([
+            'status' => 1,
+        ]);
+
         session()->flash('message', 'Proof Approved Successfully!');
     }
 
@@ -71,6 +77,11 @@ class Disputes extends Component
         
         $proof = SubmittedTaskProof::find($this->proofId);
         $proof->update(['status' => 6]);
+
+        $disputeToUpdate = TaskDispute::where('proof_id', $this->proofId)->latest()->first();
+        $disputeToUpdate->update([
+            'status' => 1,
+        ]);
         
     }
 
