@@ -140,8 +140,9 @@
                                     </li>
 
                                     <li class="sidebar-item">
-                                        <a href="/advertiser/disputes" class="sidebar-link"><i class="fa-solid fa-clock-rotate-left"></i> Disputes</a>
-                                        <span class="badge bg-primary">{{ \App\Models\TaskDispute::where('employer_id', auth()->user()->id)->where('status', 0)->count() }}</span>
+                                        <a href="/advertiser/disputes" class="sidebar-link"><i class="fa-solid fa-clock-rotate-left"></i> Disputes 
+                                            <span class="badge bg-primary">{{ \App\Models\TaskDispute::where('employer_id', auth()->user()->id)->where('status', 0)->count() }}</span>
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
