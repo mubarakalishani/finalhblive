@@ -24,7 +24,7 @@
             </div>
 
             <!-- top area-before-table -->
-            <div class="table-responsive-lg">
+            <div class="table-responsive-lg" style="overflow-x: auto;">
                 <table class="table table-big table-hover table-middle">
                     <thead>
                         <tr class="table-row">

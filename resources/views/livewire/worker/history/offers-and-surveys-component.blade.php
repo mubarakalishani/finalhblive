@@ -35,7 +35,7 @@
                             </div>
                             <!-- top area-before-table end-->
 
-                            <div class="table-responsive-lg">
+                            <div class="table-responsive-lg" style="overflow-x: auto;">
                                 <table class="table table-big table-hover table-middle table-striped">
                                   <thead>
                                     <tr class="table-row" >
