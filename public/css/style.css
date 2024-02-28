@@ -1810,7 +1810,7 @@ Dashboard-status-card style start
     font-size: 8px;
     font-weight: 800;
 }
-.dashboard-data-head .currency-style{
+.dashboardstatus-card .currency-style{
     font-size: 11px;
     font-family: monospace;
     font-weight: 800;
