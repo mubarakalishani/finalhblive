@@ -24,6 +24,9 @@ class BatchApprove extends Action
             }
             else {
                 $withdrawalRequest->update(['status' => 1]);
+                $withdrawalRequest->user->update([
+                    'total_withdrawn' => $withdrawalRequest->amount_after_fee
+                ]);
             }
             
         }

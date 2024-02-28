@@ -14,6 +14,9 @@ class SingleApprove extends RowAction
     public function handle(Model $model)
     {
         $model->update(['status' => 1]);
+        $model->user->update([
+            'total_withdrawn' => $model->amount_after_fee
+        ]);
 
         return $this->response()->success('Successfully Completed')->refresh();
     }
