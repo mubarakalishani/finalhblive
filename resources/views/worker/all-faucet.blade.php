@@ -81,7 +81,7 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-12" id="horizontalbanner">
+        <div class="col-lg-12 text-center" id="horizontalbanner">
           {!! $topBanner !!}
         </div>
       </div> 
@@ -109,7 +109,7 @@
       </div>
 
       <div class="row my-3">
-        <div class="col-lg-12" id="bottomBanner">
+        <div class="col-lg-12 text-center" id="bottomBanner">
           {!! $bottomBanner !!}
         </div>
       </div>
