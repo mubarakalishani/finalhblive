@@ -83,7 +83,7 @@
                           <div class="mb-0 dashboard-data-head">Earned/Withrawn</div>
                         </div>
                         <div class="col text-secondary currency-style">
-                          ${{ auth()->user()->total_earned }} / ${{ \App\Models\WithdrawalHistory::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }}
+                          ${{ auth()->user()->total_earned }} / ${{ auth()->user()->total_withdrawn }}
                         </div>
                         <div class="col text-secondary view-all-btn">
                           <a href="/withdraw">View all</a>
