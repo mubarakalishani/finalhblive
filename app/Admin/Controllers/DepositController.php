@@ -95,7 +95,7 @@ class DepositController extends AdminController
         $form->text('method', __('Method'));
         $form->decimal('amount', __('Amount'))->default(0.00);
         $form->text('status', __('Status'));
-        $form->text('internal_tx', __('Internal tx'))->default('H1E3xVfyHaJr');
+        $form->text('internal_tx', __('Internal tx'))->value(bin2hex(random_bytes(6)));
         $form->textarea('external_tx', __('External tx'));
         $form->textarea('description', __('Description'));
 
