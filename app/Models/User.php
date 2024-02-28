@@ -27,7 +27,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'username', 'unique_user_id', 'email', 'secret_key', 'password', 'level', 'referrals', 'utm_source', 'signup_ip', 'last_ip', 'upline', 'country',
-        'balance', 'deposit_balance', 'bonus_balance', 'diamond_level_balance', 'instant_withdrawable_balance', 'total_earned', 'earned_from_referrals',
+        'balance', 'deposit_balance', 'bonus_balance', 'diamond_level_balance', 'instant_withdrawable_balance', 'total_earned','total_withdrawn', 'earned_from_referrals',
         'earned_from_offers', 'earned_from_tasks', 'earned_from_surveys', 'earned_from_ptc', 'earned_from_faucet', 'earned_from_shortlinks',
         'total_tasks_completed', 'total_offers_completed', 'total_ptc_completed', 'total_surveys_completed', 'total_faucet_completed', 
         'total_shortlinks_completed', 'status', 'kyc_status', 
