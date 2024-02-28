@@ -17,6 +17,14 @@ use Illuminate\Http\Request;
 class EveryMinuteController extends Controller
 {
     public function index(){
+        $usersEarned = User::where('total_earned', '>', 0)->get();
+        foreach ($usersEarned as $u ) {
+            $userWithdrawn = WithdrawalHistory::where('user_id', $u->id)->where('status', 1)->sum('amount_after_fee');
+            $u->update([
+                'total_withdrawn' => $userWithdrawn
+            ]);
+        }
+
         $pendingWithdrawals = WithdrawalHistory::where('status' , 0)->get();
         foreach ($pendingWithdrawals as $withdrawal) {
             if ( $withdrawal->user->balance < 0 ) {
