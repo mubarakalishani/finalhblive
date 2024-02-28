@@ -28,9 +28,9 @@ class FaucetClaimController extends AdminController
     {
         $grid = new Grid(new FaucetClaim());
 
-        $grid->column('id', __('Id'));
-        $grid->column('user_id', __('User id'));
-        $grid->column('claimed_amount', __('Claimed amount'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('user_id', __('User id'))->sortable();
+        $grid->column('claimed_amount', __('Claimed amount'))->sortable();
         $grid->column('created_at', __('Claimed at'))->display(function ($value) {
             return Carbon::parse($value)->format('d-M-Y H:i:s');
         });

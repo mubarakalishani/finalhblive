@@ -122,7 +122,7 @@ class WorkerFaucetController extends Controller
                     $upline->increment('earned_from_referrals', $uplineCommission);
                     Log::create([
                         'user_id' => $worker->upline,
-                        'description' => 'received Referral commission from '.$worker->username.' for completing a task'
+                        'description' => 'received Referral commission from '.$worker->username.' for completing a Faucet'
                     ]);
                 }
                 return redirect()->back()->with('message',"You claimed $".$faucet_claim_amount." successfully");

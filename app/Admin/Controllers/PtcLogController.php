@@ -28,11 +28,10 @@ class PtcLogController extends AdminController
         $grid = new Grid(new PtcLog());
 
         $grid->column('id', __('Id'));
-        $grid->column('worker_id', __('Worker id'))->display(function ($worker_id, $column) {
-            $user = User::find($worker_id);
-            $username = $user->value('username');
-            return $username;
-        });
+        $grid->column('worker_id', __('Worker id'))->display( function($userid){
+            $username = User::where('id', $userid)->value('username');
+            return "<span>$username</span>";
+        })->sortable();
 
         $grid->column('ad_id', __('Ad id'))->sortable();
         $grid->column('reward', __('Reward'))->sortable();

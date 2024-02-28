@@ -243,7 +243,7 @@ class PtcAdController extends Controller
                 $upline->increment('earned_from_referrals', $uplineCommission);
                 Log::create([
                     'user_id' => $worker->upline,
-                    'description' => 'received Referral commission from '.$worker->username.' for completing a task'
+                    'description' => 'received Referral commission from '.$worker->username.' for completing a PTC'
                 ]);
             }
             return redirect($ad->url);
@@ -318,7 +318,7 @@ class PtcAdController extends Controller
                 $upline->increment('earned_from_referrals', $uplineCommission);
                 Log::create([
                     'user_id' => $worker->upline,
-                    'description' => 'received Referral commission from '.$worker->username.' for completing a task'
+                    'description' => 'received Referral commission from '.$worker->username.' for completing a PTC'
                 ]);
             }
             header( "refresh:1; url=".url('/views/window') ); 
