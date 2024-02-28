@@ -31,7 +31,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Main Balance</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           ${{ auth()->user()->balance }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -46,7 +46,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Advertising Balance</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           ${{ auth()->user()->deposit_balance }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -58,7 +58,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Expert Level Balance</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ auth()->user()->diamond_level_balance }} 
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -70,7 +70,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Pending Balance</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           ${{ \App\Models\SubmittedTaskProof::where('status', 0)->where('worker_id', auth()->user()->id)->sum('amount') + \App\Models\OffersAndSurveysLog::where('status', 1)->where('user_id', auth()->user()->id)->sum('reward') }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -82,7 +82,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Earned/Withrawn</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           ${{ auth()->user()->total_earned }} / ${{ \App\Models\WithdrawalHistory::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount_after_fee') }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -100,7 +100,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Total Submitted</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->count() }} 
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -112,7 +112,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Approved+Paid</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 1)->count() }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -124,7 +124,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Rejected Task</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 2)->count() }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -136,7 +136,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Pending Approval</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ \App\Models\SubmittedTaskProof::where('worker_id', auth()->user()->id)->where('status', 0)->count() }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -154,7 +154,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Total Offers</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ auth()->user()->total_offers_completed }} 
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -166,7 +166,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">PTC Completed</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ auth()->user()->total_ptc_completed }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -178,7 +178,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Faucet Completed</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ auth()->user()->total_faucet_completed }}
                         </div>
                         <div class="col text-secondary view-all-btn">
@@ -190,7 +190,7 @@
                         <div class="col">
                           <div class="mb-0 dashboard-data-head">Shorterlinks Completed</div>
                         </div>
-                        <div class="col text-secondary view-all-btn">
+                        <div class="col text-secondary currency-style">
                           {{ auth()->user()->total_shortlinks_completed }}
                         </div>
                         <div class="col text-secondary view-all-btn">
