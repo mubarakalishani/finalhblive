@@ -66,6 +66,7 @@ class UserController extends AdminController
         $grid->column('diamond_level_balance', __('Diamond level balance'))->sortable();
         $grid->column('instant_withdrawable_balance', __('Instant withdrawable balance'))->sortable();
         $grid->column('total_earned', __('Total earned'))->sortable();
+        $grid->column('total_withdrawn', __('Total Withdrawn'))->sortable();
         $grid->column('earned_from_referrals', __('Earned from referrals'))->sortable();
         $grid->column('earned_from_offers', __('Earned from offers'))->sortable();
         $grid->column('earned_from_tasks', __('Earned from tasks'))->sortable();
