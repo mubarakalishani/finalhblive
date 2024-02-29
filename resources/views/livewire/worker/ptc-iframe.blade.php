@@ -1,5 +1,5 @@
 <div>
-    <header class="header-area">
+    <header class="header-area" style="border-bottom: solid 1px #666666;">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid  mx-2">
             <a href="/" class="navbar-brand">
