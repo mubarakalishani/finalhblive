@@ -6,6 +6,7 @@
                 <img src="/images/logo.png"  alt="CoolBrand" style="">
             </a>
             <strong><span id="safeTimerDisplay">Loading:</span></strong>
+            <span><i class="fa-regular fa-clock"></i></span>
       </nav>
     </header>
     <iframe id="adFrame" src="{{ $url }}" width="100%" height="1000px"></iframe>
