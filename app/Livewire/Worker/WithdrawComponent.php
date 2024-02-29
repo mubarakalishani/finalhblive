@@ -137,7 +137,7 @@ class WithdrawComponent extends Component
             ], [
                 'wallet.required' => 'The Wallet address is required.',
                 'wallet.string' => 'The Address is not in a valid format.',
-                'wallet.numeric' => 'The Address is not in a valid format. the UID looks like this 526496893, get it from your binance profile or pay',
+                'wallet.numeric' => 'The UID or Pay ID you submitted is not in a valid. the UID looks like this 526496893, get it from your binance profile or pay',
                 'wallet.regex' => 'The address is not in a valid address. it must be a valid evm address like this: 0xc2132D05D31c914a87C6611C10748AEb04B58e8F. check again and eliminate any extra blank spaces etc',
         ]);
     }
