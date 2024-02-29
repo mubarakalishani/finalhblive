@@ -23,7 +23,7 @@
           <div class="row gutters-sm">
             <div class="col">
               <div class="row gutters-sm">
-                <div class="col-sm-4 mb-3">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3">
                   <div class="card h-100">
                     <div class="card-body">
                         <h5 class="d-flex align-items-center mb-3">Balance Status</h5>
@@ -92,7 +92,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-4 mb-3">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3">
                   <div class="card h-100">
                     <div class="card-body">
                       <h5 class="d-flex align-items-center mb-3">Micro Tasks Status</h5>
@@ -146,7 +146,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-4 mb-3">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3">
                   <div class="card h-100">
                     <div class="card-body">
                       <h5 class="d-flex align-items-center mb-3">All Jobs</h5>
