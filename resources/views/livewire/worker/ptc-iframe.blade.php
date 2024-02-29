@@ -5,7 +5,7 @@
             <a href="/" class="navbar-brand">
                 <img src="/images/logo.png"  alt="CoolBrand" style="">
             </a>
-            <span><i class="fa-regular fa-clock"></i> <strong id="safeTimerDisplay">Loading:</strong></span>
+            <span><strong id="safeTimerDisplay">Loading:</strong> <i class="fa-regular fa-clock"></i></span>
       </nav>
     </header>
     <iframe id="adFrame" src="{{ $url }}" width="100%" height="1000px"></iframe>
