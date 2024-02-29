@@ -129,6 +129,19 @@ class WithdrawComponent extends Component
         ]);
     }
 
+
+    public function binacepayValidate()
+    {
+        $this->validate([
+            'wallet' => ['required', 'numeric'],
+            ], [
+                'wallet.required' => 'The Wallet address is required.',
+                'wallet.string' => 'The Address is not in a valid format.',
+                'wallet.numeric' => 'The Address is not in a valid format. the UID looks like this 526496893, get it from your binance profile or pay',
+                'wallet.regex' => 'The address is not in a valid address. it must be a valid evm address like this: 0xc2132D05D31c914a87C6611C10748AEb04B58e8F. check again and eliminate any extra blank spaces etc',
+        ]);
+    }
+
     public function validateFaucetPayAddress(){
         $apiEndpoint = 'https://faucetpay.io/api/v1/checkaddress';
         $apiKey = 'eba9637922c60c044faa820dec46dd872d76d56b04f1a33c38c7143a1c4ab76a';
@@ -191,7 +204,10 @@ class WithdrawComponent extends Component
                 break;  
             case 'Faucet Pay':
                 $this->validateFaucetPayAddress();
-                break;          
+                break;
+            case 'Binance Pay ID':
+                $this->binacepayValidate();
+                break;             
         }
         if ($this->getErrorBag()->any()) {
             // Handle errors or return early
