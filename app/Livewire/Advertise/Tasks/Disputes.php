@@ -40,7 +40,7 @@ class Disputes extends Component
         if ($advertiser->deposit_balance < $amount) {
             return back()->with('error', 'your have insufficient funds, please top up first');
         }
-        $advertiser->deductAdvertiserBalance($amount);
+        $advertiser->deductAdvertiserBalance(abs($amount));
 
         $worker->addWorkerBalance($amount);
         $worker->increment('total_earned', $amount);

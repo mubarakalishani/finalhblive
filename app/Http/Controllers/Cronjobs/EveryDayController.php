@@ -68,7 +68,7 @@ class EveryDayController extends Controller
             $worker = User::find( $expiredDispute->worker_id );
             $proof = SubmittedTaskProof::find( $expiredDispute->proof_id );
 
-            $employer->decrement('deposit_balance', $expiredDispute->proof->amount);
+            $employer->decrement('deposit_balance', abs($expiredDispute->proof->amount));
             $worker->increment('balance', $expiredDispute->proof->amount);
             $worker->increment('earned_from_tasks', $expiredDispute->proof->amount);
             $worker->increment('total_earned', $expiredDispute->proof->amount);

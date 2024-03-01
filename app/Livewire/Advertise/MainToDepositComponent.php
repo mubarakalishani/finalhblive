@@ -25,7 +25,7 @@ class MainToDepositComponent extends Component
         if ($this->amount <= auth()->user()->balance) {
             $userId = auth()->user()->id;
             $advertiser = User::find($userId);
-            $advertiser->decrement('balance', $this->amount);
+            $advertiser->decrement('balance', abs($this->amount));
             $advertiser->increment('deposit_balance', $this->amount);
             Log::create([
                 'user_id' => auth()->user()->id,

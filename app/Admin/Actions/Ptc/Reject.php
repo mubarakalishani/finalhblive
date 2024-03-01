@@ -24,7 +24,7 @@ class Reject extends Action
                 $user = User::find($ad->employer_id);
                 $ad->update(['status' => 2]);
                 $adBalance = $ad->ad_balance;
-                $ad->decrement('ad_balance', $adBalance);
+                $ad->decrement('ad_balance', abs($adBalance));
                 $user->addAdvertiserBalance($ad->ad_balance); 
             }
         }

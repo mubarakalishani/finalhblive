@@ -54,15 +54,20 @@ class PtcCampaignHistory extends Component
             return redirect(url('/advertiser/ptc-campaigns-list'))->with('error', 'Your advertising balance is less than the amount you entered');
         }
         else{
-            $this->validate();
-            $user->deductAdvertiserBalance($this->budgetToAdd);
-            $ad->increment('ad_balance', $this->budgetToAdd);
-            $ad->increment('views_needed', $this->budgetToAdd/$ad->reward_per_view);
-            Log::create([
-                'user_id' => auth()->user()->id,
-                'description' => 'modified and added budget to the ptc ad '.$this->adId.' with $'.$this->budgetToAdd,
-            ]);
-            return redirect(url('/advertiser/ptc-campaigns-list'))->with('success', 'The campaign budget is successfully Updated');
+            if (auth()->user()->deposit_balance > 0 && $this->budgetToAdd > 0) {
+                $this->validate();
+                $user->deductAdvertiserBalance(abs($this->budgetToAdd));
+                $ad->increment('ad_balance', $this->budgetToAdd);
+                $ad->increment('views_needed', $this->budgetToAdd/$ad->reward_per_view);
+                Log::create([
+                    'user_id' => auth()->user()->id,
+                    'description' => 'modified and added budget to the ptc ad '.$this->adId.' with $'.$this->budgetToAdd,
+                ]);
+                return redirect(url('/advertiser/ptc-campaigns-list'))->with('success', 'The campaign budget is successfully Updated');   
+            }
+            else{
+                return redirect(url('/advertiser/ptc-campaigns-list'))->with('error', 'something went wrong, either your advertising balance is insufficient or you have entered negative numbers'); 
+            }
             
         }
     }

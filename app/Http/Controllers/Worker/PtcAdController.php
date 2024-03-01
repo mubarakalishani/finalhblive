@@ -230,7 +230,7 @@ class PtcAdController extends Controller
                 'ip' => request()->ip(),
             ]);
             $ad->increment('views_completed');
-            $ad->decrement('ad_balance', $ad->reward_per_view);
+            $ad->decrement('ad_balance', abs($ad->reward_per_view));
             $worker->addWorkerBalance($ad->reward_per_view);
             $worker->increment('total_earned', $ad->reward_per_view);
             $worker->increment('earned_from_ptc' , $ad->reward_per_view);
@@ -305,7 +305,7 @@ class PtcAdController extends Controller
                 'ip' => request()->ip(),
             ]);
             $ad->increment('views_completed');
-            $ad->decrement('ad_balance', $ad->reward_per_view);
+            $ad->decrement('ad_balance', abs($ad->reward_per_view));
             $worker->addWorkerBalance($ad->reward_per_view);
             $worker->increment('total_earned', $ad->reward_per_view);
             $worker->increment('earned_from_ptc' , $ad->reward_per_view);

@@ -106,7 +106,7 @@ class TaskSubmitController extends Controller
         $workerId = auth()->user()->id;
         $userCountry = auth()->user()->country;
         $reward = TaskTargetedCountry::where('task_id', $taskId)->where('country', $userCountry)->value('amount_per_task');
-        $advertiser->deductAdvertiserBalance($reward);
+        $advertiser->deductAdvertiserBalance(abs($reward));
 
         $submittedProof = new SubmittedTaskProof;
         $submittedProof->task_id = $taskId;

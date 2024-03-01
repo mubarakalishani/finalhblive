@@ -162,7 +162,7 @@ class CreatePtc extends Component
             $this->ptcAd->revision_interval = $this->adRevisionInterval;
             $this->ptcAd->excluded_countries = json_encode($this->excludedCountries);
             $this->ptcAd->save();
-            $user->deductAdvertiserBalance($totalAdAmount);
+            $user->deductAdvertiserBalance(abs($totalAdAmount));
             return redirect(url('/advertiser/ptc-campaigns-list'))->with('success', 'Your Campaign is Successfully Created and Pending Approval');
             
         }

@@ -48,7 +48,7 @@ class ReviewTasks extends Component
         $advertiseId = Auth::user()->id;
         $advertiser = User::find($advertiseId);
 
-        $advertiser->deductAdvertiserBalance($amount);
+        $advertiser->deductAdvertiserBalance(abs($amount));
         $worker->addWorkerBalance($amount);
 
         $SubmittedTaskProof->update([ 'status' => 1 ]);

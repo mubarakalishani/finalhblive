@@ -71,7 +71,7 @@ class CampaingDetailWithRevisionAskedProofs extends Component
             if ($advertiser->deposit_balance < $amount) {
                 return back()->with('error', 'your have insufficient funds, please top up first');
             }
-            $advertiser->deductAdvertiserBalance($amount);
+            $advertiser->deductAdvertiserBalance(abs($amount));
         }
         $worker->addWorkerBalance($amount);
 
@@ -106,7 +106,7 @@ class CampaingDetailWithRevisionAskedProofs extends Component
             if ($advertiser->deposit_balance < $amount) {
                 return back()->with('error', 'your have insufficient funds, please top up first');
             }
-            $advertiser->deductAdvertiserBalance($amount);
+            $advertiser->deductAdvertiserBalance(abs($amount));
         }
 
         $submittedTaskProof->update([ 'status' => 3 ]);
@@ -127,7 +127,7 @@ class CampaingDetailWithRevisionAskedProofs extends Component
                 if ($advertiser->deposit_balance < $amount) {
                     return back()->with('error', 'your have insufficient funds, please top up first');
                 }
-                $advertiser->deductAdvertiserBalance($amount);
+                $advertiser->deductAdvertiserBalance(abs($amount));
             }
             $worker->addWorkerBalance($amount);
             
