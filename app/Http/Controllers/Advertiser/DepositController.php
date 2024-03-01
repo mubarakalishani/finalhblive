@@ -205,6 +205,10 @@ class DepositController extends Controller
 
 
 public function handlePerfectMoneyWebhook(Request $request){
+    $faucetPayStatus = Deposit::where('method', 'perfectmoney')->value('status');
+    if ($faucetPayStatus != 1) {
+        return 0;
+    }
     $transactionId = $request->input('PAYMENT_ID');
     $amount = $request->input('PAYMENT_AMOUNT');
     $externalTx = $request->input('PAYMENT_BATCH_NUM');
