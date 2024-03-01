@@ -87,11 +87,13 @@ class PtcAdController extends AdminController
         $grid->filter(function($filter){
           $filter->equal('employer_id', 'employer ID');
           $filter->where(function ($query) {
-              $query->whereHas('user', function ($query) {
+              $query->whereHas('employer', function ($query) {
                   $query->where('username', 'like', "%{$this->input}%");
               });
           }, 'Employer Username');
           $filter->equal('type', 'Type')->select(['0' => 'iframe', '1' => 'window']);
+          $filter->in('status')->multipleSelect(['0' => 'Pending Approval', '1' => 'approved/running' , '2' => 'Rejected', '3' => 'Paused', '4' => 'Completed', '5' => 'Admin Paused' ]);
+          $filter->between('created_at', 'Ad Submitted Between')->datetime();
       });
 
         $grid->quickSearch(function ($model, $query) {
@@ -102,11 +104,6 @@ class PtcAdController extends AdminController
             ;
         });
 
-
-        $grid->filter(function($filter){
-            $filter->in('status')->multipleSelect(['0' => 'Pending Approval', '1' => 'approved/running' , '2' => 'Rejected', '3' => 'Paused', '4' => 'Completed', '5' => 'Admin Paused' ]);
-            $filter->between('created_at', 'Ad Submitted Between')->datetime();
-        });
 
 
         $grid->model()->orderBy('id', 'desc');
