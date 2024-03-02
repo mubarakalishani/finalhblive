@@ -313,7 +313,7 @@
                               <tr>
                                 <td>
                                   <div class="form-check">
-                                    <input class="form-check-input" wire:model.live="batchSelectedProofs" type="checkbox" value="{{ $proof->id }}" id="flexCheckDefault">
+                                    <input id="flexCheck{{ $proof->id }}" class="form-check-input" wire:model.live="batchSelectedProofs" type="checkbox" value="{{ $proof->id }}">
                                   </div>
                                   <strong>Text Proofs:</strong>
                                   <ol>
