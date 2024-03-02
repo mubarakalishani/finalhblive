@@ -132,8 +132,14 @@ class TaskController extends AdminController
         $show->field('employer_id', __('Employer id'));
         $show->field('title', __('Title'));
         $show->field('worker_level', __('Worker level'));
-        $show->field('category', __('Category'));
-        $show->field('sub_category', __('Sub category'));
+        $show->field('category', __('Category'))->display( function($id){
+            $category = TaskCategory::where('id', $id)->value('name');
+            return "<span>$category</span>";
+        });
+        $show->field('sub_category', __('Sub category'))->display( function($id){
+            $subCategory = TaskCategory::where('id', $id)->value('name');
+            return "<span>$subCategory</span>";
+        });
         $show->field('task_balance', __('Task balance'));
         $show->field('approval_fee', __('Approval fee'));
         $show->field('rating_time', __('Rating time'));
@@ -145,18 +151,47 @@ class TaskController extends AdminController
         $show->field('submission_per_hour', __('Submission per hour'));
         $show->field('submission_per_day', __('Submission per day'));
         $show->field('submission_per_week', __('Submission per week'));
-        $show->field('status', __('Status'));
+        $show->field('status', __('Status'))->display( function($status){
+            switch ($status) {
+                case 0:
+                  return "<span class='badge bg-warning'>Pending Approval</span>";
+                  break;
+                case 1:
+                    return "<span class='badge bg-success'>Approved</span>";
+                    break;
+                case 2:
+                    return "<span class='badge bg-danger'>Rejected</span>";
+                    break;
+                case 3:
+                    return "<span class='badge bg-secondary'>Paused</span>";
+                    break;
+                case 4:
+                    return "<span class='badge bg-success'>Running</span>";
+                    break;
+                case 5:
+                    return "<span class='badge bg-light'>Completed</span>";
+                    break;
+                case 6:
+                    return "<span class='badge bg-info'>Budget Exceeded</span>";
+                    break; 
+                case 7:
+                    return "<span class='badge bg-primary'>paused Admin</span>";
+                    break;
+                case 8:
+                    return "<span class='badge bg-dark'>Admin Stopped</span>";
+                    break;             
+                default:
+                return "<span class='badge bg-primary'>$status</span>";
+              }
+        });
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
         $show->stepDetails('stepDetails', function ($stepDetails) {
             // If you need to set the resource URL for steps
             $stepDetails->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/task-steps');
-        
             $stepDetails->step_no();
             $stepDetails->step_details();
-            
-            // You can include other step fields as needed
         });
         $show->requiredProofs('requiredProofs', function ($requiredProofs) {
             // If you need to set the resource URL for steps
