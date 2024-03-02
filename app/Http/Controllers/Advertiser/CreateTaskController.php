@@ -44,9 +44,9 @@ class CreateTaskController extends Controller
         Validator::make($request->all(), [
             'title' => 'required|string|max:50',
             'rating_time' => 'required|numeric',
-            'step.*' => 'required|string|max:255',
-            'requiredProof.*' => 'required|string|max:255',
-            'proofType.*' => 'required|string|max:255',
+            'step.*' => 'required|string|max:500',
+            'requiredProof.*' => 'required|string|max:500',
+            'proofType.*' => 'required|numeric',
             'includedCountries.*' => 'required|string|max:255',
             'category' => 'required|numeric',
             'subCategory' => 'required|numeric',
