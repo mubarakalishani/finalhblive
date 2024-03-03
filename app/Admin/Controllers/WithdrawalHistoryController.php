@@ -93,7 +93,6 @@ class WithdrawalHistoryController extends AdminController
         $grid->actions(function ($actions) {
             $actions->disableDelete();
             $actions->disableEdit();
-            $actions->disableShow();
             $actions->add(new SingleApprove);
             $actions->add(new SingleCancel);
             $actions->add(new SingleRefund);
