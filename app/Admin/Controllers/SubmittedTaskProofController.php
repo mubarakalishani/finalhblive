@@ -95,6 +95,22 @@ class SubmittedTaskProofController extends AdminController
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
+        $show->textProofs('textProofs', function ($textProofs) {
+            // If you need to set the resource URL for steps
+            $textProofs->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/text-proofs');
+            $textProofs->submitted_proof_id();
+            $textProofs->proof_no();
+            $textProofs->proof_text();
+        });
+
+        $show->imageProofs('imageProofs', function ($imageProofs) {
+            // If you need to set the resource URL for steps
+            $imageProofs->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/image-proofs');
+            $imageProofs->submitted_proof_id();
+            $imageProofs->proof_no();
+            $imageProofs->url();
+        });
+
         return $show;
     }
 
