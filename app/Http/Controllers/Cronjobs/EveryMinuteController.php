@@ -79,7 +79,7 @@ class EveryMinuteController extends Controller
             if($pendingWithdrawal == null){
                 $sumOfWithdrawals = 0;
             }
-            if ( $sumOfWithdrawals > ($user->total_earned + $user->earned_from_referrals)) {
+            if ( $sumOfWithdrawals > ((($user->total_earned + $user->earned_from_referrals)/100)) * 10) {
                 $pendingWithdrawal->update([
                     'status' => 4,
                     'description' => 'sum of withdrawals is greater than the earned balance'
