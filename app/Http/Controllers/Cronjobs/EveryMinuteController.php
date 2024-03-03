@@ -73,7 +73,7 @@ class EveryMinuteController extends Controller
         //get all the pending withdrawals
         $pendingWithdrawals = WithdrawalHistory::where('status', 0)->get();
         foreach ($pendingWithdrawals as $pendingWithdrawal) {
-            $userId = $pendingWithdrawals->user_id;
+            $userId = $pendingWithdrawal->user_id;
             $user = User::find($userId);
             $sumOfWithdrawals = WithdrawalHistory::where('user_id', $userId)->whereIn('status', [0,1])->sum('sum');
             if($sumOfWithdrawals == null){
