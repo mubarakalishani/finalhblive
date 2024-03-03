@@ -54,7 +54,10 @@ class WithdrawalHistoryController extends AdminController
                     break;
                 case 3:
                     return "<span class='badge bg-danger'>Cancelled</span>";
-                    break;            
+                    break;
+                case 4:
+                    return "<span class='badge bg-danger'>Investigate</span>";
+                    break;                 
                 default:
                 return "<span class='badge bg-primary'>$status</span>";
               }

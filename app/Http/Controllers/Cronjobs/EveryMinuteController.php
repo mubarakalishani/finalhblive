@@ -13,6 +13,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\WithdrawalHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class EveryMinuteController extends Controller
 {
@@ -64,63 +65,49 @@ class EveryMinuteController extends Controller
             ]);
             $offer->update(['status' => 0]);
         }
-        $this->processFaucetPayPayments();
+        $this->checkAllWithdrawals();
     }
 
 
-
-    protected function processFaucetPayPayments(){
-        $apiEndpoint = 'https://faucetpay.io/api/v1/send';
-        $apiKey = DepositMethodSetting::where('name', 'faucetpay_merchant_api')->value('value');
-
-        $pendingFaucetPayWithdrawals = WithdrawalHistory::where('method', 'Faucet Pay')
-        ->where('status', 0)
-        ->get();
-        if (PayoutGateway::where('name', 'Faucet Pay')->value('instant') == 1) {
-            foreach ($pendingFaucetPayWithdrawals as $withdrawal) {
-                $walletAddress = $withdrawal->wallet;
-                // Prepare the data to be sent in the request
-                $data = [
-                    'api_key' => $apiKey,
-                    'currency' => 'USDT',
-                    'amount' => $withdrawal->amount_after_fee * 100000000,
-                    'to' => $walletAddress
-                ];
-
-                // Initialize cURL session
-                $ch = curl_init();
-
-                // Set cURL options
-                curl_setopt($ch, CURLOPT_URL, $apiEndpoint);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                // Execute cURL session
-                $response = curl_exec($ch);
-
-                // Check for cURL errors
-                if (curl_errno($ch)) {
-                    echo 'Curl error: ' . curl_error($ch);
-                }
-
-                // Close cURL session
-                curl_close($ch);
-
-                // Decode the JSON response
-                $result = json_decode($response, true);
-                if ($result['status'] == 200 && $result['message'] == 'OK') {
-                    $withdrawal->update(['status' => 1]);
-                }
+    protected function checkAllWithdrawals(){
+        //get all the pending withdrawals
+        $pendingWithdrawals = WithdrawalHistory::where('status', 0)->get();
+        foreach ($pendingWithdrawals as $pendingWithdrawal) {
+            $userId = $pendingWithdrawals->user_id;
+            $user = User::find($userId);
+            $sumOfWithdrawals = WithdrawalHistory::where('user_id', $userId)->whereIn('status', [0,1])->sum('sum');
+            if($sumOfWithdrawals == null){
+                $sumOfWithdrawals = 0;
             }
-        }  
-    }
+            if ( $sumOfWithdrawals > $user->total_earned) {
+                $pendingWithdrawal->update([
+                    'status' => 4,
+                    'description' => 'sum of withdrawals is greater than the earned balance'
+                ]);
+            }
 
-    protected function markTasksBudgetExceeded(){
-        $tasks = Task::where('status', 1)->get();
-        foreach ($tasks as $task) {
-            $employer = User::where($task->employer_id);
-            
+            //here check if a user has offers within short time
+            $offerRecords = OffersAndSurveysLog::where('payout', '>=', 0.05)->where('user_id', $userId)->orderorderBy('id')->get();
+            $countWithin5Minutes = 0;
+            if ($offerRecords->count() > 1) {
+                for ($i = 0; $i < count($offerRecords) - 1; $i++) {
+                    $currentRecord = $offerRecords[$i];
+                    $nextRecord = $offerRecords[$i + 1];
+                
+                    $timeDifference = Carbon::parse($currentRecord->created_at)
+                        ->diffInMinutes(Carbon::parse($nextRecord->created_at));
+                
+                    if ($timeDifference < 5) {
+                        $countWithin5Minutes++;
+                    }
+                }    
+            }
+            if ($countWithin5Minutes > 1) {
+                $pendingWithdrawal->update([
+                    'status' => 4,
+                    'description' => 'multiple offers and surveys within very short span of time'
+                ]);
+            }
         }
     }
 }

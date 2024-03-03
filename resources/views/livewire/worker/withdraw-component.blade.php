@@ -80,11 +80,13 @@
                                             @elseif($withdrawalHistory->status==1) bg-success 
                                             @elseif($withdrawalHistory->status==2) bg-primary
                                             @elseif($withdrawalHistory->status==3) bg-danger
+                                            @elseif($withdrawalHistory->status==4) bg-danger
                                             @endif">
                                             @if($withdrawalHistory->status==0) Pending 
                                             @elseif($withdrawalHistory->status==1) Completed 
                                             @elseif($withdrawalHistory->status==2) Refunded 
                                             @elseif($withdrawalHistory->status==3) Cancelled
+                                            @elseif($withdrawalHistory->status==4) Admin investigation pending, contact telegram support if took 24h+
                                             @endif
                                         </span>
                                         {{-- @if($withdrawalHistory->status==2)
