@@ -70,7 +70,7 @@ class SubmittedTaskProofController extends AdminController
             }else{
                 $remark = 'none yet';
             }
-            return "<span>$$remark</span>";;
+            return "<span>$remark</span>";;
         });
         $grid->column('created_at', __('Created at'))->sortable();
         $grid->column('updated_at', __('Updated at'))->sortable();
