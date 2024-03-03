@@ -64,6 +64,14 @@ class SubmittedTaskProofController extends AdminController
                 return "<span class='badge bg-primary'>$status</span>";
               }
         })->sortable();
+        $grid->column('employer_remark')->display( function(){
+            if ($this->status == 2 || $this->status == 3 || $this->status == 4 || $this->status == 5 || $this->status == 6 || $this->status == 7) {
+                $remark = $this->revisionApprovalReason->selected_reason . '  '.$this->revisionApprovalReason->employer_comment;
+            }else{
+                $remark = 'none yet';
+            }
+            return "<span>$$remark</span>";;
+        });
         $grid->column('created_at', __('Created at'))->sortable();
         $grid->column('updated_at', __('Updated at'))->sortable();
 
@@ -72,6 +80,16 @@ class SubmittedTaskProofController extends AdminController
         $grid->filter(function($filter){
             $filter->equal('worker_id', 'User Id');
             $filter->equal('task_id', 'Task Id');
+            $filter->in('status', 'Status')->multipleSelect([
+                '0' => 'pending', 
+                '1' => 'approved' , 
+                '2' => 'rejected',
+                '3' => 'asked Resubmit',
+                '4' => 'resubmitted by worker',
+                '5' => 'dispute filed',
+                '6' => 'dispute rejected',
+                '7' => 'resubmission time passed'
+            ]);
             $filter->between('created_at', 'submitted between')->datetime();
         });
         return $grid;

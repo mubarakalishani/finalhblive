@@ -47,6 +47,7 @@ Route::group([
     $router->resource('news-and-announcements', NewsAndAnnouncementController::class);
     $router->resource('text-proofs', TextProofController::class);
     $router->resource('image-proofs', ImageProofController::class);
+    $router->resource('reject-approval-reasons', RejectApprovalReasonController::class);
 
 
 
