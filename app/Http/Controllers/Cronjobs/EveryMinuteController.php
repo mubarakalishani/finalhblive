@@ -75,11 +75,11 @@ class EveryMinuteController extends Controller
         foreach ($pendingWithdrawals as $pendingWithdrawal) {
             $userId = $pendingWithdrawal->user_id;
             $user = User::find($userId);
-            $sumOfWithdrawals = WithdrawalHistory::where('user_id', $userId)->whereIn('status', [0,1])->sum('sum');
-            if($sumOfWithdrawals == null){
+            $pendingWithdrawal = WithdrawalHistory::where('user_id', $userId)->whereIn('status', [0,1])->sum('sum');
+            if($pendingWithdrawal == null){
                 $sumOfWithdrawals = 0;
             }
-            if ( $sumOfWithdrawals > $user->total_earned) {
+            if ( $pendingWithdrawal > $user->total_earned) {
                 $pendingWithdrawal->update([
                     'status' => 4,
                     'description' => 'sum of withdrawals is greater than the earned balance'
