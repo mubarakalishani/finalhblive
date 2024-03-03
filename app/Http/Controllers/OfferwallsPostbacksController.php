@@ -187,7 +187,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -209,7 +209,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -240,7 +240,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -454,7 +454,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -476,7 +476,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -507,7 +507,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -708,7 +708,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -730,7 +730,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -761,7 +761,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -978,7 +978,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1000,7 +1000,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1031,7 +1031,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1229,7 +1229,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1251,7 +1251,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1282,7 +1282,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1482,7 +1482,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1504,7 +1504,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1534,7 +1534,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1738,7 +1738,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1760,7 +1760,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1791,7 +1791,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -1992,7 +1992,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2014,7 +2014,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2045,7 +2045,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2245,7 +2245,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2267,7 +2267,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2298,7 +2298,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2498,7 +2498,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2520,7 +2520,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2551,7 +2551,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2749,7 +2749,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2771,7 +2771,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -2802,7 +2802,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3015,7 +3015,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3037,7 +3037,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3068,7 +3068,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3275,7 +3275,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3297,7 +3297,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3328,7 +3328,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3527,7 +3527,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3549,7 +3549,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3580,7 +3580,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3779,7 +3779,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToReward->increment('earned_from_referrals', $uplineCommision);
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'received referral Commission ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3801,7 +3801,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($uplineCommision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $uplineCommision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }
@@ -3832,7 +3832,7 @@ class OfferwallsPostbacksController extends Controller
                     $uplineToDeduct->decrement('earned_from_referrals', abs($offer->upline_commision));
                     Log::create([
                         'user_id' => $uplineId, 
-                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username,
+                        'description' => 'deducted chargedback ' . $offer->upline_commision . ' from user '. $user->username.' for offer at '.$offerwall->name,
                     ]);
                 }
             }

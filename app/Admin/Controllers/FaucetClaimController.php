@@ -42,6 +42,11 @@ class FaucetClaimController extends AdminController
 
         $grid->filter(function($filter){
             $filter->equal('user_id', 'User Id');
+            $filter->where(function ($query) {
+                $query->whereHas('worker', function ($query) {
+                    $query->where('username', 'like', "%{$this->input}%");
+                });
+            }, 'Username');
             $filter->between('created_at', 'submitted between')->datetime();
         });
         
