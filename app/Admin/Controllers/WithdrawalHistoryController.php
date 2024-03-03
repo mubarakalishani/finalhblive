@@ -80,7 +80,7 @@ class WithdrawalHistoryController extends AdminController
                     $query->where('username', 'like', "%{$this->input}%");
                 });
             }, 'Username');
-            $filter->in('status', 'Status')->multipleSelect(['0' => 'Pending', '1' => 'Completed' , '2' => 'Refunded', '3' => 'Cancelled']);
+            $filter->in('status', 'Status')->multipleSelect(['0' => 'Pending', '1' => 'Completed' , '2' => 'Refunded', '3' => 'Cancelled', 'Investigation' => '4']);
             $filter->in('method', 'method')->multipleSelect($methods);
         });
 
