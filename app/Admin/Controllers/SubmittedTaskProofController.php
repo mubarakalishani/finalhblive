@@ -69,6 +69,11 @@ class SubmittedTaskProofController extends AdminController
 
         $grid->model()->orderBy('updated_at', 'desc');
 
+        $grid->filter(function($filter){
+            $filter->equal('worker_id', 'User Id');
+            $filter->equal('task_id', 'Task Id');
+            $filter->between('created_at', 'submitted between')->datetime();
+        });
         return $grid;
     }
 

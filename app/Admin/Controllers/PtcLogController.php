@@ -44,6 +44,12 @@ class PtcLogController extends AdminController
 
         $grid->filter(function($filter){
             $filter->like('ip', 'ip');
+            $filter->equal('worker_id', 'User Id');
+            $filter->where(function ($query) {
+                $query->whereHas('worker', function ($query) {
+                    $query->where('username', 'like', "%{$this->input}%");
+                });
+            }, 'Username');
             $filter->between('created_at', 'completed between')->datetime();
         });
 

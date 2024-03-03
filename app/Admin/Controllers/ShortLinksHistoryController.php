@@ -38,8 +38,13 @@ class ShortLinksHistoryController extends AdminController
         $grid->model()->orderBy('updated_at', 'desc');
 
         $grid->filter(function($filter){
-            $shortlinks = ShortLink::pluck('id', 'name')->toArray();
+            $shortlinks = ShortLink::pluck('name', 'id')->toArray();
             $filter->equal('user_id', 'User Id');
+            $filter->where(function ($query) {
+                $query->whereHas('worker', function ($query) {
+                    $query->where('username', 'like', "%{$this->input}%");
+                });
+            }, 'Username');
             $filter->equal('link_id', 'Link Id');
             $filter->in('link_id', 'Short Link')->multipleSelect($shortlinks);
         });

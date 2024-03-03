@@ -11,4 +11,8 @@ class ShortLinksHistory extends Model
     protected $fillable = [
         'user_id', 'link_id', 'reward', 'ip_address'
     ];
+
+    public function worker(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

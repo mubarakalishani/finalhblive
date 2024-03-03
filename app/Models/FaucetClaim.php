@@ -11,4 +11,8 @@ class FaucetClaim extends Model
     protected $fillable = [
         'user_id', 'claimed_amount'
     ];
+
+    public function worker(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

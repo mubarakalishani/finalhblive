@@ -39,6 +39,11 @@ class FaucetClaimController extends AdminController
         });
 
         $grid->disableActions();
+
+        $grid->filter(function($filter){
+            $filter->equal('user_id', 'User Id');
+            $filter->between('created_at', 'submitted between')->datetime();
+        });
         
         return $grid;
     }
