@@ -87,7 +87,7 @@ class EveryMinuteController extends Controller
             }
 
             //here check if a user has offers within short time
-            $offerRecords = OffersAndSurveysLog::where('payout', '>=', 0.05)->where('user_id', $userId)->orderorderBy('id')->get();
+            $offerRecords = OffersAndSurveysLog::where('payout', '>=', 0.05)->where('user_id', $userId)->orderBy('id')->get();
             $countWithin5Minutes = 0;
             if ($offerRecords->count() > 1) {
                 for ($i = 0; $i < count($offerRecords) - 1; $i++) {
