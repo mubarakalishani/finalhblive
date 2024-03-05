@@ -15,6 +15,20 @@ class FixBalancesController extends Controller
     public function index(){
         $users = User::where('total_earned', '>', 0)->orWhere('total_withdrawn', '>', 0)->get();
         foreach ($users as $user) {
+            $earnedFromPtc = 0;
+            $ptcCount = 0;
+            $earnedFromFaucet = 0;
+            $faucetCount = 0;
+            $earnedFromOffers = 0;
+            $offersCount = 0;
+            $earnedFromShortlinks = 0;
+            $shotlinkCount = 0;
+            $earnedFromTasks = 0;
+            $tasksCount = 0;
+
+
+
+
             $earnedFromPtc = PtcLog::where('worker_id', $user->id)->sum('reward');
             $ptcCount = PtcLog::where('worker_id', $user->id)->count();
             $earnedFromFaucet = FaucetClaim::where('user_id', $user->id)->sum('claimed_amount');
@@ -40,6 +54,11 @@ class FixBalancesController extends Controller
                 'total_shortlinks_completed' => $shotlinkCount,
                 'total_earned' => $totalEarned,
             ]);
+
+            if($user->id > 500){
+                echo "completed";
+                return 0;
+            }
         }
 
         echo "fixed successfully";
