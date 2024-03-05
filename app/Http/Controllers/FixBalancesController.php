@@ -13,31 +13,20 @@ use Illuminate\Http\Request;
 class FixBalancesController extends Controller
 {
     public function index(){
-        // Fetch all users with their related data
-        $users = User::with(['ptcLogs', 'faucetClaims', 'offersAndSurveysLogs', 'shortLinksHistories', 'submittedTaskProofs'])
-                      ->get();
-    
+        $users = User::where('total_earned', '>', 0)->orWhere('total_withdrawn', '>', 0)->get();
         foreach ($users as $user) {
-            // Calculate earned amounts and counts for each user
-            $earnedFromPtc = $user->ptcLogs->sum('reward');
-            $ptcCount = $user->ptcLogs->count();
-            
-            $earnedFromFaucet = $user->faucetClaims->sum('claimed_amount');
-            $faucetCount = $user->faucetClaims->count();
-            
-            $earnedFromOffers = $user->offersAndSurveysLogs->where('status', 0)->sum('reward');
-            $offersCount = $user->offersAndSurveysLogs->where('status', 0)->count();
-            
-            $earnedFromShortlinks = $user->shortLinksHistories->sum('reward');
-            $shortlinkCount = $user->shortLinksHistories->count();
-            
-            $earnedFromTasks = $user->submittedTaskProofs->where('status', 1)->sum('amount');
-            $tasksCount = $user->submittedTaskProofs->where('status', 1)->count();
-            
-            // Calculate total earned amount
+            $earnedFromPtc = PtcLog::where('worker_id', $user->id)->sum('reward');
+            $ptcCount = PtcLog::where('worker_id', $user->id)->count();
+            $earnedFromFaucet = FaucetClaim::where('user_id', $user->id)->sum('claimed_amount');
+            $faucetCount = FaucetClaim::where('user_id', $user->id)->count();
+            $earnedFromOffers = OffersAndSurveysLog::where('user_id', $user->id)->where('status', 0)->sum('reward');
+            $offersCount = OffersAndSurveysLog::where('user_id', $user->id)->where('status', 0)->count();
+            $earnedFromShortlinks = ShortLinksHistory::where('user_id', $user->id)->sum('reward');
+            $shotlinkCount = ShortLinksHistory::where('user_id', $user->id)->count();
+            $earnedFromTasks = SubmittedTaskProof::where('worker_id', $user->id)->where('status', 1)->sum('amount');
+            $tasksCount = SubmittedTaskProof::where('worker_id', $user->id)->where('status', 1)->count();
             $totalEarned = $earnedFromPtc + $earnedFromFaucet + $earnedFromOffers + $earnedFromShortlinks + $earnedFromTasks;
             
-            // Update user record with calculated values
             $user->update([
                 'earned_from_ptc' => $earnedFromPtc,
                 'earned_from_offers' => $earnedFromOffers,
@@ -48,11 +37,12 @@ class FixBalancesController extends Controller
                 'total_offers_completed' => $offersCount,
                 'total_ptc_completed' => $ptcCount,
                 'total_faucet_completed' => $faucetCount,
-                'total_shortlinks_completed' => $shortlinkCount,
+                'total_shortlinks_completed' => '$shotlinkCount',
                 'total_earned' => $totalEarned,
             ]);
         }
-    
+
         echo "fixed successfully";
+        
     }
 }
