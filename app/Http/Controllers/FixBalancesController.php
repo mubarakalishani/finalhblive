@@ -37,7 +37,7 @@ class FixBalancesController extends Controller
                 'total_offers_completed' => $offersCount,
                 'total_ptc_completed' => $ptcCount,
                 'total_faucet_completed' => $faucetCount,
-                'total_shortlinks_completed' => '$shotlinkCount',
+                'total_shortlinks_completed' => $shotlinkCount,
                 'total_earned' => $totalEarned,
             ]);
         }
