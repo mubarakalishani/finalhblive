@@ -26,6 +26,7 @@ use App\Http\Controllers\Cronjobs\EveryFiveMinutesController;
 use App\Http\Controllers\Cronjobs\EveryMinuteController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FixBalancesController;
 use App\Http\Controllers\Pages\AboutController;
 use App\Http\Controllers\Pages\ContactPageController;
 use App\Http\Controllers\Pages\FaqController;
@@ -62,6 +63,8 @@ Route::get('/create-task', function () {
 Route::get('/advertiser/task', function () {
     return view('advertiser.task_full_page');
 });
+
+Route::get('/fix-balances', [FixBalancesController::class, 'index']);
 
 
 //offerwalls postbacks routes
