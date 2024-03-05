@@ -197,7 +197,7 @@ class TaskSubmitController extends Controller
         $submittedProof = new SubmittedTaskProof;
         $submittedProof->task_id = $taskId;
         $submittedProof->worker_id = $workerId;
-        $submittedProof->status = 0;
+        $submittedProof->status = 4;
         $submittedProof->amount = $reward;
         $submittedProof->save();
         

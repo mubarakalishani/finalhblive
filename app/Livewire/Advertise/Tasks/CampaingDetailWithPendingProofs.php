@@ -94,7 +94,10 @@ class CampaingDetailWithPendingProofs extends Component
         $worker = User::find($workerId);
         $advertiseId = auth()->user()->id;
         $advertiser = User::find($advertiseId);
-        $advertiser->addAdvertiserBalance($amount); //adding the amount back to the advertiser's balance
+        if ($SubmittedTaskProof->status != 4 && $SubmittedTaskProof->status == 0) {
+            $advertiser->addAdvertiserBalance($amount);
+        }
+         //adding the amount back to the advertiser's balance
 
         $SubmittedTaskProof->update([ 'status' => 2 ]);
 
