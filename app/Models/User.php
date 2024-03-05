@@ -82,6 +82,31 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    public function ptcLogs()
+    {
+        return $this->hasMany(PtcLog::class, 'worker_id');
+    }
+
+    public function faucetClaims()
+    {
+        return $this->hasMany(FaucetClaim::class, 'user_id');
+    }
+
+    public function offersAndSurveysLogs()
+    {
+        return $this->hasMany(OffersAndSurveysLog::class, 'user_id');
+    }
+
+    public function shortLinksHistories()
+    {
+        return $this->hasMany(ShortLinksHistory::class, 'user_id');
+    }
+
+    public function submittedTaskProofs()
+    {
+        return $this->hasMany(SubmittedTaskProof::class, 'worker_id');
+    }
+
     public function addWorkerBalance($amount)
     {
         $this->balance += $amount;
