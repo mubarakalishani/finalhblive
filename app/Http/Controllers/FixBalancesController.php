@@ -13,9 +13,7 @@ use Illuminate\Http\Request;
 class FixBalancesController extends Controller
 {
     public function index(){
-        $users = $users = User::where('total_earned', '>', 0)
-        ->where('id', '>=', 2500)
-        ->get();
+        $users = $users = User::where('id', '>=', 2500)->get();
         foreach ($users as $user) {
             $earnedFromPtc = 0;
             $ptcCount = 0;
