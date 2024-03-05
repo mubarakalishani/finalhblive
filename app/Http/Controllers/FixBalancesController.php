@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class FixBalancesController extends Controller
 {
     public function index(){
-        $users = $users = User::where('id', '>=', 7000)->get();
+        $users = $users = User::where('id', '>=', 8000)->get();
         foreach ($users as $user) {
             $earnedFromPtc = 0;
             $ptcCount = 0;
@@ -55,7 +55,7 @@ class FixBalancesController extends Controller
                 'total_earned' => $totalEarned,
             ]);
 
-            if($user->id > 8000){
+            if($user->id > 9000){
                 echo "completed";
                 return 0;
             }
