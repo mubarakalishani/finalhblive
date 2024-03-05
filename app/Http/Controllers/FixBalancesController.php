@@ -58,7 +58,7 @@ class FixBalancesController extends Controller
                 'total_earned' => $totalEarned,
             ]);
 
-            if($user->id > 3000){
+            if($user->id > 1500){
                 echo "completed";
                 return 0;
             }
