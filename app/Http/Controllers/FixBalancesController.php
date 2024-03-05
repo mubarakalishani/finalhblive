@@ -15,7 +15,7 @@ class FixBalancesController extends Controller
     public function index(){
         $users = $users = User::where('total_earned', '>', 0)
         ->orWhere('total_withdrawn', '>', 0)
-        ->where('id', '>', 500)
+        ->where('id', '>', 1500)
         ->get();
         foreach ($users as $user) {
             $earnedFromPtc = 0;
@@ -58,9 +58,9 @@ class FixBalancesController extends Controller
                 'total_earned' => $totalEarned,
             ]);
 
-            if($user->id > 1500){
+            if($user->id > 2500){
                 echo "completed";
-                return 0;
+                return 2500;
             }
         }
 
