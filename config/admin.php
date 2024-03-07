@@ -425,7 +425,7 @@ return [
             ]
         ],
         'media-manager' => [
-            'disk' => 'public'   // Points to the disk set in config/filesystem.php
+            'disk' => 'admin'   // Points to the disk set in config/filesystem.php
         ],
 
     ],
