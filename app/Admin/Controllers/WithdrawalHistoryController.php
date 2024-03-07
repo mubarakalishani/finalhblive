@@ -80,6 +80,7 @@ class WithdrawalHistoryController extends AdminController
                     $query->where('username', 'like', "%{$this->input}%");
                 });
             }, 'Username');
+            $filter->equal('wallet', 'Wallet Address');
             $filter->in('status', 'Status')->multipleSelect(['0' => 'Pending', '1' => 'Completed' , '2' => 'Refunded', '3' => 'Cancelled', '4' => 'Investigation']);
             $filter->in('method', 'method')->multipleSelect($methods);
         });
@@ -87,7 +88,8 @@ class WithdrawalHistoryController extends AdminController
         $grid->quickSearch(function ($model, $query) {
             $model->where('method', 'like', "%{$query}%")
             ->orWhere('status', 'like', "%{$query}%")
-            ->orWhere('user_id', 'like', "%{$query}%");
+            ->orWhere('user_id', 'like', "%{$query}%")
+            ->orWhere('wallet', 'like', "%{$query}%");
         });
 
         $grid->actions(function ($actions) {
