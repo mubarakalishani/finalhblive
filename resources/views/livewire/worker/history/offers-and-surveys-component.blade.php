@@ -44,7 +44,7 @@
                                       <th scope="col" class="white-space-pre">Provider</th>
                                       <th scope="col" class="white-space-pre text-center">Title</th>
                                       <th scope="col" class="white-space-pre text-center">Reward</th>
-                                      <th scope="col" class="white-space-pre text-center" data-bs-toggle="tooltip" data-bs-placement="right" title="You will receive this amount when You will become and expert level user">Added to Expert Level</th>
+                                      <th scope="col" class="white-space-pre text-center" data-bs-toggle="tooltip" data-bs-placement="right" title="You will receive this amount when You will become and expert level user">Added to Expert Level <a target="_blank" href="/guides-and-announcements/2"><i class="fa-regular fa-circle-question"></i></a></th>
                                       <th scope="col" class="white-space-pre text-center">Status</th>
                                       <th scope="col" class="white-space-pre text-center">Submitted</th>
                                       <th scope="col" class="white-space-pre text-center">Last Updated</th>
@@ -77,7 +77,7 @@
                                                 @if($history->status == 0)
                                                     Approved
                                                 @elseif($history->status == 1)
-                                                    Pending
+                                                    Pending <a target="_blank" href="/guides-and-announcements/2"><i class="fa-regular fa-circle-question"></i></a>
                                                 @elseif($history->status == 2)
                                                     Reversed
                                                 @endif
