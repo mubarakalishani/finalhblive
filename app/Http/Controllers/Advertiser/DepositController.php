@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Models\DepositMethodSetting;
 use App\Models\Deposit;
+use App\Models\DepositMethod;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -205,8 +206,8 @@ class DepositController extends Controller
 
 
 public function handlePerfectMoneyWebhook(Request $request){
-    $faucetPayStatus = Deposit::where('method', 'perfectmoney')->value('status');
-    if ($faucetPayStatus != 1) {
+    $perfectmoneyStatus = DepositMethod::where('name', 'perfectmoney')->value('status');
+    if ($perfectmoneyStatus != 1) {
         return 0;
     }
     $transactionId = $request->input('PAYMENT_ID');
