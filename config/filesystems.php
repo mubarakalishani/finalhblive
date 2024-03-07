@@ -43,6 +43,13 @@ return [
             'url' => public_path('/uploads'),
         ],
 
+        'mediatemp' => [
+            'driver' => 'local',
+            'root' => public_path(),
+            'visibility' => 'public',
+            'url' => public_path(),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
