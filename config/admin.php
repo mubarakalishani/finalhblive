@@ -423,7 +423,10 @@ return [
                 'contentsCss'   => '/css/frontend-body-content.css',
 
             ]
-        ]
+        ],
+        'media-manager' => [
+            'disk' => 'public'   // Points to the disk set in config/filesystem.php
+        ],
 
     ],
 ];
