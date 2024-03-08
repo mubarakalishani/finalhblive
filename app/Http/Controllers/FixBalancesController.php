@@ -66,7 +66,9 @@ class FixBalancesController extends Controller
 
 
 
-        $users = User::all();
+        $users = User::with(['payouts' => function ($query) use ($userCountry) {
+            $query->where('status', 1);
+    }])->get();
         foreach ($users as $user) {
             $totalWithdrawn = WithdrawalHistory::where('user_id', $user->id)->where('status', 1)->sum('amount_after_fee');
             $user->update([

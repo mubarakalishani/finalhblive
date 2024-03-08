@@ -92,6 +92,11 @@ class User extends Authenticatable
         return $this->hasMany(FaucetClaim::class, 'user_id');
     }
 
+    public function payouts()
+    {
+        return $this->hasMany(WithdrawalHistory::class, 'user_id');
+    }
+
     public function offersAndSurveysLogs()
     {
         return $this->hasMany(OffersAndSurveysLog::class, 'user_id');
