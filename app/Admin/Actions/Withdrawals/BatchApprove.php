@@ -2,6 +2,7 @@
 
 namespace App\Admin\Actions\Withdrawals;
 
+use App\Models\User;
 use App\Models\WithdrawalHistory;
 use Illuminate\Http\Request;
 use OpenAdmin\Admin\Actions\Action;
@@ -20,11 +21,17 @@ class BatchApprove extends Action
         //Pause each task by admin i.e put status to 2
         foreach ($withdrawalRequests as $withdrawalRequest) {
             if($withdrawalRequest->status == 2){
-
+                $user = User::find($withdrawalRequest->user_id);
+                $user->decrement('balance', $withdrawalRequest->amount_no_fee);
+                $user->update([
+                    'total_withdrawn' => $withdrawalRequest->amount_after_fee
+                ]);
+                $withdrawalRequest->update(['status' => 1]);
             }
             else {
                 $withdrawalRequest->update(['status' => 1]);
-                $withdrawalRequest->user->update([
+                $user = User::find($withdrawalRequest->user_id);
+                $user->update([
                     'total_withdrawn' => $withdrawalRequest->amount_after_fee
                 ]);
             }
