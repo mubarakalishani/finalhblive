@@ -66,7 +66,7 @@ class FixBalancesController extends Controller
 
 
 
-        $users = User::with(['payouts' => function ($query) use ($userCountry) {
+        $users = User::with(['payouts' => function ($query) {
             $query->where('status', 1);
     }])->get();
         foreach ($users as $user) {
