@@ -28,6 +28,7 @@ class ShortLinkController extends AdminController
         $grid = new Grid(new ShortLink());
         
         $grid->column('id', __('Id'))->sortable();
+        $grid->column('order', __('Order'))->sortable()->text();
         $grid->column('name', __('Name'))->sortable()->text();
         $grid->column('status', __('Status'))->switch([
             'enable' => ['value' => 1, 'text' => 'open', 'color' => 'primary'],
@@ -59,7 +60,7 @@ class ShortLinkController extends AdminController
 
         $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
             $create->text('name', 'name')->placeholder('Name');
-            $create->url('url', 'url')->placeholder('https://apiurl.com/?api=&url={url}');
+            $create->url('url', 'url')->placeholder('https://apiurl.com/?api=&url=[url]');
             $create->decimal('reward', 'reward')->placeholder('Reward eg, 0.001');
             $create->number('views_per_day', 'views_per_day')->placeholder('views 24h');
             $create->number('min_seconds', 'min_seconds')->placeholder('min seconds');
@@ -100,8 +101,10 @@ class ShortLinkController extends AdminController
      */
     protected function form()
     {
+        $order = ShortLink::latest()->first();
         $form = new Form(new ShortLink());
 
+        $form->number('order', __('Order'))->default($order->id++);
         $form->text('name', __('Name'));
         $form->switch('status', __('Status'))->default(1);
         $form->url('url', __('Url'));
