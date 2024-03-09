@@ -9,7 +9,7 @@ class ShortLink extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'url', 'unique_id', 'reward', 'views_per_day', 'min_seconds'
+        'order', 'name', 'url', 'unique_id', 'reward', 'views_per_day', 'min_seconds'
     ]; 
 
     // protected static function booted()
