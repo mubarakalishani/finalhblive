@@ -127,7 +127,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> $13436 </h4>
+                            <h4> ${{ $withdrawals->where('status', 1)->sum('amount_after_fee')}} </h4>
                             <p> Total Paid </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
