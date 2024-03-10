@@ -249,7 +249,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> ${{ $tasksEarning->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('amount')->sum('amount') }} </h4>
+                            <h4> ${{ $tasksEarning->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('amount') }} </h4>
                             <p> Last Month earning</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
