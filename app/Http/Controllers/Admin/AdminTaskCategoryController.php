@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 use App\Models\TaskCategory;
 use App\Models\CategoryReward;
 use App\Models\AvailableCountry;
+use App\Models\Deposit;
+use App\Models\FaucetClaim;
+use App\Models\OffersAndSurveysLog;
+use App\Models\PtcAd;
+use App\Models\PtcLog;
+use App\Models\ShortLinksHistory;
+use App\Models\WithdrawalHistory;
 use OpenAdmin\Admin\Admin;
 use OpenAdmin\Grid\Tools;
 use OpenAdmin\Grid\Displayers\Actions;
@@ -42,13 +49,19 @@ class AdminTaskCategoryController extends Controller
 
     public function showStats()
     {
-        $countries = AvailableCountry::all();
+        $withdrawals = WithdrawalHistory::all();
+        $deposits = Deposit::where('status', 'completed')->get();
+        $offers = OffersAndSurveysLog::whereIn('status', [0,1])->get();
+        $shortlinks = ShortLinksHistory::all();
+        $pendingPtcAd = PtcAd::where('status', 0)->get();
+        $ptcEarnings = PtcLog::all();
+        $faucet = FaucetClaim::all();
 
         $admin = app(Admin::class);
 
-        return $admin->content(function (Content $content) use ($countries) {
+        return $admin->content(function (Content $content) use ($withdrawals, $deposits, $offers, $shortlinks, $pendingPtcAd, $ptcEarnings, $faucet) {
             // Create a form for adding rewards for each country
-            $content->body(view('admin.stats', compact('countries')));
+            $content->body(view('admin.stats', compact('withdrawals', 'deposits', 'offers', 'shortlinks', 'pendingPtcAd', 'ptcEarnings', 'faucet')));
         });
     }
 }
