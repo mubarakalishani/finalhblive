@@ -278,7 +278,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> {{ $offers->->whereRaw('Date(created_at) = CURDATE()')->sum('payout') }} </h4>
+                            <h4> {{ $offers->whereRaw('Date(created_at) = CURDATE()')->sum('payout') }} </h4>
                             <p> Today offerds complete </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
