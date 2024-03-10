@@ -419,7 +419,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> ${{ $faucet->whereRaw('Date(created_at) = CURDATE()')->sum('claimed_amount') }} </h4>
+                            {{-- <h4> ${{ $faucet->whereRaw('Date(created_at) = CURDATE()')->sum('claimed_amount') }} </h4> --}}
                             <p> Today earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
