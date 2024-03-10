@@ -155,7 +155,9 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> $723 </h4>
+                            <h4> ${{ $withdrawals->where('status', 1)->whereMonth(
+                                'created_at', '=', now()->subMonth()->month
+                            )->sum('amount_after_fee')}} </h4>
                             <p> Last Month paid</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
