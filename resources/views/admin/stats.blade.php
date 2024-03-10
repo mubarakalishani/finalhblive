@@ -146,7 +146,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> ${{ $withdrawals->where('status', 1)->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('amount_after_fee')}} </h4>
+                            <h4> ${{ $withdrawals->where('status', 1)->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('amount_after_fee') }} </h4>
                             <p> This Month paid</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
