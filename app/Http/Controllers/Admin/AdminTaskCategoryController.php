@@ -51,9 +51,9 @@ class AdminTaskCategoryController extends Controller
 
     public function showStats()
     {
-        $withdrawals = WithdrawalHistory::whereIn('status', [0, 1, 4])->get();
+        $withdrawals = WithdrawalHistory::where('status', 0)->orWhere('status', 1)->orWhere('status', 4)->get();
         $deposits = Deposit::where('status', 'completed')->get();
-        $offers = OffersAndSurveysLog::whereIn('status', [0,1])->get();
+        $offers = OffersAndSurveysLog::where('status', 0)->orWhere('status', 1)->get();
         $shortlinks = ShortLinksHistory::all();
         $pendingPtcAd = PtcAd::where('status', 0)->get();
         $ptcEarnings = PtcLog::all();
