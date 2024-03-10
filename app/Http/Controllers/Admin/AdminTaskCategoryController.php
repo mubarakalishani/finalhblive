@@ -54,10 +54,10 @@ class AdminTaskCategoryController extends Controller
         $withdrawals = WithdrawalHistory::whereIn('status', [0, 1, 4])->get();
         $deposits = Deposit::where('status', 'completed')->get();
         $offers = OffersAndSurveysLog::where('status', [0,1])->get();
-        $shortlinks = ShortLinksHistory::get();
+        $shortlinks = ShortLinksHistory::where('reward', '>', 0)->get();
         $pendingPtcAd = PtcAd::where('status', 0)->get();
-        $ptcEarnings = PtcLog::get();
-        $faucet = FaucetClaim::get();
+        $ptcEarnings = PtcLog::where('reward', '>', 0)->get();
+        $faucet = FaucetClaim::where('claimed_amount', '>', 0)->get();
         $tasksEarning = SubmittedTaskProof::where('status', 1)->get();
         $pendingTasks = Task::where('status', 0)->count();
 
