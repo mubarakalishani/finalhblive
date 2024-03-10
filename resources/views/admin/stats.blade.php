@@ -80,7 +80,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> $13436 </h4>
+                            <h4> ${{ $deposits->sum('amount')}} </h4>
                             <p> Total Deposit </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -90,7 +90,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> $185358 </h4>
+                            <h4> ${{ $deposits->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('amount')}} </h4>
                             <p> This Month </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -146,7 +146,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> $5464 </h4>
+                            <h4> ${{ $withdrawals->where('status', 1)->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('amount_after_fee')}} </h4>
                             <p> This Month paid</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
