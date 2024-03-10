@@ -90,7 +90,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> ${{ $deposits->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('amount')}} </h4>
+                            <h4> ${{ $deposits->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('amount') }} </h4>
                             <p> This Month </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -99,7 +99,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> $5464 </h4>
+                            <h4> ${{ $deposits->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('amount') }} </h4>
                             <p> Last Month </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -137,7 +137,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> $185358 </h4>
+                            <h4> ${{{{ $withdrawals->where('status', 0)->sum('amount_after_fee')}}}} </h4>
                             <p> Total Pending </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -174,7 +174,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> $13436 </h4>
+                            <h4> ${{ $offers->sum('payout') }} </h4>
                             <p> Offerwalls earning </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -184,7 +184,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> $185358 </h4>
+                            <h4> ${{ $shortlinks->sum('reward') }} </h4>
                             <p> Shortlinks earnings </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -193,7 +193,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> $5464 </h4>
+                            <h4> ${{ $ptcEarnings->sum('reward') }} </h4>
                             <p> PTC earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -202,7 +202,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> $723 </h4>
+                            <h4> ${{ $tasksEarning->sum('amount') }} </h4>
                             <p> Taks earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -221,7 +221,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> $13436 </h4>
+                            <h4> ${{ $tasksEarning->sum('amount') }} </h4>
                             <p> Total Earned </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -231,7 +231,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> 232 </h4>
+                            <h4> {{ $pendingTasks }} </h4>
                             <p> pending Approval </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -240,7 +240,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> $5464 </h4>
+                            <h4> ${{ $tasksEarning->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('amount')->sum('amount') }}  </h4>
                             <p> This Month earning</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -249,7 +249,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> $723 </h4>
+                            <h4> ${{ $tasksEarning->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('amount')->sum('amount') }} </h4>
                             <p> Last Month earning</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -268,7 +268,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> 3436 </h4>
+                            <h4> {{$offers->sum('payout')}} </h4>
                             <p> Total offer completed </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -278,8 +278,8 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> 232 </h4>
-                            <p> Today offers completed </p>
+                            <h4> {{ $offers->whereDate('created_at', \Carbon\Carbon::today())->sum('payout') }} </h4>
+                            <p> Today offerds complete </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
@@ -287,7 +287,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> $5464 </h4>
+                            <h4> ${{ $offers->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('payout') }} </h4>
                             <p> This Month completed</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -296,7 +296,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> $723 </h4>
+                            <h4> ${{ $offers->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('payout') }} </h4>
                             <p> Last Month completed</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -315,7 +315,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> 3436 </h4>
+                            <h4> {{ $shortlinks->sum('reward') }} </h4>
                             <p> Total earnings </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -325,7 +325,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> 232 </h4>
+                            <h4> {{ $shortlinks->whereDate('created_at', \Carbon\Carbon::today())->sum('reward') }} </h4>
                             <p> Today earnings </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -334,7 +334,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> 5464 </h4>
+                            <h4> {{ $shortlinks->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('reward') }} </h4>
                             <p> This Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -343,7 +343,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> 723 </h4>
+                            <h4> {{ $shortlinks->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('reward') }} </h4>
                             <p> Last Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -362,7 +362,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> 3436 </h4>
+                            <h4> {{ $pendingPtcAd->count() }} </h4>
                             <p> pending Approval </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -372,7 +372,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> $232 </h4>
+                            <h4> ${{ $ptcEarnings->sum('reward_per_view') }} </h4>
                             <p> Total Earned </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -381,7 +381,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> $5464 </h4>
+                            <h4> ${{ $ptcEarnings->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('reward_per_view') }} </h4>
                             <p> This Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -390,7 +390,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> $723 </h4>
+                            <h4> ${{ $ptcEarnings->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('reward_per_view') }} </h4>
                             <p> Last Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -409,7 +409,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> $3436 </h4>
+                            <h4> ${{ $faucet->sum('claimed_amount') }} </h4>
                             <p> Total earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -419,7 +419,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> $232 </h4>
+                            <h4> ${{ $faucet->whereDate('created_at', \Carbon\Carbon::today())->sum('claimed_amount') }} </h4>
                             <p> Today earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -428,7 +428,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> $5464 </h4>
+                            <h4> ${{ $faucet->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('claimed_amount') }} </h4>
                             <p> This Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -437,7 +437,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> $723 </h4>
+                            <h4> ${{ $faucet->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()])->sum('claimed_amount') }} </h4>
                             <p> Last Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
