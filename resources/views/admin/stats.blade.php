@@ -137,7 +137,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> ${{{{ $withdrawals->where('status', 0)->sum('amount_after_fee')}}}} </h4>
+                            <h4> ${{ $withdrawals->where('status', 0)->sum('amount_after_fee') }} </h4>
                             <p> Total Pending </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
