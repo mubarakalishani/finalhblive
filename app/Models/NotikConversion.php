@@ -10,6 +10,6 @@ class NotikConversion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'username', 'click_id', 'campaign_id', 'campaign_name', 'traffic_source', 'user_country_code', 'remarks', 'user_ip'
+        'username', 'click_id', 'campaign_id', 'campaign_name', 'traffic_source', 'user_country_code', 'remarks', 'user_ip', 'days', 'status'
     ];
 }
