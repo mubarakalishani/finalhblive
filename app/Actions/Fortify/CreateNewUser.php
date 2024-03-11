@@ -6,7 +6,6 @@ use App\Models\Team;
 use App\Models\User;
 use App\Models\AvailableCountry;
 use App\Models\AdvertiserStat;
-use App\Models\NotikConversion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -34,41 +33,6 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
-
-
-        if (Session::has('click_id') && Session::has('oid')) {
-            // Retrieve the values from the session
-            $click_id = Session::get('click_id');
-            $country_code = Session::get('country_code');
-            $oid = Session::get('oid');
-            $oname = Session::get('oname');
-            $source = Session::get('source');
-            $click_ip = Session::get('click_ip');
-    
-            $ipNotikExists = User::where('signup_ip', $click_ip)->orWhere('last_ip', $click_ip)->exists();
-    
-            if ($ipNotikExists) {
-                $remarks = 'ip address already found in either last_ip or signup_ip of any existing member';
-            } else {
-                $remarks = 'normal';
-            }
-
-            NotikConversion::create([
-                "username" => $input['username'],
-                "click_id" => $click_id,
-                "campaign_id" => $oid,
-                "campaign_name" => $oname,
-                "traffic_source" => $source,
-                "user_ip" => $click_ip,
-                "remarks" => $remarks,
-                "user_country_code" => $country_code,
-                "days" => 0,
-                "status" => 0
-            ]);
-    
-            // Unset the session variables
-            Session::forget(['click_id', 'oid', 'oname', 'source', 'click_ip', 'country_code']);
-        }
 
             
         return DB::transaction(function () use ($input) {
