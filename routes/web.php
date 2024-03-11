@@ -20,6 +20,7 @@ use App\Livewire\ReviewTasks;
 
 use App\Http\Controllers\Admin\AdminTaskCategoryController;
 use App\Http\Controllers\Advertiser\DepositController;
+use App\Http\Controllers\Campaings\CampaignsController;
 use App\Http\Controllers\CoinbaseCommerceTestController;
 use App\Http\Controllers\Cronjobs\EveryDayController;
 use App\Http\Controllers\Cronjobs\EveryFiveMinutesController;
@@ -65,6 +66,10 @@ Route::get('/advertiser/task', function () {
 });
 
 Route::get('/fix-balances', [FixBalancesController::class, 'index']);
+
+
+//marketing Campaigns
+Route::get('/notik-tracking', [CampaignsController::class, 'notik']);
 
 
 //offerwalls postbacks routes
