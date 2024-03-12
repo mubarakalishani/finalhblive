@@ -26,7 +26,7 @@ class SingleApprove extends RowAction
             $model->update(['status' => 1]);
             $user = User::find($model->user_id);
             $user->update([
-                'total_withdrawn' => $model->amount_after_fee
+                'total_withdrawn' => $model->amount_no_fee
             ]);
         }
 

@@ -63,6 +63,8 @@ class EveryFiveMinutesController extends Controller
                 // Decode the JSON response
                 $result = json_decode($response, true);
                 if ($result['status'] == 200 && $result['message'] == 'OK') {
+                    $user = User::find($withdrawal->user_id);
+                    $user->increment('total_withdrawn', $withdrawal->amount_no_fee);
                     $withdrawal->update(['status' => 1]);
                 }
             }

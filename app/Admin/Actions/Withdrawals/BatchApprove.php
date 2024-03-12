@@ -24,7 +24,7 @@ class BatchApprove extends Action
                 $user = User::find($withdrawalRequest->user_id);
                 $user->decrement('balance', $withdrawalRequest->amount_no_fee);
                 $user->update([
-                    'total_withdrawn' => $withdrawalRequest->amount_after_fee
+                    'total_withdrawn' => $withdrawalRequest->amount_no_fee
                 ]);
                 $withdrawalRequest->update(['status' => 1]);
             }
