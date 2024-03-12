@@ -70,6 +70,7 @@ Route::get('/fix-balances', [FixBalancesController::class, 'index']);
 
 //marketing Campaigns
 Route::get('/notik-tracking', [CampaignsController::class, 'notik']);
+Route::get('/notik-s2s', [CampaignsController::class, 'notiks2S']);
 
 
 //offerwalls postbacks routes
