@@ -5,7 +5,7 @@
 
         <!-- all games start -->
         <div class="all-history-page">
-            <div class=" py-4">
+            <div class="container py-4">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                       <a class="nav-link active" aria-current="page" href="/history/jobs">Jobs History</a>

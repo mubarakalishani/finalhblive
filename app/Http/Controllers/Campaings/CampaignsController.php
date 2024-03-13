@@ -36,7 +36,7 @@ class CampaignsController extends Controller
         }
 
         
-        return redirect('https://handbucks.com');
+        return redirect('https://handbucks.com/?ref=notikcheck');
     }
 
     public function notiks2S() {
