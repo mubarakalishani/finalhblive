@@ -36,13 +36,6 @@ class WithdrawalHistoryController extends AdminController
         $grid->column('user_id', __('Username'))->display( function($userid){
             $username = User::where('id', $userid)->value('username');
             return "<span>$username</span>";
-        })->expand(function ($model) {
-
-            $comments = $model->user()->take(10)->get()->map(function ($comment) {
-                return $comment->only(['id', 'balance', 'created_at']);
-            });
-        
-            return new User(['ID', 'content', 'release time'], $comments->toArray());
         })->sortable();    
                   
         $grid->column('method', __('Method'))->sortable();
