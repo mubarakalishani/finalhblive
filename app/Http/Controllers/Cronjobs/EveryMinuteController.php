@@ -51,7 +51,7 @@ class EveryMinuteController extends Controller
                 if($uplineId > 0)
                 {
                     $uplineToReward = User::find($uplineId);
-                    $uplineToReward->addWorkerBalance( $offer->upline_commision );
+                    $uplineToReward->increment('balance', $offer->upline_commision );
                     $uplineToReward->increment('earned_from_referrals', $offer->upline_commision);
                     Log::create([
                         'user_id' => $uplineId, 
