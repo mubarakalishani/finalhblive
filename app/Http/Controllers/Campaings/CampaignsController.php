@@ -40,7 +40,7 @@ class CampaignsController extends Controller
     }
 
     public function notiks2S() {
-        $conversions = NotikConversion::where('status', 0)->get();
+        $conversions = NotikConversion::where('status', 0)->where('remarks', 'normal')->get();
         
         foreach ($conversions as $conversion) {
             $user = User::where('username', $conversion->username)->first();
