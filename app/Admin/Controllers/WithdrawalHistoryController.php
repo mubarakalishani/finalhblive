@@ -42,7 +42,7 @@ class WithdrawalHistoryController extends AdminController
                 return $comment->only(['id', 'balance', 'created_at']);
             });
         
-            return new Table(['ID', 'content', 'release time'], $comments->toArray());
+            return new User(['ID', 'content', 'release time'], $comments->toArray());
         })->sortable();    
                   
         $grid->column('method', __('Method'))->sortable();
