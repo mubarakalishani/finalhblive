@@ -74,6 +74,7 @@ Route::get('/notik-s2s', [CampaignsController::class, 'notiks2S']);
 
 
 //offerwalls postbacks routes
+Route::get('/postback/admantium', [OfferwallsPostbacksController::class, 'adscendmedia']);
 Route::get('/postback/adscendmedia', [OfferwallsPostbacksController::class, 'adscendmedia']);
 Route::get('/postback/adswedmedia', [OfferwallsPostbacksController::class, 'adswedmedia']);
 Route::get('/postback/ayetstudios', [OfferwallsPostbacksController::class, 'ayetstudios']);
@@ -88,6 +89,7 @@ Route::get('/postback/kiwiwall', [OfferwallsPostbacksController::class, 'kiwiwal
 Route::get('/postback/monlix', [OfferwallsPostbacksController::class, 'monlix']);
 Route::get('/postback/notik', [OfferwallsPostbacksController::class, 'notik']);
 Route::post('/postback/revlum', [OfferwallsPostbacksController::class, 'revlum']);
+Route::get('/postback/sushiads', [OfferwallsPostbacksController::class, 'adscendmedia']);
 Route::get('/postback/timewall', [OfferwallsPostbacksController::class, 'timewall']);
 Route::get('/postback/wannads', [OfferwallsPostbacksController::class, 'wannads']);
 
