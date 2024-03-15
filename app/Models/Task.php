@@ -12,7 +12,7 @@ class Task extends Model
     
     protected $fillable = ['employer_id', 'worker_level', 'task_balance', 'category',
      'sub_category', 'approval_fee', 'rating_time', 'hold_time',
-     'max_budget', 'daily_budget', 'weekly_budget', 'hourly_budget', 'submission_per_hour', 'submission_per_day', 'submission_per_week', 'status'
+     'max_budget', 'daily_budget', 'weekly_budget', 'hourly_budget','maximum_submissions', 'submission_per_hour', 'submission_per_day', 'submission_per_week', 'status'
     ];
 
     public function employer()

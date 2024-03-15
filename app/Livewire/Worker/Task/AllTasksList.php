@@ -317,6 +317,10 @@ class AllTasksList extends Component
 
     public function addTaskCaps(){
         foreach ($this->availableTasks as $task) {
+            $totalSubmissions = $task->submittedProofs()
+                ->whereIn('status', [0,1,3,4,5])
+                ->count();
+
             $submissionsInLastHour = $task->submittedProofs()
                 ->where('created_at', '>=', Carbon::now()->subHour())
                 ->count();
@@ -340,7 +344,7 @@ class AllTasksList extends Component
             $amountLaskWeek = $task->submittedProofs()
                 ->where('created_at', '>=', Carbon::now()->subDays(7))
                 ->sum('amount');
-
+            $isTotalSubmissionExceeded = 0;
             $isSubmissionPerHourExceeded = 0;
             $isSubmissionPerDayExceeded = 0;
             $isSubmissionPerWeekExceeded = 0;
@@ -371,6 +375,10 @@ class AllTasksList extends Component
                 $isBudgetPerWeekExceeded = 1;
             }
 
+            if ($task->maximum_submissions !=0 && $totalSubmissions >= $task->maximum_submissions) {
+                $isTotalSubmissionExceeded = 1; 
+            }
+
 
         
             $task->hourly_submit_exceed = $isSubmissionPerHourExceeded;
@@ -379,6 +387,7 @@ class AllTasksList extends Component
             $task->hourly_budget_exceed = $isBudgetPerHourExceeded;
             $task->daily_budget_exceed = $isBudgetPerDayExceeded;
             $task->weekly_budget_exceed = $isBudgetPerWeekExceeded;
+            $task->total_submissions_exceed = $isTotalSubmissionExceeded;
         }
     }
 
