@@ -278,7 +278,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> {{ $offers->whereDate('created_at', '=', \Carbon\Carbon::today())->sum('payout') }} </h4>
+                            <h4> {{ $offers->whereDate('created_at', '=', \Carbon\Carbon::today())->get()->sum('payout') }} </h4>
                             <p> Today offerds complete </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -325,7 +325,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> {{ $shortlinks->whereDate('created_at', '=', \Carbon\Carbon::today())->sum('reward') }} </h4>
+                            <h4> {{ $shortlinks->whereDate('created_at', '=', \Carbon\Carbon::today())->get()->sum('reward') }} </h4>
                             <p> Today earnings </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -419,7 +419,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> ${{ $faucet->whereDate('created_at', '=', Carbon\Carbon::today())->sum('claimed_amount') }} </h4>
+                            <h4> ${{ $faucet->whereDate('created_at', '=', Carbon\Carbon::today())->get()->sum('claimed_amount') }} </h4>
                             <p> Today earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
