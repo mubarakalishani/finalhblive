@@ -194,6 +194,7 @@ class DepositController extends Controller
                         $transaction->update(['status' => $status]);
                         break;
                 }
+                $transaction->update(['status' => $status]);
             }
         }
     } else {

@@ -34,19 +34,23 @@ class CategorySelector extends Component
         sort($this->excludedCountries);
     }
 
+    public function updatedSelectedParentCategory(){
+        $this->subCategory = null;
+    }
+
     public function loadSubCategories()
     {
         $this->subCategories = TaskCategory::where('parent_id', $this->selectedParentCategory)->get();
     }
 
     public function subCategorySelected(){
-           // Fetch the selected subcategory
-    $this->subCategory = TaskCategory::with('rewards')->find($this->selectedSubCategory);
+        // Fetch the selected subcategory
+        $this->subCategory = TaskCategory::with('rewards')->find($this->selectedSubCategory);
 
-    // If subcategory is found, load the associated rewards
-    if ($this->subCategory) {
-        $this->subCategory->load('rewards');
-    }
+        // If subcategory is found, load the associated rewards
+        if ($this->subCategory) {
+            $this->subCategory->load('rewards');
+        }
     }
 
 

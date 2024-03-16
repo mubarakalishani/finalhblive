@@ -20,7 +20,7 @@ class Reject extends Action
         foreach ($tasks as $task) {
             $task->update(['status' => 2]);
         }
-        return $this->response()->success('Selected Task Paused Successfully')->refresh();
+        return $this->response()->error('Selected Task Rejected Successfully')->refresh();
     }
 
     public function html()

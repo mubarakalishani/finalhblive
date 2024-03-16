@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="form-floating">
-                <select class="form-select" name="category" wire:model="selectedParentCategory" wire:change="loadSubCategories" required>
+                <select class="form-select" name="category" wire:model.live="selectedParentCategory" wire:change="loadSubCategories" required>
                     <option value="">Select Category</option>
                     @foreach ($parentCategories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
