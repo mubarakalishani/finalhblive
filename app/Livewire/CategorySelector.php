@@ -35,7 +35,7 @@ class CategorySelector extends Component
     }
 
     public function updatedSelectedParentCategory(){
-        $this->subCategory = null;
+        $this->subCategory = '';
     }
 
     public function loadSubCategories()
