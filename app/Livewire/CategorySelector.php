@@ -37,6 +37,7 @@ class CategorySelector extends Component
 
     public function updatedSelectedParentCategory(){
         $this->subCategories = TaskCategory::where('parent_id', $this->selectedParentCategory)->get();
+        $this->subCategory = '0';
     }
 
     public Function updatedSelectedSubCategory(){
