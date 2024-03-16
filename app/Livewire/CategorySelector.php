@@ -37,7 +37,6 @@ class CategorySelector extends Component
 
     public function updatedSelectedParentCategory(){
         $this->subCategories = TaskCategory::where('parent_id', $this->selectedParentCategory)->get();
-        $this->subCategory = '0';
     }
 
     public Function updatedSelectedSubCategory(){
@@ -50,20 +49,20 @@ class CategorySelector extends Component
         }
     }
 
-    public function loadSubCategories()
-    {
-        $this->subCategories = TaskCategory::where('parent_id', $this->selectedParentCategory)->get();
-    }
+    // public function loadSubCategories()
+    // {
+    //     $this->subCategories = TaskCategory::where('parent_id', $this->selectedParentCategory)->get();
+    // }
 
-    public function subCategorySelected(){
-        // Fetch the selected subcategory
-        $this->subCategory = TaskCategory::with('rewards')->find($this->selectedSubCategory);
+    // public function subCategorySelected(){
+    //     // Fetch the selected subcategory
+    //     $this->subCategory = TaskCategory::with('rewards')->find($this->selectedSubCategory);
 
-        // If subcategory is found, load the associated rewards
-        if ($this->subCategory) {
-            $this->subCategory->load('rewards');
-        }
-    }
+    //     // If subcategory is found, load the associated rewards
+    //     if ($this->subCategory) {
+    //         $this->subCategory->load('rewards');
+    //     }
+    // }
 
 
     // Method to move a country between boxes
