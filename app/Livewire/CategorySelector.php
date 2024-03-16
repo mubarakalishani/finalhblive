@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\TaskCategory;
 use App\Models\AvailableCountry;
 use App\Models\ArabCountry;
-use Pest\Arch\Objects\FunctionDescription;
 use WisdomDiala\Countrypkg\Models\Country;
 class CategorySelector extends Component
 { 
@@ -35,35 +34,20 @@ class CategorySelector extends Component
         sort($this->excludedCountries);
     }
 
-    public function updatedSelectedParentCategory(){
+    public function loadSubCategories()
+    {
         $this->subCategories = TaskCategory::where('parent_id', $this->selectedParentCategory)->get();
-        $this->subCategory = '0';
     }
 
-    public Function updatedSelectedSubCategory(){
-        // Fetch the selected subcategory
-        $this->subCategory = TaskCategory::with('rewards')->find($this->selectedSubCategory);
+    public function subCategorySelected(){
+           // Fetch the selected subcategory
+    $this->subCategory = TaskCategory::with('rewards')->find($this->selectedSubCategory);
 
-        // If subcategory is found, load the associated rewards
-        if ($this->subCategory) {
-            $this->subCategory->load('rewards');
-        }
+    // If subcategory is found, load the associated rewards
+    if ($this->subCategory) {
+        $this->subCategory->load('rewards');
     }
-
-    // public function loadSubCategories()
-    // {
-    //     $this->subCategories = TaskCategory::where('parent_id', $this->selectedParentCategory)->get();
-    // }
-
-    // public function subCategorySelected(){
-    //     // Fetch the selected subcategory
-    //     $this->subCategory = TaskCategory::with('rewards')->find($this->selectedSubCategory);
-
-    //     // If subcategory is found, load the associated rewards
-    //     if ($this->subCategory) {
-    //         $this->subCategory->load('rewards');
-    //     }
-    // }
+    }
 
 
     // Method to move a country between boxes
