@@ -19,7 +19,7 @@
             @if ($subCategories)
                 <div class="form-floating">
                     <select class="form-select" name="subCategory" wire:model="selectedSubCategory" wire:change="subCategorySelected" required>
-                        <option value="">Select Subcategory</option>
+                        <option value="0">Select Subcategory</option>
                         @foreach ($subCategories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
