@@ -15,6 +15,7 @@ use App\Models\OffersAndSurveysLog;
 use App\Models\PtcAd;
 use App\Models\PtcLog;
 use App\Models\ShortLinksHistory;
+use App\Models\Statistic;
 use App\Models\SubmittedTaskProof;
 use App\Models\Task;
 use App\Models\WithdrawalHistory;
@@ -61,11 +62,13 @@ class AdminTaskCategoryController extends Controller
         $tasksEarning = SubmittedTaskProof::where('status', 1)->get();
         $pendingTasks = Task::where('status', 0)->count();
 
+        $statistics = Statistic::latest()->firstOrCreate([]);
+
         $admin = app(Admin::class);
 
-        return $admin->content(function (Content $content) use ($withdrawals, $deposits, $offers, $shortlinks, $pendingPtcAd, $ptcEarnings, $faucet, $tasksEarning, $pendingTasks) {
+        return $admin->content(function (Content $content) use ($statistics, $withdrawals, $deposits, $offers, $shortlinks, $pendingPtcAd, $ptcEarnings, $faucet, $tasksEarning, $pendingTasks) {
             // Create a form for adding rewards for each country
-            $content->body(view('admin.stats', compact('withdrawals', 'deposits', 'offers', 'shortlinks', 'pendingPtcAd', 'ptcEarnings', 'faucet', 'tasksEarning', 'pendingTasks')));
+            $content->body(view('admin.stats', compact('statistics', 'withdrawals', 'deposits', 'offers', 'shortlinks', 'pendingPtcAd', 'ptcEarnings', 'faucet', 'tasksEarning', 'pendingTasks')));
         });
     }
 }

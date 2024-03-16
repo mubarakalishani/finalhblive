@@ -8,6 +8,7 @@ use App\Models\SubmittedTaskProof;
 use App\Models\user;
 use App\Models\AvailableRejectionReason;
 use App\Models\RejectApprovalReason;
+use App\Models\Statistic;
 use Livewire\WithPagination;
 
 class CampaingDetailWithPendingProofs extends Component
@@ -74,7 +75,12 @@ class CampaingDetailWithPendingProofs extends Component
                 }
                 $advertiser->deductAdvertiserBalance(abs($amount));
             }
-            $worker->addWorkerBalance($amount);
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('tasks_total_earned', $amount);
+            $statistics->increment('tasks_today_earned', $amount);
+            $statistics->increment('tasks_this_month', $amount);
+            $statistics->increment('tasks_last_month', $amount);
+            $worker->increment('balance', $amount);
             $worker->increment('total_earned', $amount);
             $worker->increment('total_tasks_completed');
             $worker->increment('earned_from_tasks', $amount);
@@ -138,7 +144,13 @@ class CampaingDetailWithPendingProofs extends Component
                 }
                 $advertiser->deductAdvertiserBalance(abs($amount));
             }
-            $worker->addWorkerBalance($amount);
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('tasks_total_earned', $amount);
+            $statistics->increment('tasks_today_earned', $amount);
+            $statistics->increment('tasks_this_month', $amount);
+            $statistics->increment('tasks_last_month', $amount);
+            
+            $worker->increment('balance',$amount);
             $worker->increment('total_earned', $amount);
             $worker->increment('total_tasks_completed');
             $worker->increment('earned_from_tasks', $amount);

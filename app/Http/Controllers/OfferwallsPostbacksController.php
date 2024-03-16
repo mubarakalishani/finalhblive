@@ -7,6 +7,7 @@ use App\Models\OfferwallsSetting;
 use App\Models\User;
 use App\Models\Log;
 use App\Models\Offerwall;
+use App\Models\Statistic;
 use Illuminate\Http\Request;
 class OfferwallsPostbacksController extends Controller
 {
@@ -175,6 +176,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -422,6 +430,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -679,6 +694,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -942,6 +964,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -1196,6 +1225,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -1466,6 +1502,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -1717,6 +1760,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -1970,6 +2020,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -2226,6 +2283,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -2480,6 +2544,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -2733,6 +2804,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -2986,6 +3064,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -3237,6 +3322,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -3503,6 +3595,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -3763,6 +3862,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -4015,6 +4121,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -4267,6 +4380,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);
@@ -4519,6 +4639,13 @@ class OfferwallsPostbacksController extends Controller
             //if finalstatus = 0(completed), reward, and if 2(reversed), deduct the worker and upline and corresponding log
             if ( $finalStatus == 0 ) 
             {
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $finalReward);
+                $statistics->increment('offers_today_earned', $finalReward);
+                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_last_month', $finalReward);
+
+               
                 $user->addWorkerBalance($finalReward);
                 $user->increment('diamond_level_balance', $addToExpertLevel);
                 $user->increment('total_earned', $finalReward);

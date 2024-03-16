@@ -11,6 +11,7 @@ use App\Models\IpLog;
 use App\Models\CheatLog;
 use App\Models\FaucetSetting;
 use App\Models\Log;
+use App\Models\Statistic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -125,6 +126,12 @@ class WorkerFaucetController extends Controller
                         'description' => 'received Referral commission from '.$worker->username.' for completing a Faucet'
                     ]);
                 }
+                //update statistics
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('faucet_total_earned', $amount);
+                $statistics->increment('faucet_today_earned', $amount);
+                $statistics->increment('faucet_this_month', $amount);
+                $statistics->increment('faucet_last_month', $amount);
                 return redirect()->back()->with('message',"You claimed $".$faucet_claim_amount." successfully");
             }
             

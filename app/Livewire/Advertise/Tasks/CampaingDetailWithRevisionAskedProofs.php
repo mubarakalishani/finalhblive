@@ -8,6 +8,7 @@ use App\Models\SubmittedTaskProof;
 use App\Models\user;
 use App\Models\AvailableRejectionReason;
 use App\Models\RejectApprovalReason;
+use App\Models\Statistic;
 use Livewire\WithPagination;
 
 class CampaingDetailWithRevisionAskedProofs extends Component
@@ -74,7 +75,11 @@ class CampaingDetailWithRevisionAskedProofs extends Component
             $advertiser->deductAdvertiserBalance(abs($amount));
         }
         $worker->addWorkerBalance($amount);
-
+        $statistics = Statistic::latest()->firstOrCreate([]);
+        $statistics->increment('tasks_total_earned', $amount);
+        $statistics->increment('tasks_today_earned', $amount);
+        $statistics->increment('tasks_this_month', $amount);
+        $statistics->increment('tasks_last_month', $amount);
         $submittedTaskProof->update([ 'status' => 1 ]);
 
         session()->flash('message', 'Proof Approve Successfully!');
@@ -130,6 +135,11 @@ class CampaingDetailWithRevisionAskedProofs extends Component
                 $advertiser->deductAdvertiserBalance(abs($amount));
             }
             $worker->addWorkerBalance($amount);
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('tasks_total_earned', $amount);
+            $statistics->increment('tasks_today_earned', $amount);
+            $statistics->increment('tasks_this_month', $amount);
+            $statistics->increment('tasks_last_month', $amount);
             
             $submittedTaskProof->update([ 'status' => 1 ]);
             session()->flash('message', 'all selected Tasks has been Approved');

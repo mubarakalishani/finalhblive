@@ -8,6 +8,7 @@ use App\Models\OffersAndSurveysLog;
 use App\Models\OfferwallsSetting;
 use App\Models\DepositMethodSetting;
 use App\Models\PayoutGateway;
+use App\Models\Statistic;
 use App\Models\SubmittedTaskProof;
 use App\Models\Task;
 use App\Models\User;
@@ -58,6 +59,12 @@ class EveryMinuteController extends Controller
                         'description' => 'received referral Commission ' . $offer->upline_commision . ' from user '. $offerUser->username,
                     ]);
                 }
+
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('offers_total_earned', $offer->reward);
+                $statistics->increment('offers_today_earned', $offer->reward);
+                $statistics->increment('offers_this_month', $offer->reward);
+                $statistics->increment('offers_last_month', $offer->reward);
             }
             Log::create([
                 'user_id' => $offer->worker->id,

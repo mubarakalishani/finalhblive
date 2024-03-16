@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\CheatLog;
 use App\Models\Log;
 use App\Models\Setting;
+use App\Models\Statistic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -246,6 +247,13 @@ class PtcAdController extends Controller
                     'description' => 'received Referral commission from '.$worker->username.' for completing a PTC'
                 ]);
             }
+            //update statistics
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('ptc_total_earned', $ad->reward_per_view);
+            $statistics->increment('ptc_today_earned', $ad->reward_per_view);
+            $statistics->increment('ptc_this_month', $ad->reward_per_view);
+            $statistics->increment('ptc_last_month', $ad->reward_per_view);
+            
             return redirect($ad->url);
         // }
         // else{
@@ -321,6 +329,14 @@ class PtcAdController extends Controller
                     'description' => 'received Referral commission from '.$worker->username.' for completing a PTC'
                 ]);
             }
+
+            //update statistics
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('ptc_total_earned', $ad->reward_per_view);
+            $statistics->increment('ptc_today_earned', $ad->reward_per_view);
+            $statistics->increment('ptc_this_month', $ad->reward_per_view);
+            $statistics->increment('ptc_last_month', $ad->reward_per_view);
+
             header( "refresh:1; url=".url('/views/window') ); 
             // return redirect(url('/views/window'))->with('success', $ad->reward_per_view.' added to your balance successfully')->withDelay(2);
         // }else{

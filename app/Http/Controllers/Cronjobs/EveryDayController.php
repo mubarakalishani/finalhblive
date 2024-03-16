@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cronjobs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Log;
+use App\Models\Statistic;
 use App\Models\SubmittedTaskProof;
 use App\Models\Task;
 use App\Models\TaskDispute;
@@ -47,6 +48,11 @@ class EveryDayController extends Controller
 
         foreach ($employerReviewPassedProofs as $employerReviewPassedProof) {
             $worker = User::find($employerReviewPassedProof->worker_id);
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('tasks_total_earned', $employerReviewPassedProof->amount);
+            $statistics->increment('tasks_today_earned', $employerReviewPassedProof->amount);
+            $statistics->increment('tasks_this_month', $employerReviewPassedProof->amount);
+            $statistics->increment('tasks_last_month', $employerReviewPassedProof->amount);
             $worker->increment('balance', $employerReviewPassedProof->amount);
             $worker->increment('earned_from_tasks', $employerReviewPassedProof->amount);
             $worker->increment('total_earned', $employerReviewPassedProof->amount);
@@ -76,6 +82,13 @@ class EveryDayController extends Controller
             $proof->update([
                 'status' => 1
             ]);
+
+            //update statistics
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('tasks_total_earned', $expiredDispute->proof->amount);
+            $statistics->increment('tasks_today_earned', $expiredDispute->proof->amount);
+            $statistics->increment('tasks_this_month', $expiredDispute->proof->amount);
+            $statistics->increment('tasks_last_month', $expiredDispute->proof->amount);
 
             $expiredDispute->update([
                 'status' => 1

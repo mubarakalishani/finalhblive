@@ -12,7 +12,7 @@ use App\Models\ShortLinksVerification;
 use App\Models\User;
 use App\Models\ShortLinksHistory;
 use App\Models\CheatLog;
-
+use App\Models\Statistic;
 
 class WorkerShortLinkController extends Controller
 {
@@ -168,6 +168,13 @@ class WorkerShortLinkController extends Controller
         $user->increment('total_earned', $amountToAdd);
         $user->increment('earned_from_shortlinks', $amountToAdd);
         $user->increment('total_shortlinks_completed');
+
+        //update statistics
+        $statistics = Statistic::latest()->firstOrCreate([]);
+        $statistics->increment('shortlinks_total_earned', $amountToAdd);
+        $statistics->increment('shortlinks_today_earned', $amountToAdd);
+        $statistics->increment('shortlinks_this_month', $amountToAdd);
+        $statistics->increment('shortlinks_last_month', $amountToAdd);
 
         //create shorlink history
         ShortLinksHistory::create([
