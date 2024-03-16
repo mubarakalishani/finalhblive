@@ -278,8 +278,8 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> {{ $offers->whereDate('created_at', '=', \Carbon\Carbon::today())->get()->sum('payout') }} </h4>
-                            <p> Today offerds complete </p>
+                            <h4> ${{ $offers->whereBetween('created_at', [now()->startOfDay(), now()->endOfDay()])->sum('payout') }} </h4>
+                            <p> Today offers complete </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
@@ -325,7 +325,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> {{ $shortlinks->whereDate('created_at', '=', \Carbon\Carbon::today())->get()->sum('reward') }} </h4>
+                            <h4> ${{ $shortlinks->whereBetween('created_at', [now()->startOfDay(), now()->endOfDay()])->sum('reward') }} </h4>
                             <p> Today earnings </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -334,7 +334,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-orange">
                         <div class="inner">
-                            <h4> {{ $shortlinks->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('reward') }} </h4>
+                            <h4> ${{ $shortlinks->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('reward') }} </h4>
                             <p> This Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -419,7 +419,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-green">
                         <div class="inner">
-                            <h4> ${{ $faucet->whereDate('created_at', '=', Carbon\Carbon::today())->get()->sum('claimed_amount') }} </h4>
+                            <h4> ${{ $faucet->whereBetween('created_at', [now()->startOfDay(), now()->endOfDay()])->sum('claimed_amount') }} </h4>
                             <p> Today earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
