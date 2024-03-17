@@ -52,7 +52,7 @@ class CampaignsController extends Controller
             ->where('click_id', '<>', $conversion->click_id)
             ->exists();
 
-            if ($sameIpExists) {
+            if ($sameIpExists && $user && $user->total_earned >= 2) {
                 $conversion->update([
                     'remarks' => 'Same Ip address by multiple users'
                 ]);
