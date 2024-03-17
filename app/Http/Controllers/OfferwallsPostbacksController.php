@@ -258,13 +258,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
         echo "OK";
         die();
@@ -512,13 +516,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
 
     
@@ -776,13 +784,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
         echo "OK";
         die();
@@ -1046,13 +1058,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
          echo 1;
     }
@@ -1307,13 +1323,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }       
         echo 1;
         die();
@@ -1584,13 +1604,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }    
     }
 
@@ -1842,13 +1866,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
          echo 1;
          die();
@@ -2101,13 +2129,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
     }
 
@@ -2365,13 +2397,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
         echo 1;
         die();
@@ -2626,13 +2662,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
          echo 1;
          die();
@@ -2886,13 +2926,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
     }
 
@@ -3146,13 +3190,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
     }
 
@@ -3404,13 +3452,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
 
          echo "OK";
@@ -3944,13 +3996,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
          echo 1;
          die();
@@ -4203,13 +4259,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
         echo "OK";
         die();
@@ -4462,13 +4522,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
         echo 1;
         die();
@@ -4721,13 +4785,17 @@ class OfferwallsPostbacksController extends Controller
             }
             $offer->update([ 'status' => 2 ]);
         }
-         else
+         elseif($finalStatus == 2)
          {
             $user->deductWorkerBalance(abs($finalReward));
             $user->decrement('diamond_level_balance', abs($addToExpertLevel));
             $user->decrement('total_earned', abs($finalReward));
             $user->decrement('earned_from_offers', abs($finalReward));
             $user->decrement('total_offers_completed');
+             Log::create([
+                    'user_id' => $user->id,
+                    'description' =>  $finalReward . ' reversed by '.$offerwall->name,
+                ]);
          }
         echo "OK";
         die();
