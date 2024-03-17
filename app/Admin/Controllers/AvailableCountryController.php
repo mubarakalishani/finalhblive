@@ -7,6 +7,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\AvailableCountry;
+use App\Models\User;
 
 class AvailableCountryController extends AdminController
 {
@@ -29,6 +30,11 @@ class AvailableCountryController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('country_code', __('Country code'));
         $grid->column('country_name', __('Country name'));
+        $grid->column('total_users')->display( function(){
+            $id = $this->country_name;
+            $totalUsers = User::where('country', $id)->count();
+            return "<span>$totalUsers</span>";;
+        })->sortable();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
