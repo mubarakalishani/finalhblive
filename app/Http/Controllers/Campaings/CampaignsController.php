@@ -44,8 +44,13 @@ class CampaignsController extends Controller
         
         foreach ($conversions as $conversion) {
             $user = User::where('username', $conversion->username)->first();
-            
-            if ($user && $user->total_earned >= 2) {
+            $conversionCountryAlreadyPaid = NotikConversion::where('user_country_code', $conversion->user_country_code)->where('status', 1)->exists();
+            if ($conversionCountryAlreadyPaid) {
+                $conversion->update([
+                    'remarks' => 'user country already paid, check manually'
+                ]);
+            }
+            elseif ($user && $user->total_earned >= 2) {
                 $callbackUrl = 'https://postback.notik.me/adv-pb/KACTqADeqM322rxI?oid='.$conversion->campaign_id.'&click_id='.$conversion->click_id.'&conversion_ip='.$conversion->user_ip.'&pbSec=yAQcMJ0Q';
                 
                 // Initialize cURL session
