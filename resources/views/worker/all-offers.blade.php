@@ -9,10 +9,10 @@
                 @foreach ($offerwalls as $offerwall)
                     <div class="col-lg-2 col-md-3 col-sm-12 mt-3">
                         <div class="all-offers-area-fixed">
-                            <a href="{{ $offerwall->url }}" target="_blank"
-                                class="offerwall-button">
+                            <button
+                                class="offerwall-button" data-bs-toggle="modal" data-bs-target="#myModal" data-bs-url="{{ $offerwall->url }}" data-bs-header="{{ $offerwall->name }}">
                                 <img width="100px" src="{{$offerwall->image_url}}" alt="{{$offerwall->name}}">
-                            </a>
+                        </button>
                         </div>
                     </div>
                 @endforeach
