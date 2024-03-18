@@ -275,7 +275,7 @@
               @endif
                 <!-- filter start -->
               <div class="results-bar d-flex align-items-center justify-content-between flex-wrap">
-                  <button class="btn btn-success" wire:click="approveAllSelected">Approve All in current view</button>
+                  <button id="approveCurrentView" class="btn btn-success" wire:click="approveAllInCurrentView">Approve All in current view</button>
                   <div class="d-flex flex-wrap">
                     @if ($selectedMultiple == 'yes' )
                       <button class="btn btn-success" wire:click="approveAllSelected">Approve All Selected Tasks</button>
