@@ -75,6 +75,7 @@ Route::get('/notik-s2s', [CampaignsController::class, 'notiks2S']);
 
 //offerwalls postbacks routes
 Route::get('/postback/admantium', [OfferwallsPostbacksController::class, 'admantium']);
+Route::get('/postback/adtowall', [OfferwallsPostbacksController::class, 'adtowall']);
 Route::get('/postback/adscendmedia', [OfferwallsPostbacksController::class, 'adscendmedia']);
 Route::get('/postback/adswedmedia', [OfferwallsPostbacksController::class, 'adswedmedia']);
 Route::get('/postback/ayetstudios', [OfferwallsPostbacksController::class, 'ayetstudios']);

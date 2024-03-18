@@ -77,4 +77,8 @@ class FixBalancesController extends Controller
         }
         
     }
+
+    protected function fixStatistics(){
+        
+    }
 }
