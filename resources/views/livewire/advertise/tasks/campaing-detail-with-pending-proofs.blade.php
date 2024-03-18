@@ -275,10 +275,10 @@
               @endif
                 <!-- filter start -->
               <div class="results-bar d-flex align-items-center justify-content-between flex-wrap">
-                  <p class="mb-0 mr-4 results-bar__total"><span> </span>  </p>
+                  <button class="btn btn-success" wire:click="approveAllSelected">Approve All in current view</button>
                   <div class="d-flex flex-wrap">
                     @if ($selectedMultiple == 'yes' )
-                      <button class="btn btn-primary" wire:click="approveAllSelected">Approve All Selected Tasks</button>
+                      <button class="btn btn-success" wire:click="approveAllSelected">Approve All Selected Tasks</button>
                     @endif
                     
                     {{-- <div class="list-filter dropdown" data-job-filter="sort">
@@ -297,7 +297,7 @@
                   </div>
               </div>
               <!-- top area-before-table -->
-              <div class="all-history-page">
+              <div class="all-history-page mt-3">
                 <div class="row align-items-end mb-4 pb-2">
                   <nav class="mt-0">
                       <div class="nav nav-tabs" id="nav-tab" role="tablist">

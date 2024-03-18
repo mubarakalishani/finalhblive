@@ -265,7 +265,7 @@
                   <p class="mb-0 mr-4 results-bar__total"><span> </span>  </p>
                   <div class="d-flex flex-wrap">
                     @if ($selectedMultiple == 'yes' )
-                      <button class="btn btn-primary" wire:click="approveAllSelected">Approve All Selected Tasks</button>
+                      <button class="btn btn-success" wire:click="approveAllSelected">Approve All Selected Tasks</button>
                     @endif
                     
                     {{-- <div class="list-filter dropdown" data-job-filter="sort">

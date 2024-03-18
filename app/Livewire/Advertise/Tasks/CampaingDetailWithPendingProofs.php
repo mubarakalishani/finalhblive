@@ -132,31 +132,31 @@ class CampaingDetailWithPendingProofs extends Component
         foreach ($this->batchSelectedProofs as $proofId) {
             $submittedTaskProof = SubmittedTaskProof::find($proofId);
             if ($submittedTaskProof->status != 1){
-            $amount = $submittedTaskProof->amount;
-            $workerId = $submittedTaskProof->worker_id;
-            $worker = User::find($workerId);
-            $advertiseId = auth()->user()->id;
-            $advertiser = User::find($advertiseId);
-            //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
-            if($submittedTaskProof->status !=0 ){
-                if ($advertiser->deposit_balance < $amount) {
-                    return back()->with('error', 'your have insufficient funds, please top up first');
+                $amount = $submittedTaskProof->amount;
+                $workerId = $submittedTaskProof->worker_id;
+                $worker = User::find($workerId);
+                $advertiseId = auth()->user()->id;
+                $advertiser = User::find($advertiseId);
+                //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
+                if($submittedTaskProof->status !=0 ){
+                    if ($advertiser->deposit_balance < $amount) {
+                        return back()->with('error', 'your have insufficient funds, please top up first');
+                    }
+                    $advertiser->deductAdvertiserBalance(abs($amount));
                 }
-                $advertiser->deductAdvertiserBalance(abs($amount));
-            }
-            $statistics = Statistic::latest()->firstOrCreate([]);
-            $statistics->increment('tasks_total_earned', $amount);
-            $statistics->increment('tasks_today_earned', $amount);
-            $statistics->increment('tasks_this_month', $amount);
-            $statistics->increment('tasks_last_month', $amount);
-            
-            $worker->increment('balance',$amount);
-            $worker->increment('total_earned', $amount);
-            $worker->increment('total_tasks_completed');
-            $worker->increment('earned_from_tasks', $amount);
-            $submittedTaskProof->update([ 'status' => 1 ]);
-            session()->flash('message', 'all selected Tasks has been Approved');
-            $this->batchSelectedProofs = [];
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('tasks_total_earned', $amount);
+                $statistics->increment('tasks_today_earned', $amount);
+                $statistics->increment('tasks_this_month', $amount);
+                $statistics->increment('tasks_last_month', $amount);
+
+                $worker->increment('balance',$amount);
+                $worker->increment('total_earned', $amount);
+                $worker->increment('total_tasks_completed');
+                $worker->increment('earned_from_tasks', $amount);
+                $submittedTaskProof->update([ 'status' => 1 ]);
+                session()->flash('message', 'all selected Tasks has been Approved');
+                $this->batchSelectedProofs = [];
             }
         }
         $this->selectedMultiple = 'no';
@@ -234,12 +234,47 @@ class CampaingDetailWithPendingProofs extends Component
         }
         
     }
+
+    public function approveAllInCurrentView(){
+        $proofsInCurrentView = $this->task->submittedProofs()
+        ->whereIn('status', [0,4])
+        ->orderBy('id', 'ASC')
+        ->paginate($this->perPage);
+        foreach ($proofsInCurrentView as $submittedTaskProof) {
+            if ($submittedTaskProof->status != 1){
+                $amount = $submittedTaskProof->amount;
+                $workerId = $submittedTaskProof->worker_id;
+                $worker = User::find($workerId);
+                $advertiseId = auth()->user()->id;
+                $advertiser = User::find($advertiseId);
+                //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
+                if($submittedTaskProof->status !=0 ){
+                    if ($advertiser->deposit_balance < $amount) {
+                        return back()->with('error', 'your have insufficient funds, please top up first');
+                    }
+                    $advertiser->deductAdvertiserBalance(abs($amount));
+                }
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('tasks_total_earned', $amount);
+                $statistics->increment('tasks_today_earned', $amount);
+                $statistics->increment('tasks_this_month', $amount);
+                $statistics->increment('tasks_last_month', $amount);
+                
+                $worker->increment('balance',$amount);
+                $worker->increment('total_earned', $amount);
+                $worker->increment('total_tasks_completed');
+                $worker->increment('earned_from_tasks', $amount);
+                $submittedTaskProof->update([ 'status' => 1 ]);
+                session()->flash('message', 'all selected Tasks has been Approved');
+            }
+        }
+    }
     public function render()
     {
         return view('livewire.advertise.tasks.campaing-detail-with-pending-proofs', [
             'proofs' => $this->task->submittedProofs()
                 ->whereIn('status', [0,4])
-                ->orderByDesc('id')
+                ->orderBy('id', 'ASC')
                 ->paginate($this->perPage),
         ]);
     }
