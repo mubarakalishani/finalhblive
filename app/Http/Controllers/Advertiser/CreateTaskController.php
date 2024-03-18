@@ -60,6 +60,7 @@ class CreateTaskController extends Controller
         $task->task_balance = $taskBalance;
         $task->hold_time = 0;
         $task->status = 0;
+        $task->remarks = 'no remarks';
         $task->category = $request->input('category');
         $task->sub_category = $request->input('subCategory');
         $task->rating_time = $request->input('rating_time');

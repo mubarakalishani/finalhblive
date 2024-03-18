@@ -55,6 +55,19 @@
                   Submitted Proofs</a>
               </span>
             </div> --}}
+            
+            @if ($task->status == 2 || $task->status == 8)
+              <span class="mt-3 bg-danger text-white font-weight-bold">
+                {{ $task->remarks }}
+              </span>
+            @endif
+
+            @if ($task->status == 7)
+              <span class="mt-3 bg-primary text-white font-weight-bold">
+                The job has been paused by the admin and is under investigation, it will be shortly either resumed or stopped.
+              </span>
+            @endif
+            
             <div class="p-3 p-sm-6 bg-gray mb-6 detail-campaign-area">
               <div class="row">
                 <div class="col-md-6 mb-4 mb-md-0">
@@ -100,7 +113,7 @@
                         <p class="mb-0"><strong>Spent So Far:</strong></p>
                       </div>
                       <div class="col-sm-7 col-md-8 details-text-style">
-                        <p class="mb-0 font-weight-bold">${{ $task->submittedProofs->where('status', 1)->sum('amount') }}
+                        <p class="mb-0 font-weight-bold">${{ number_format($task->submittedProofs->where('status', 1)->sum('amount'), 3) }}
                         </p>
                       </div>
                     </div>
@@ -109,7 +122,7 @@
                         <p class="mb-0"><strong>Pending Spend:</strong></p>
                       </div>
                       <div class="col-sm-7 col-md-8 details-text-style">
-                        <p class="mb-0 font-weight-bold">${{ $task->submittedProofs->where('status', 0)->sum('amount') }}
+                        <p class="mb-0 font-weight-bold">${{ number_format($task->submittedProofs->where('status', 0)->sum('amount'), 3) }}
                         </p>
                       </div>
                     </div>

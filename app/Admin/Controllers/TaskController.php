@@ -75,12 +75,13 @@ class TaskController extends AdminController
         })->sortable();
         $grid->column('category', __('Category'))->display( function($categoryID){
             $category = TaskCategory::where('id', $categoryID)->value('name');
-            return "<span class='badge bg-warning'>$category</span>";
+            return "<span>$category</span>";
         })->sortable();
         $grid->column('sub_category', __('Sub category'))->display( function($categoryID){
             $category = TaskCategory::where('id', $categoryID)->value('name');
-            return "<span class='badge bg-warning'>$category</span>";
+            return "<span>$category</span>";
         })->sortable();
+        $grid->column('remarks', __('Admin Remarks'))->text()->sortable();
         $grid->column('task_balance', __('Task balance'))->sortable();
         $grid->column('approval_fee', __('Approval fee'));
         $grid->column('rating_time', __('Rating time'))->sortable();
