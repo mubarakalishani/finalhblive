@@ -37,6 +37,7 @@ class CampaingDetailWithPendingProofs extends Component
     public $reasonSelected;
     public $proofId;
     public $rejectOrRevision;
+    public $approveAllCurrentBtnClicked = 0; //0 no, 1 yes
 
     protected $rules = [
         'reasonExplained' => 'required|min:20',
@@ -236,6 +237,7 @@ class CampaingDetailWithPendingProofs extends Component
     }
 
     public function approveAllInCurrentView(){
+        $this->approveAllCurrentBtnClicked = 1;
         $proofsInCurrentView = $this->task->submittedProofs()
         ->whereIn('status', [0,4])
         ->orderBy('id', 'ASC')
@@ -268,6 +270,7 @@ class CampaingDetailWithPendingProofs extends Component
                 session()->flash('message', 'all selected Tasks has been Approved');
             }
         }
+        $this->approveAllCurrentBtnClicked = 0;
     }
     public function render()
     {

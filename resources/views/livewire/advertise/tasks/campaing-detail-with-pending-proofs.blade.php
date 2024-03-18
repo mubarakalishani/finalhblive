@@ -275,7 +275,11 @@
               @endif
                 <!-- filter start -->
               <div class="results-bar d-flex align-items-center justify-content-between flex-wrap">
-                  <button id="approveCurrentView" class="btn btn-success" wire:click="approveAllInCurrentView">Approve All in current view</button>
+                  @if ( $approveAllCurrentBtnClicked == 0 )
+                    <button id="approveCurrentView" class="btn btn-success" wire:click="approveAllInCurrentView">Approve All in current view</button>
+                  @elseif($approveAllCurrentBtnClicked == 1)
+                    <button id="approveCurrentView" class="btn btn-success">processing...</button>
+                  @endif
                   <div class="d-flex flex-wrap">
                     @if ($selectedMultiple == 'yes' )
                       <button class="btn btn-success" wire:click="approveAllSelected">Approve All Selected Tasks</button>
