@@ -284,7 +284,7 @@
                   </div>
               </div>
               <!-- top area-before-table -->
-              <div class="all-history-page">
+              <div class="all-history-page mt-3">
                 <div class="row align-items-end mb-4 pb-2">
                   <nav class="mt-0">
                       <div class="nav nav-tabs" id="nav-tab" role="tablist">
