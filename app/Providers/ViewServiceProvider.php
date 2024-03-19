@@ -51,7 +51,9 @@ class ViewServiceProvider extends ServiceProvider
             $countIframe = 0;
             foreach ($availableIframePtcAds as $IframeAd) {
                 if (!$IframeAd->totalSecondsDifference || $IframeAd->totalSecondsDifference > ($IframeAd->revision_interval * 60 * 60)) {
-                    $countIframe++;
+                    if ($IframeAd->views_completed < $IframeAd->views_needed){
+                        $countIframe++;
+                    }
                 }
             }
 
@@ -78,7 +80,9 @@ class ViewServiceProvider extends ServiceProvider
             $countWindows = 0;
             foreach ($availableWindowPtcAds as $windowAd) {
                 if (!$windowAd->totalSecondsDifference || $windowAd->totalSecondsDifference > ($windowAd->revision_interval * 60 * 60)) {
-                    $countWindows++;
+                    if ($windowAd->views_completed < $windowAd->views_needed) {
+                        $countWindows++; 
+                    }
                 }
             }
 

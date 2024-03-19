@@ -5,9 +5,11 @@
 @endphp
 @foreach ($availableWindowPtcAds as $ad)
     @if (!$ad->totalSecondsDifference || $ad->totalSecondsDifference > ($ad->revision_interval * 60 * 60))
-        @php
-            $countWindows++;
-        @endphp
+        @if ($ad->views_completed < $ad->views_needed)
+            @php
+                $countWindows++;
+            @endphp
+        @endif
     @endif
 @endforeach
 
@@ -17,9 +19,11 @@
 @endphp
 @foreach ($availableIframePtcAds as $ad)
     @if (!$ad->totalSecondsDifference || $ad->totalSecondsDifference > ($ad->revision_interval * 60 * 60))
-        @php
-            $countIframe++;
-        @endphp
+        @if ($ad->views_completed < $ad->views_needed)
+            @php
+                $countIframe++;
+            @endphp
+        @endif
     @endif
 @endforeach
     <div class="container-fluid">
