@@ -83,8 +83,8 @@ class OffersAndSurveysLogsController extends AdminController
             $model->where('provider_name', 'like', "%{$query}%")
             ->orWhere('status', 'like', "%{$query}%")
             ->orWhere('user_id', "%{$query}%")
-            ->orWhereHas('worker', function ($query) {
-                $query->where('username', "%{$query}%");
+            ->orWhereHas('worker', function ($input) {
+                $input->where('username', "%{$this->query}%");
             });
         });
 
