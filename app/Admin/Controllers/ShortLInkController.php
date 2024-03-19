@@ -37,12 +37,12 @@ class ShortLinkController extends AdminController
         $grid->column('total_views')->display( function(){
             $id = $this->id;
             $totalViews = ShortLinksHistory::where('link_id', $id)->count();
-            return "<span>$totalViews</span>";;
+            return "<span>$totalViews</span>";
         })->sortable();
         $grid->column('total_paid')->display( function(){
             $id = $this->id;
             $totalPaid = ShortLinksHistory::where('link_id', $id)->sum('reward');
-            return "<span>$totalPaid</span>";;
+            return "<span>$totalPaid</span>";
         })->sortable();
         $grid->column('url', __('Url'))->text();
         $grid->column('unique_id', __('Unique id'));

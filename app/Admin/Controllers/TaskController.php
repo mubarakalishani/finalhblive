@@ -81,7 +81,7 @@ class TaskController extends AdminController
             $category = TaskCategory::where('id', $categoryID)->value('name');
             return "<span>$category</span>";
         })->sortable();
-        $grid->column('remarks', __('Admin Remarks'))->text()->sortable();
+        $grid->column('remarks', __('Admin Remarks'))->sortable()->text();
         $grid->column('task_balance', __('Task balance'))->sortable();
         $grid->column('approval_fee', __('Approval fee'));
         $grid->column('rating_time', __('Rating time'))->sortable();
@@ -240,6 +240,7 @@ class TaskController extends AdminController
 
         $form->text('employer_id', __('Employer id'));
         $form->text('title', __('Title'));
+        $form->text('remarks', __('Admin Remarks'));
         $form->text('worker_level', __('Worker level'))->default('starter');
         $form->number('category', __('Category'));
         $form->number('sub_category', __('Sub category'));
