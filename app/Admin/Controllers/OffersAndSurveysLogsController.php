@@ -82,10 +82,7 @@ class OffersAndSurveysLogsController extends AdminController
         $grid->quickSearch(function ($model, $query) {
             $model->where('provider_name', 'like', "%{$query}%")
             ->orWhere('status', 'like', "%{$query}%")
-            ->orWhere('user_id', "%{$query}%")
-            ->orWhereHas('worker', function ($input) {
-                $input->where('username', "%{$this->query}%");
-            });
+            ->orWhere('user_id', "{$query}");
         });
 
         return $grid;

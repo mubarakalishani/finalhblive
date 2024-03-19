@@ -39,7 +39,8 @@
             <div class="row">
                 @foreach ($availableIframePtcAds as $ad)
                     @if (!$ad->totalSecondsDifference || $ad->totalSecondsDifference > ($ad->revision_interval * 60 * 60))
-                        <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-2" id="ad{{ $ad->id }}">
+                        @if($ad->views_completed < $ad->views_needed)
+                            <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-2" id="ad{{ $ad->id }}">
                             <div class="card-body ">
                                 <div class="ads-para-description text-center" style="height: 110px;">
                                     <h6>{{ $ad->title }}</h6>
@@ -76,7 +77,8 @@
                                 <a href="/views/iframe/{{ $ad->unique_id }}" onclick="adClicked('ad{{ $ad->id }}')" target="_blank"
                                     class="form-control btn btn-primary">View ads</a>
                             </div>
-                        </div>
+                            </div>
+                        @endif    
                     @endif
                 @endforeach
             </div>
