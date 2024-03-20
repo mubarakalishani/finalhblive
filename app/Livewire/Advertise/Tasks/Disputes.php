@@ -37,12 +37,6 @@ class Disputes extends Component
         $advertiseId = auth()->user()->id;
         $advertiser = User::find($advertiseId);
         
-        if ($advertiser->deposit_balance < $amount) {
-            return back()->with('error', 'your have insufficient funds, please top up first');
-        }
-        $advertiser->deductAdvertiserBalance(abs($amount));
-
-        $worker->addWorkerBalance($amount);
         $worker->increment('total_earned', $amount);
         $worker->increment('total_tasks_completed');
         $worker->increment('earned_from_tasks', $amount);

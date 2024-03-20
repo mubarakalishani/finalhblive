@@ -119,9 +119,8 @@ class EveryFiveMinutesController extends Controller
 
     protected function resolveAppealTimeExhaustedProofs(){
         //get all the proofs for whose the resubmission allowed time is passed and mark them as resubmit time exhausted
-        $appealTimeExhaustedProofs = SubmittedTaskProof::where(function ($query) {
-            $query->where('updated_at', '<=', now()->subHours(30));
-        })->where('status', 6)->get();
+        $appealTimeExhaustedProofs = SubmittedTaskProof::where('updated_at', '<=', now()->subHours(30))
+        ->where('status', 6)->get();
         foreach ($appealTimeExhaustedProofs as $appealTimeExhaustedProof) {
             $task= Task::find($appealTimeExhaustedProof->task_id);
             $employer = User::find($task->employer_id);
