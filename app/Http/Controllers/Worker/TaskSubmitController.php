@@ -156,7 +156,7 @@ class TaskSubmitController extends Controller
     /*============================function to store the Dispute that the User will File=========================================  */
     public function fileDispute(Request $request, $taskId){
         $request->validate([
-            'description' => 'required|string',
+            'description' => 'required|min:10',
             'proofId' => 'required',
         ]);
 
