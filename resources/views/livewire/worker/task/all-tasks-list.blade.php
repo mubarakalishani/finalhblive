@@ -125,7 +125,7 @@
                           <p class="mb-0 py-1">Approved/Rejected:</p>
                         </div>
                         <div class="col details-text-style">
-                          <p class="mb-0 py-1">{{ $task->submittedProofs->where('status', 1)->count() }} / {{ $task->submittedProofs->where('status', 2)->count()}}</p>
+                          <p class="mb-0 py-1">{{ $task->submittedProofs->where('status', 1)->count() }} / {{ $task->submittedProofs->whereIn('status', [2,6,7,8,9])->count()}}</p>
                         </div>
                       </div>
                       <div class="row">

@@ -90,12 +90,12 @@ class CampaingDetailWithRejectedProofs extends Component
     {
         // dd($proofId);
         $SubmittedTaskProof = SubmittedTaskProof::find($proofId);
-        $amount = $SubmittedTaskProof->amount;
-        $workerId = $SubmittedTaskProof->worker_id;
-        $worker = User::find($workerId);
-        $advertiseId = auth()->user()->id;
-        $advertiser = User::find($advertiseId);
-        $advertiser->addAdvertiserBalance($amount); //adding the amount back to the advertiser's balance
+        // $amount = $SubmittedTaskProof->amount;
+        // $workerId = $SubmittedTaskProof->worker_id;
+        // $worker = User::find($workerId);
+        // $advertiseId = auth()->user()->id;
+        // $advertiser = User::find($advertiseId);
+        // $advertiser->addAdvertiserBalance($amount); //adding the amount back to the advertiser's balance
 
         $SubmittedTaskProof->update([ 'status' => 2 ]);
 
@@ -226,7 +226,7 @@ class CampaingDetailWithRejectedProofs extends Component
     {
         return view('livewire.advertise.tasks.campaing-detail-with-rejected-proofs', [
             'proofs' => $this->task->submittedProofs()
-                ->whereIn('status', [2,6])
+                ->whereIn('status', [2,6,8,9])
                 ->orderByDesc('id')
                 ->paginate($this->perPage),
         ]);

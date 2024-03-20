@@ -230,6 +230,7 @@ Route::get('/privacy-policy', [App\Http\Controllers\Pages\PrivacyPolicyControlle
 
 Route::get('/jobs/submitted/{taskId}', [TaskSubmitController::class, 'showSbumittedProof']);
 Route::post('/jobs/submitted/{taskId}/file-dispute', [TaskSubmitController::class, 'fileDispute'])->name('worker.file_dispute');
+Route::post('/jobs/submitted/{taskId}/file-admin-appeal', [TaskSubmitController::class, 'fileAdminAppeal'])->name('worker.file_admin_appeal');
 
 Route::post('/jobs/submitted/{taskId}/submit-revised-task', [TaskSubmitController::class, 'submitRevisedTask'])->name('worker.submit_revised_task');
 

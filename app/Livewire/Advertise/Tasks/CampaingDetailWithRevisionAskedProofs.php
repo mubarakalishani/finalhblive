@@ -89,12 +89,12 @@ class CampaingDetailWithRevisionAskedProofs extends Component
     {
         // dd($proofId);
         $SubmittedTaskProof = SubmittedTaskProof::find($proofId);
-        $amount = $SubmittedTaskProof->amount;
-        $workerId = $SubmittedTaskProof->worker_id;
-        $worker = User::find($workerId);
-        $advertiseId = auth()->user()->id;
-        $advertiser = User::find($advertiseId);
-        $advertiser->addAdvertiserBalance($amount); //adding the amount back to the advertiser's balance
+        // $amount = $SubmittedTaskProof->amount;
+        // $workerId = $SubmittedTaskProof->worker_id;
+        // $worker = User::find($workerId);
+        // $advertiseId = auth()->user()->id;
+        // $advertiser = User::find($advertiseId);
+        // $advertiser->addAdvertiserBalance($amount); //adding the amount back to the advertiser's balance
 
         $SubmittedTaskProof->update([ 'status' => 2 ]);
 

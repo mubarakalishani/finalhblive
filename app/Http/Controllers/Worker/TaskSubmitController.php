@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Worker;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminProofDispute;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Task;
@@ -154,6 +155,29 @@ class TaskSubmitController extends Controller
 
     /*============================function to store the Dispute that the User will File=========================================  */
     public function fileDispute(Request $request, $taskId){
+        $request->validate([
+            'description' => 'required|string',
+            'proofId' => 'required',
+        ]);
+
+        $task = Task::find($taskId);
+        $employerId = $task->employer_id;
+
+        AdminProofDispute::create([
+            'status' => 0,
+            'worker_id' => auth()->user()->id,
+            'task_id' => $taskId,
+            'proof_id' => $request->input('proofId'),
+            'description' => $request->input('description'),
+            'employer_id' => $employerId
+        ]);
+        $proof = SubmittedTaskProof::find($request->input('proofId'));
+        $proof->update(['status' => 5]);
+        return back()->with('success', 'Your Dispute Is Successfully Filed');
+    }
+
+
+    public function fileAdminAppeal(Request $request, $taskId){
         $request->validate([
             'description' => 'required|min:10',
             'proofId' => 'required',

@@ -138,7 +138,7 @@
                                         bg-warning
                                     @elseif($proof->status == 5)
                                         bg-primary
-                                    @elseif($proof->status == 6 || $proof->status == 7)
+                                    @elseif($proof->status == 6 || $proof->status == 7 || $proof->status == 8)
                                         bg-danger
                                     @endif"
                                     >
@@ -157,7 +157,11 @@
                                     @elseif($proof->status == 6)
                                         Dispute Rejected By  employer
                                     @elseif($proof->status == 7)
-                                        Resubmission Expired    
+                                        Resubmission Expired
+                                    @elseif($proof->status == 8)
+                                        Rejected + dispute time passed
+                                    @elseif($proof->status == 9)
+                                        Rejected + Appeal to admin time passed         
                                     @endif
                                 </span>
 
@@ -194,7 +198,33 @@
                                         <form action="{{ route('worker.file_dispute', ['taskId' => $task->id])}}" method="POST">
                                             @csrf
                                             <div class="mb-3">
-                                                <label>Explain the Dispute Details Here:</label>
+                                                <label>Explain the Dispute Details Here: (minimum 10 letters)</label>
+                                                <textarea name="description" class="form-control" required></textarea>
+                                            </div>
+                                            <input type="hidden" name="proofId" value="{{ $proof->id }}">
+                                            <div class="mb-3">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>    
+                                        </form>
+                                    </div>
+                                  </div>
+                                @endif
+
+
+                                @if ($proof->status==6)
+                                 <p>
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                      submit appeal to Admin
+                                    </button>
+                                  </p>
+                                  <div class="collapse" id="collapseExample">
+                                    <div class="card card-body">
+                                        <form action="{{ route('worker.file_admin_appeal', ['taskId' => $task->id])}}" method="POST">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label>Explain the Appeal Details Here: Include as much as detail you can, don't submit appeal with incomplete details or if you have not done the
+                                                  task correctly, doing so, will result in getting banned.
+                                                </label>
                                                 <textarea name="description" class="form-control" required></textarea>
                                             </div>
                                             <input type="hidden" name="proofId" value="{{ $proof->id }}">
