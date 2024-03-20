@@ -48,6 +48,7 @@ Route::group([
     $router->resource('text-proofs', TextProofController::class);
     $router->resource('image-proofs', ImageProofController::class);
     $router->resource('reject-approval-reasons', RejectApprovalReasonController::class);
+    $router->resource('admin-proof-disputes', AdminProofDisputeController::class);
 
 
 
