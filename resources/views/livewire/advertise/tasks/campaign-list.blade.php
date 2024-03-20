@@ -92,11 +92,11 @@
                                                 class="fas fa-info-circle"></i> Job Details</a>
                                         {{-- <a class="dropdown-item pw-emp-menu-item" href="#"><i class="fas fa-copy"></i>
                                             Clone Job</a> --}}
-                                        <a class="dropdown-item pw-emp-menu-item" href="/advertiser/campaign/{{ $task->id }}"><i class="fas fa-eye"></i>
+                                        <a class="dropdown-item pw-emp-menu-item" href="/advertiser/campaign/{{ $task->id }}?tab=approved"><i class="fas fa-eye"></i>
                                             View Approved Proofs</a>
-                                        <a class="dropdown-item pw-emp-menu-item" href="/advertiser/campaign/{{ $task->id }}"><i class="fas fa-eye"></i>
+                                        <a class="dropdown-item pw-emp-menu-item" href="/advertiser/campaign/{{ $task->id }}?tab=pending"><i class="fas fa-eye"></i>
                                             Review pending Proofs</a>
-                                        <a class="dropdown-item pw-emp-menu-item" href="/advertiser/campaign/{{ $task->id }}"><i class="fas fa-eye"></i>
+                                        <a class="dropdown-item pw-emp-menu-item" href="/advertiser/campaign/{{ $task->id }}?tab=rejected"><i class="fas fa-eye"></i>
                                             Review Rejected Proofs</a>
                                     </div>
                                 </div>

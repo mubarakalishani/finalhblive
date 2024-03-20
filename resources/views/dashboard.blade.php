@@ -29,7 +29,7 @@
                         <h5 class="d-flex align-items-center mb-3">Balance Status</h5>
                       <div class="row">
                         <div class="col">
-                          <div class="mb-0 dashboard-data-head">Main Balance</div>
+                          <div class="mb-0 dashboard-data-head">Main</div>
                         </div>
                         <div class="col text-secondary currency-style">
                           ${{ auth()->user()->balance }}
@@ -44,10 +44,12 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <div class="mb-0 dashboard-data-head">Advertising Balance</div>
+                          <div class="mb-0 dashboard-data-head">Advertising</div>
                         </div>
                         <div class="col text-secondary currency-style">
-                          ${{ auth()->user()->deposit_balance }}
+                          available: ${{ number_format(auth()->user()->deposit_balance, 2) }}, on hold: ${{ auth()->user()->tasks()->with('submittedProofs')->whereHas('submittedProofs', function($query) {
+                            $query->whereIn('status', [2, 6, 10]);
+                        })->get()->pluck('submittedProofs')->flatten()->sum('amount') }}
                         </div>
                         <div class="col text-secondary view-all-btn">
                           <a href="/advertiser/deposit">Deposit</a>
@@ -56,7 +58,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <div class="mb-0 dashboard-data-head">Expert Level Balance</div>
+                          <div class="mb-0 dashboard-data-head">Expert Level</div>
                         </div>
                         <div class="col text-secondary currency-style">
                           {{ auth()->user()->diamond_level_balance }} 
@@ -68,7 +70,7 @@
                       <hr>
                       <div class="row">
                         <div class="col">
-                          <div class="mb-0 dashboard-data-head">Pending Balance</div>
+                          <div class="mb-0 dashboard-data-head">Pending</div>
                         </div>
                         <div class="col text-secondary currency-style">
                           ${{ \App\Models\SubmittedTaskProof::where('status', 0)->where('worker_id', auth()->user()->id)->sum('amount') + \App\Models\OffersAndSurveysLog::where('status', 1)->where('user_id', auth()->user()->id)->sum('reward') }}

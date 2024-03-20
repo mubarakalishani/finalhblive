@@ -173,6 +173,17 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-6 mb-md-0">
+                  <div class="row mb-4 mb-sm-2">
+                    <div class="col-sm-5 mb-1 mb-sm-0 col-md-4 details-text-style">
+                      <p class="mb-0"></p>
+                      <p class="mb-0" data-bs-toggle="tooltip" data-bs-placement="left" title="When you reject a submission, we hold the balance for upto 2 days to tackle with disputes, after 2 days the balance will be added back to your advertising balance again."><strong>Balance On Hold</strong>   <i class="fa-regular fa-circle-question"></i></h5>
+                    </div>
+                    <div class="col-sm-7 col-md-8 details-text-style">
+                      <p class="mb-0 font-weight-bold">{{ number_format($task->submittedProofs->whereIn('status', [2,6,10])->sum('amount'), 3) }}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
