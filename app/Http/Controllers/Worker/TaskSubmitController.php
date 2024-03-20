@@ -196,7 +196,7 @@ class TaskSubmitController extends Controller
         ]);
         $proof = SubmittedTaskProof::find($request->input('proofId'));
         $proof->update(['status' => 10]);
-        return back()->with('success', 'Your Dispute Is Successfully Filed');
+        return back()->with('success', 'Your Appeal Is Successfully Filed');
     }
 
     /*============================function to store the Revise Task that the User will File=========================================  */

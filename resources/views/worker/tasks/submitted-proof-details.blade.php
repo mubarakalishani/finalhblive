@@ -161,7 +161,9 @@
                                     @elseif($proof->status == 8)
                                         Rejected + dispute time passed
                                     @elseif($proof->status == 9)
-                                        Rejected + Appeal to admin time passed         
+                                        Rejected + Appeal to admin time passed
+                                    @elseif($proof->status == 10)
+                                        Appeal Filed to admin         
                                     @endif
                                 </span>
 
