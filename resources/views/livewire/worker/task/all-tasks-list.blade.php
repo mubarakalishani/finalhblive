@@ -99,7 +99,7 @@
             </div>
             <div class="row">
                 @foreach ($availableTasks as $task)
-                @if ( $task->targetedCountries->first()->amount_per_task <= \App\Models\User::where('id', $task->employer_id)->value('deposit_balance') && $task->hourly_submit_exceed == 0 && $task->daily_submit_exceed ==0 && $task->weekly_submit_exceed == 0 && $task->hourly_budget_exceed ==0 && $task->daily_budget_exceed == 0 && $task->weekly_budget_exceed == 0 && $task->total_submissions_exceed == 0)
+                @if ( $task->id != 97 && $task->targetedCountries->first()->amount_per_task <= \App\Models\User::where('id', $task->employer_id)->value('deposit_balance') && $task->hourly_submit_exceed == 0 && $task->daily_submit_exceed ==0 && $task->weekly_submit_exceed == 0 && $task->hourly_budget_exceed ==0 && $task->daily_budget_exceed == 0 && $task->weekly_budget_exceed == 0 && $task->total_submissions_exceed == 0)
                   <div class="col-lg-6 col-md-12 col-sm-12">
                   <div class="p-3 p-sm-6 bg-gray mb-6 detail-campaign-area clickable-div" onclick="navigateToPage('/jobs/{{ $task->id }}')">
                     <div class="job-bar__header d-flex align-items-top justify-content-between mb-3">
@@ -173,7 +173,83 @@
                     <hr>
                   </div>
                   </div>
-                @endif  
+                
+                @elseif ( $task->id == 97 && auth()->user()->total_withdrawn > 0 && $task->targetedCountries->first()->amount_per_task <= \App\Models\User::where('id', $task->employer_id)->value('deposit_balance') && $task->hourly_submit_exceed == 0 && $task->daily_submit_exceed ==0 && $task->weekly_submit_exceed == 0 && $task->hourly_budget_exceed ==0 && $task->daily_budget_exceed == 0 && $task->weekly_budget_exceed == 0 && $task->total_submissions_exceed == 0)
+                  <div class="col-lg-6 col-md-12 col-sm-12">
+                  <div class="p-3 p-sm-6 bg-gray mb-6 detail-campaign-area clickable-div" onclick="navigateToPage('/jobs/{{ $task->id }}')">
+                    <div class="job-bar__header d-flex align-items-top justify-content-between mb-3">
+                      <h3 class="job-bar__heading fw-medium mb-0 h4">
+                        <span class="js-job-item-name">{{ $task->title }}</span>
+                      </h3>
+                      <div class="job-bar__actions flex-shrink-0">
+                        <a href="#"><i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                    <div class="col">
+                      <div class="row">
+                        <div class="col mb-1 mb-sm-0 details-text-heading">
+                          <p class="mb-0 py-1">Reward</p>
+                        </div>
+                        <div class="col details-text-style">
+                          <p class="mb-0 py-1" id="jid">${{ $task->targetedCountries->first()->amount_per_task }}</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col mb-1 mb-sm-0 details-text-heading">
+                          <p class="mb-0 py-1">Approved/Rejected:</p>
+                        </div>
+                        <div class="col details-text-style">
+                          <p class="mb-0 py-1">{{ $task->submittedProofs->where('status', 1)->count() }} / {{ $task->submittedProofs->whereIn('status', [2,6,7,8,9])->count()}}</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col mb-1 mb-sm-0 details-text-heading">
+                          <p class="mb-0 py-1">Job Started</p>
+                        </div>
+                        <div class="col details-text-style">
+                          <p class="mb-0 py-1">{{ $task->created_at->diffForHumans() }}</p>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col">
+                        <div class="row">
+                            <div class="col mb-1 mb-sm-0 details-text-heading">
+                                <p class="mb-0 py-1">Time to rate:</p>
+                            </div>
+                            <div class="col details-text-style">
+                                <p class="mb-0 py-1">{{ $task->rating_time }} Days</p>
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col mb-1 mb-sm-0 details-text-heading">
+                                <p class="mb-0 py-1">Category:</p>
+                            </div>
+                            <div class="col details-text-style">
+                                <p class="mb-0 py-1">{{ $task->taskCategory->name }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col mb-1 mb-sm-0 details-text-heading">
+                                <p class="mb-0 py-1">Sub-Category:</p>
+                            </div>
+                            <div class="col details-text-style">
+                                <p class="mb-0 py-1">{{ $task->subCategory->name }}</p>
+                            </div>
+                        </div>
+                    </div>
+        
+                    
+        
+                    </div>
+                    <hr>
+                  </div>
+                  </div>
+                @endif
+                  
                 @endforeach
             </div>
             <div x-intersect="$wire.loadMore()" style="visibility:hidden">Load More</div>
