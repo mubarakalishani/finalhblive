@@ -195,7 +195,7 @@ class TaskSubmitController extends Controller
             'employer_id' => $employerId
         ]);
         $proof = SubmittedTaskProof::find($request->input('proofId'));
-        $proof->update(['status' => 5]);
+        $proof->update(['status' => 10]);
         return back()->with('success', 'Your Dispute Is Successfully Filed');
     }
 

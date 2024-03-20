@@ -59,13 +59,22 @@ class SubmittedTaskProofController extends AdminController
                     break; 
                 case 7:
                     return "<span class='badge bg-primary'>resubmission exhausted</span>";
-                    break;            
+                    break;
+                case 8:
+                    return "<span class='badge bg-danger'>Rejected: dispute time passed</span>";
+                    break;
+                case 9:
+                    return "<span class='badge bg-danger'>Rejected: Appeal time passed</span>";
+                    break;
+                case 10:
+                    return "<span class='badge bg-primary'>appeal filed to admin</span>";
+                    break;                    
                 default:
                 return "<span class='badge bg-primary'>$status</span>";
               }
         })->sortable();
         $grid->column('employer_remark')->display( function(){
-            if ($this->status == 2 || $this->status == 3 || $this->status == 4 || $this->status == 5 || $this->status == 6 || $this->status == 7) {
+            if ($this->status == 2 || $this->status == 3 || $this->status == 4 || $this->status == 5 || $this->status == 6 || $this->status == 7 $this->status == 8 || $this->status == 9 || $this->status == 10) {
                 $remark = $this->revisionApprovalReason->selected_reason . ' , '.$this->revisionApprovalReason->employer_comment;
             }else{
                 $remark = 'none yet';
@@ -88,7 +97,10 @@ class SubmittedTaskProofController extends AdminController
                 '4' => 'resubmitted by worker',
                 '5' => 'dispute filed',
                 '6' => 'dispute rejected',
-                '7' => 'resubmission time passed'
+                '7' => 'resubmission time passed',
+                '8' =>  'Rejected: dispute time passed',
+                '9' =>  'Rejected: Appeal time passed',
+                '10' => 'appeal filed to admin'
             ]);
             $filter->between('created_at', 'submitted between')->datetime();
         });

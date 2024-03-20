@@ -81,7 +81,7 @@
                                                         bg-success
                                                     @elseif($proof->status == 2)
                                                         bg-danger
-                                                    @elseif($proof->status == 3)
+                                                    @elseif($proof->status == 3 || $proof->status == 10)
                                                         bg-info
                                                     @elseif($proof->status == 4)
                                                         bg-warning
@@ -109,7 +109,9 @@
                                                     @elseif($proof->status == 8)
                                                         Rejected: Dispute time Expired
                                                     @elseif($proof->status == 9)
-                                                        Rejected: Appeal to Admin Time expired       
+                                                        Rejected: Appeal to Admin Time expired
+                                                    @elseif($proof->status == 10)
+                                                        Appeal Filed to Admin           
                                                     @endif
                                                 </span>
                                             </td>
