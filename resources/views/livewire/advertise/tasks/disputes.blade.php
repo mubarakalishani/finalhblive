@@ -68,7 +68,7 @@
                                                         <li>{{ $textProof->proof_text }}</li>  
                                                     @endforeach
                                                     @foreach ($proof->imageProofs as $imageProof)
-                                                    <li>{{ $imageProof->url }}</li>  
+                                                        <li><img style="max-width: 320px;" src="{{ asset('storage/proofs/'.$imageProof->url)}}" alt="proof img" width="320px"></li>
                                                 @endforeach
                                                 </ol>
                                                 <strong class="text-danger">Your Rejection Reason :</strong>
