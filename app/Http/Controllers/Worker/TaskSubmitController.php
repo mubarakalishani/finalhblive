@@ -188,7 +188,7 @@ class TaskSubmitController extends Controller
 
         AdminProofDispute::create([
             'status' => 0,
-            'worker_id' => auth()->user()->id,
+            'user_id' => auth()->user()->id,
             'task_id' => $taskId,
             'proof_id' => $request->input('proofId'),
             'description' => $request->input('description'),
