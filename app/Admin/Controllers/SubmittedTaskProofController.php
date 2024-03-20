@@ -74,7 +74,7 @@ class SubmittedTaskProofController extends AdminController
               }
         })->sortable();
         $grid->column('employer_remark')->display( function(){
-            if ($this->status == 2 || $this->status == 3 || $this->status == 4 || $this->status == 5 || $this->status == 6 || $this->status == 7 $this->status == 8 || $this->status == 9 || $this->status == 10) {
+            if ($this->status == 2 || $this->status == 3 || $this->status == 4 || $this->status == 5 || $this->status == 6 || $this->status == 7 || $this->status == 8 || $this->status == 9 || $this->status == 10) {
                 $remark = $this->revisionApprovalReason->selected_reason . ' , '.$this->revisionApprovalReason->employer_comment;
             }else{
                 $remark = 'none yet';
