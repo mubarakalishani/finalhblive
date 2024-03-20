@@ -129,10 +129,7 @@ class CampaingDetailWithRejectedProofs extends Component
             $advertiseId = auth()->user()->id;
             $advertiser = User::find($advertiseId);
             //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
-            if($submittedTaskProof->status !=0 ){
-                if ($advertiser->deposit_balance < $amount) {
-                    return back()->with('error', 'your have insufficient funds, please top up first');
-                }
+            if($submittedTaskProof->status !=2 ){
                 $advertiser->deductAdvertiserBalance(abs($amount));
             }
             $worker->increment('balance', $amount);
