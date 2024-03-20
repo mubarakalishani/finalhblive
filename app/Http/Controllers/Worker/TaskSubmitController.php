@@ -163,7 +163,7 @@ class TaskSubmitController extends Controller
         $task = Task::find($taskId);
         $employerId = $task->employer_id;
 
-        AdminProofDispute::create([
+        TaskDispute::create([
             'status' => 0,
             'worker_id' => auth()->user()->id,
             'task_id' => $taskId,
@@ -186,7 +186,7 @@ class TaskSubmitController extends Controller
         $task = Task::find($taskId);
         $employerId = $task->employer_id;
 
-        TaskDispute::create([
+        AdminProofDispute::create([
             'status' => 0,
             'worker_id' => auth()->user()->id,
             'task_id' => $taskId,
