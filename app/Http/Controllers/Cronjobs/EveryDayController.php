@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 class EveryDayController extends Controller
 {
     public function runCronJob(){
+        $this->resetStats();
         $this->resolveResubmitExhaustTasks();
         $this->updateTasks();
         $this->creditDisputesNotResponded();
@@ -139,5 +140,17 @@ class EveryDayController extends Controller
                 'description' => 'dispute expired to respond to added '.$expiredDispute->proof->amount.' to user '.$expiredDispute->worker_id.' for task#'.$expiredDispute->task_id
             ]);
         }
+    }
+
+    protected function resetStats(){
+        $statistic = Statistic::latest()->firstOrCreate([]);
+        $statistic->update([
+            'tasks_today_earned' => 0,
+            'offers_today_earned' => 0,
+            'shortlinks_today_earned' => 0,
+            'ptc_today_earned' => 0,
+            'faucet_today_earned' => 0,
+        ]);
+        
     }
 }
