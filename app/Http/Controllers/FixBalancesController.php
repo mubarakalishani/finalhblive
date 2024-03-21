@@ -82,43 +82,39 @@ class FixBalancesController extends Controller
 
     protected function fixStatistics(){
         $statistic = Statistic::latest()->firstOrCreate([]);
-        // Get the first and last day of the current month
-        $firstDayOfMonth = now()->startOfMonth();
-        $lastDayOfMonth = now()->endOfMonth();
-
         // Get the first and last day of the last month
         $firstDayOfLastMonth = now()->subMonth()->startOfMonth();
         $lastDayOfLastMonth = now()->subMonth()->endOfMonth();
         $statistic->update([
         'tasks_total_earned' => SubmittedTaskProof::where('status', 1)->sum('amount'),
-        $statistic->tasks_this_month = SubmittedTaskProof::where('status', 1)
-        ->where('created_at', '=', $firstDayOfMonth->year)
-        ->whereMonth('created_at', '=', $firstDayOfMonth->month)
+        'tasks_this_month' => SubmittedTaskProof::where('status', 1)
+        ->whereYear('created_at', '=', now()->year)
+        ->whereMonth('created_at', '=', now()->month)
         ->sum('amount'),
         'tasks_last_month' => SubmittedTaskProof::where('status', 1)->whereBetween('created_at', [$firstDayOfLastMonth, $lastDayOfLastMonth])->sum('amount'),
 
         'offers_total_earned' => OffersAndSurveysLog::whereIn('status', [0,1])->sum('payout'),
         'offers_this_month' => OffersAndSurveysLog::whereIn('status', [1,0])
-        ->where('created_at', '=', $firstDayOfMonth->year)
-        ->whereMonth('created_at', '=', $firstDayOfMonth->month)
+        ->whereYear('created_at', '=', now()->year)
+        ->whereMonth('created_at', '=', now()->month)
         ->sum('payout'),
         'offers_last_month' => OffersAndSurveysLog::whereIn('status', [0,1])->whereBetween('created_at', [$firstDayOfLastMonth, $lastDayOfLastMonth])->sum('payout'),
 
         'shortlinks_total_earned' => ShortLinksHistory::sum('reward'),
-        'shortlinks_this_month' => ShortLinksHistory::where('created_at', '=', $firstDayOfMonth->year)
-        ->whereMonth('created_at', '=', $firstDayOfMonth->month)
+        'shortlinks_this_month' => ShortLinksHistory::whereYear('created_at', '=', now()->year)
+        ->whereMonth('created_at', '=', now()->month)
         ->sum('reward'),
         'shortlinks_last_month' => ShortLinksHistory::whereBetween('created_at', [$firstDayOfLastMonth, $lastDayOfLastMonth])->sum('reward'),
 
         'ptc_total_earned' => PtcLog::sum('reward'),
-        'ptc_this_month' => PtcLog::where('created_at', '=', $firstDayOfMonth->year)
-        ->whereMonth('created_at', '=', $firstDayOfMonth->month)
+        'ptc_this_month' => PtcLog::whereYear('created_at', '=', now()->year)
+        ->whereMonth('created_at', '=', now()->month)
         ->sum('reward'),
         'ptc_last_month' => PtcLog::whereBetween('created_at', [$firstDayOfLastMonth, $lastDayOfLastMonth])->sum('reward'),
 
         'faucet_total_earned' => FaucetClaim::sum('claimed_amount'),
-        'faucet_this_month' => FaucetClaim::where('created_at', '=', $firstDayOfMonth->year)
-        ->whereMonth('created_at', '=', $firstDayOfMonth->month)
+        'faucet_this_month' => FaucetClaim::whereYear('created_at', '=', now()->year)
+        ->whereMonth('created_at', '=', now()->month)
         ->sum('claimed_amount'),
         'faucet_last_month' => FaucetClaim::whereBetween('created_at', [$firstDayOfLastMonth, $lastDayOfLastMonth])->sum('claimed_amount')
         ]);
