@@ -79,7 +79,6 @@ class CampaingDetailWithRevisionAskedProofs extends Component
         $statistics->increment('tasks_total_earned', $amount);
         $statistics->increment('tasks_today_earned', $amount);
         $statistics->increment('tasks_this_month', $amount);
-        $statistics->increment('tasks_last_month', $amount);
         $submittedTaskProof->update([ 'status' => 1 ]);
 
         session()->flash('message', 'Proof Approve Successfully!');
@@ -139,7 +138,6 @@ class CampaingDetailWithRevisionAskedProofs extends Component
             $statistics->increment('tasks_total_earned', $amount);
             $statistics->increment('tasks_today_earned', $amount);
             $statistics->increment('tasks_this_month', $amount);
-            $statistics->increment('tasks_last_month', $amount);
             
             $submittedTaskProof->update([ 'status' => 1 ]);
             session()->flash('message', 'all selected Tasks has been Approved');

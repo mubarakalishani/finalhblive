@@ -21,17 +21,22 @@ class MainToDepositComponent extends Component
     }
 
     public function mainToDepositBalance(){
+        if ( auth()->user()->balance < 0 ) {
+            return redirect(url('/advertiser/transfer'))->with('error', 'you do not have enough balance');
+        }
         
-        if ($this->amount <= auth()->user()->balance) {
+        if ($this->amount <= auth()->user()->balance && $this->amount > 0) {
             $userId = auth()->user()->id;
             $advertiser = User::find($userId);
-            $advertiser->decrement('balance', abs($this->amount));
-            $advertiser->increment('deposit_balance', $this->amount);
-            Log::create([
-                'user_id' => auth()->user()->id,
-                'description' => 'transfered '.$this->amount.' from main balance to advertising balance',
-            ]);
-            return redirect(url('/advertiser/transfer'))->with('success', 'Successfully Transfered $'.$this->amount.' from main balance to advertising balance');
+            if( auth()->user()->balance >= $this->amount && auth()->user()->balance > 0 ){
+                $advertiser->decrement('balance', abs($this->amount));
+                $advertiser->increment('deposit_balance', $this->amount);
+                Log::create([
+                    'user_id' => auth()->user()->id,
+                    'description' => 'transfered '.$this->amount.' from main balance to advertising balance',
+                ]);
+                return redirect(url('/advertiser/transfer'))->with('success', 'Successfully Transfered $'.$this->amount.' from main balance to advertising balance');
+            }    
         }
     }
 

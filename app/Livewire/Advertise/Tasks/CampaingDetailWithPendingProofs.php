@@ -80,7 +80,6 @@ class CampaingDetailWithPendingProofs extends Component
             $statistics->increment('tasks_total_earned', $amount);
             $statistics->increment('tasks_today_earned', $amount);
             $statistics->increment('tasks_this_month', $amount);
-            $statistics->increment('tasks_last_month', $amount);
             $worker->increment('balance', $amount);
             $worker->increment('total_earned', $amount);
             $worker->increment('total_tasks_completed');
@@ -149,7 +148,6 @@ class CampaingDetailWithPendingProofs extends Component
                 $statistics->increment('tasks_total_earned', $amount);
                 $statistics->increment('tasks_today_earned', $amount);
                 $statistics->increment('tasks_this_month', $amount);
-                $statistics->increment('tasks_last_month', $amount);
 
                 $worker->increment('balance',$amount);
                 $worker->increment('total_earned', $amount);
@@ -260,7 +258,6 @@ class CampaingDetailWithPendingProofs extends Component
                 $statistics->increment('tasks_total_earned', $amount);
                 $statistics->increment('tasks_today_earned', $amount);
                 $statistics->increment('tasks_this_month', $amount);
-                $statistics->increment('tasks_last_month', $amount);
                 
                 $worker->increment('balance',$amount);
                 $worker->increment('total_earned', $amount);

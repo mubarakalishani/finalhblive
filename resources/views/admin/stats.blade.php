@@ -108,7 +108,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> $723 </h4>
+                            <h4> $0.00 </h4>
                             <p> Available Balance </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -268,7 +268,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> {{ $statistics->offers_total_earned }} </h4>
+                            <h4> ${{ $statistics->offers_total_earned }} </h4>
                             <p> Total offer completed </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -343,7 +343,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-red">
                         <div class="inner">
-                            <h4> {{ $statistics->shortlinks_last_month }} </h4>
+                            <h4> ${{ $statistics->shortlinks_last_month }} </h4>
                             <p> Last Month earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>

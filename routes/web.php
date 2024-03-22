@@ -25,6 +25,7 @@ use App\Http\Controllers\CoinbaseCommerceTestController;
 use App\Http\Controllers\Cronjobs\EveryDayController;
 use App\Http\Controllers\Cronjobs\EveryFiveMinutesController;
 use App\Http\Controllers\Cronjobs\EveryMinuteController;
+use App\Http\Controllers\Cronjobs\EveryMonthController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FixBalancesController;
@@ -245,6 +246,7 @@ Route::get('/views/youtube', [PtcAdController::class, 'showYoutube'])->name('wor
 Route::get('/cronjob/everyminute', [EveryMinuteController::class, 'index']);
 Route::get('/cronjob/everyfiveminutes', [EveryFiveMinutesController::class, 'index']);
 Route::get('/cronjob/everyday', [EveryDayController::class, 'runCronJob']);
+Route::get('/cronjob/everymonth', [EveryMonthController::class, 'index']);
 
 
 Route::get('/social', function () {
