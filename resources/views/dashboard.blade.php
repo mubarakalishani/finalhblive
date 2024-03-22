@@ -37,9 +37,6 @@
                         <div class="col text-secondary view-all-btn">
                           <a href="/withdraw">withdraw</a>
                         </div>
-                        <div class="col text-secondary view-all-btn">
-                          <a href="/advertiser/transfer">Tranfer</a>
-                        </div>
                       </div>
                       <hr>
                       <div class="row">

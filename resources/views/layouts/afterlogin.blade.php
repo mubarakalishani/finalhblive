@@ -121,6 +121,9 @@
                                 <a href="/advertiser/deposit" class="sidebar-link"><i class="fa-solid fa-money-bill-transfer"></i> Deposit</a>
                             </li>
                             <li class="sidebar-item">
+                                <a href="/advertiser/transfer" class="sidebar-link"><i class="fa-solid fa-exchange"></i> Tranfer main to advertising balance</a>
+                            </li>
+                            <li class="sidebar-item">
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#task-multi" aria-expanded="false" aria-controls="multi-two">
                                     Micro Task
                                 </a>
