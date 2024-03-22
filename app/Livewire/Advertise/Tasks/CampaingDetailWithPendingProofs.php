@@ -69,13 +69,7 @@ class CampaingDetailWithPendingProofs extends Component
             $worker = User::find($workerId);
             $advertiseId = auth()->user()->id;
             $advertiser = User::find($advertiseId);
-            //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
-            if($submittedTaskProof->status !=0 ){
-                if ($advertiser->deposit_balance < $amount) {
-                    return back()->with('error', 'your have insufficient funds, please top up first');
-                }
-                $advertiser->deductAdvertiserBalance(abs($amount));
-            }
+           
             $statistics = Statistic::latest()->firstOrCreate([]);
             $statistics->increment('tasks_total_earned', $amount);
             $statistics->increment('tasks_today_earned', $amount);
@@ -115,13 +109,6 @@ class CampaingDetailWithPendingProofs extends Component
         $amount = $submittedTaskProof->amount;
         $advertiseId = auth()->user()->id;
         $advertiser = User::find($advertiseId);
-        //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
-        if($submittedTaskProof->status !=0 ){
-            if ($advertiser->deposit_balance < $amount) {
-                return back()->with('error', 'your have insufficient funds, please top up first');
-            }
-            $advertiser->deductAdvertiserBalance(abs($amount));
-        }
 
         $submittedTaskProof->update([ 'status' => 3 ]);
 
@@ -137,13 +124,7 @@ class CampaingDetailWithPendingProofs extends Component
                 $worker = User::find($workerId);
                 $advertiseId = auth()->user()->id;
                 $advertiser = User::find($advertiseId);
-                //check if the proof was rejected/revisionAsked and being setting approved, if so, advertisers balance must be above the reward to be added to the user as we have to cut it
-                if($submittedTaskProof->status !=0 ){
-                    if ($advertiser->deposit_balance < $amount) {
-                        return back()->with('error', 'your have insufficient funds, please top up first');
-                    }
-                    $advertiser->deductAdvertiserBalance(abs($amount));
-                }
+                
                 $statistics = Statistic::latest()->firstOrCreate([]);
                 $statistics->increment('tasks_total_earned', $amount);
                 $statistics->increment('tasks_today_earned', $amount);
