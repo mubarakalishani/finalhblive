@@ -33,7 +33,7 @@ class EveryFiveMinutesController extends Controller
         $apiKey = DepositMethodSetting::where('name', 'faucetpay_merchant_api')->value('value');
 
         $pendingFaucetPayWithdrawals = WithdrawalHistory::where('method', 'Faucet Pay')
-        ->where('status', 0)
+        ->whereIn('status', [0,5])
         ->get();
         if (PayoutGateway::where('name', 'Faucet Pay')->value('instant') == 1) {
             foreach ($pendingFaucetPayWithdrawals as $withdrawal) {
