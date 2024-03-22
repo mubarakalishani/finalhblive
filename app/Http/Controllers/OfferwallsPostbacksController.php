@@ -180,7 +180,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -438,7 +438,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -706,7 +706,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -980,7 +980,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -1245,7 +1245,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -1504,7 +1504,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -1785,7 +1785,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -2047,7 +2047,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -2311,7 +2311,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -2578,7 +2578,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -2843,7 +2843,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -3107,7 +3107,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -3371,7 +3371,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -3633,7 +3633,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -3910,7 +3910,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -4177,7 +4177,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -4440,7 +4440,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -4703,7 +4703,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);
@@ -4966,7 +4966,7 @@ class OfferwallsPostbacksController extends Controller
                 $statistics->increment('offers_total_earned', $finalReward);
                 $statistics->increment('offers_today_earned', $finalReward);
                 $statistics->increment('offers_this_month', $finalReward);
-                $statistics->increment('offers_last_month', $finalReward);
+                
 
                
                 $user->addWorkerBalance($finalReward);

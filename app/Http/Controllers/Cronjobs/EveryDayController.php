@@ -93,7 +93,6 @@ class EveryDayController extends Controller
             $statistics->increment('tasks_total_earned', $employerReviewPassedProof->amount);
             $statistics->increment('tasks_today_earned', $employerReviewPassedProof->amount);
             $statistics->increment('tasks_this_month', $employerReviewPassedProof->amount);
-            $statistics->increment('tasks_last_month', $employerReviewPassedProof->amount);
             $worker->increment('balance', $employerReviewPassedProof->amount);
             $worker->increment('earned_from_tasks', $employerReviewPassedProof->amount);
             $worker->increment('total_earned', $employerReviewPassedProof->amount);
@@ -129,7 +128,6 @@ class EveryDayController extends Controller
             $statistics->increment('tasks_total_earned', $expiredDispute->proof->amount);
             $statistics->increment('tasks_today_earned', $expiredDispute->proof->amount);
             $statistics->increment('tasks_this_month', $expiredDispute->proof->amount);
-            $statistics->increment('tasks_last_month', $expiredDispute->proof->amount);
 
             $expiredDispute->update([
                 'status' => 1

@@ -252,7 +252,6 @@ class PtcAdController extends Controller
             $statistics->increment('ptc_total_earned', $ad->reward_per_view);
             $statistics->increment('ptc_today_earned', $ad->reward_per_view);
             $statistics->increment('ptc_this_month', $ad->reward_per_view);
-            $statistics->increment('ptc_last_month', $ad->reward_per_view);
             
             return redirect($ad->url);
         // }
@@ -335,7 +334,6 @@ class PtcAdController extends Controller
             $statistics->increment('ptc_total_earned', $ad->reward_per_view);
             $statistics->increment('ptc_today_earned', $ad->reward_per_view);
             $statistics->increment('ptc_this_month', $ad->reward_per_view);
-            $statistics->increment('ptc_last_month', $ad->reward_per_view);
 
             header( "refresh:1; url=".url('/views/window') ); 
             // return redirect(url('/views/window'))->with('success', $ad->reward_per_view.' added to your balance successfully')->withDelay(2);

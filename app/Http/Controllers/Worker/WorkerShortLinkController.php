@@ -174,7 +174,6 @@ class WorkerShortLinkController extends Controller
         $statistics->increment('shortlinks_total_earned', $amountToAdd);
         $statistics->increment('shortlinks_today_earned', $amountToAdd);
         $statistics->increment('shortlinks_this_month', $amountToAdd);
-        $statistics->increment('shortlinks_last_month', $amountToAdd);
 
         //create shorlink history
         ShortLinksHistory::create([

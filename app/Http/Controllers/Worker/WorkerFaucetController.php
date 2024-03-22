@@ -131,7 +131,6 @@ class WorkerFaucetController extends Controller
                 $statistics->increment('faucet_total_earned', $amount);
                 $statistics->increment('faucet_today_earned', $amount);
                 $statistics->increment('faucet_this_month', $amount);
-                $statistics->increment('faucet_last_month', $amount);
                 return redirect()->back()->with('message',"You claimed $".$faucet_claim_amount." successfully");
             }
             
