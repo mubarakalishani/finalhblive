@@ -177,9 +177,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -435,9 +433,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -703,9 +699,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -977,9 +971,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -1242,9 +1234,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -1501,9 +1491,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -1782,9 +1770,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -2044,9 +2030,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -2308,9 +2292,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -2575,9 +2557,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -2840,9 +2820,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -3104,9 +3082,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -3368,9 +3344,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -3630,9 +3604,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -3907,9 +3879,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -4174,9 +4144,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -4437,9 +4405,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -4700,9 +4666,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                
@@ -4963,9 +4927,7 @@ class OfferwallsPostbacksController extends Controller
             if ( $finalStatus == 0 ) 
             {
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $finalReward);
-                $statistics->increment('offers_today_earned', $finalReward);
-                $statistics->increment('offers_this_month', $finalReward);
+                $statistics->increment('offers_today_earned', $payout);
                 
 
                

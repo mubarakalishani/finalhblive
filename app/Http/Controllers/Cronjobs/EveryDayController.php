@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cronjobs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Log;
+use App\Models\OffersAndSurveysLog;
 use App\Models\Statistic;
 use App\Models\SubmittedTaskProof;
 use App\Models\Task;
@@ -141,6 +142,8 @@ class EveryDayController extends Controller
     }
 
     protected function resetStats(){
+        $firstDayOfLastMonth = now()->subMonth()->startOfMonth();
+        $lastDayOfLastMonth = now()->subMonth()->endOfMonth();
         $statistic = Statistic::latest()->firstOrCreate([]);
         $statistic->update([
             'tasks_today_earned' => 0,
@@ -148,6 +151,12 @@ class EveryDayController extends Controller
             'shortlinks_today_earned' => 0,
             'ptc_today_earned' => 0,
             'faucet_today_earned' => 0,
+            'offers_total_earned' => OffersAndSurveysLog::whereIn('status', [0,1])->sum('payout'),
+            'offers_this_month' => OffersAndSurveysLog::whereIn('status', [1,0])
+            ->whereYear('created_at', '=', now()->year)
+            ->whereMonth('created_at', '=', now()->month)
+            ->sum('payout'),
+            'offers_last_month' => OffersAndSurveysLog::whereIn('status', [0,1])->whereBetween('created_at', [$firstDayOfLastMonth, $lastDayOfLastMonth])->sum('payout'),
         ]);
         
     }

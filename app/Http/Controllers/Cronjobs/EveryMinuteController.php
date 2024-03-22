@@ -61,10 +61,7 @@ class EveryMinuteController extends Controller
                 }
 
                 $statistics = Statistic::latest()->firstOrCreate([]);
-                $statistics->increment('offers_total_earned', $offer->reward);
-                $statistics->increment('offers_today_earned', $offer->reward);
-                $statistics->increment('offers_this_month', $offer->reward);
-                $statistics->increment('offers_last_month', $offer->reward);
+                $statistics->increment('offers_today_earned', $offer->payout);
             }
             Log::create([
                 'user_id' => $offer->worker->id,

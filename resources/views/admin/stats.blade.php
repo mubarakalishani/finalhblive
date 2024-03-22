@@ -174,7 +174,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="card-box bg-blue">
                         <div class="inner">
-                            <h4> ${{ $offers->sum('payout') }} </h4>
+                            <h4> ${{ $statistics->offers_total_earned }} </h4>
                             <p> Offerwalls earning </p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -203,7 +203,7 @@
                     <div class="card-box bg-red">
                         <div class="inner">
                             <h4> ${{ $tasksEarning->sum('amount') }} </h4>
-                            <p> Taks earnings</p>
+                            <p> Tasks earnings</p>
                         </div>
                         <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
