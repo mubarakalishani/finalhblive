@@ -21,7 +21,7 @@ class MainToDepositComponent extends Component
     }
 
     public function mainToDepositBalance(){
-        if ( auth()->user()->balance < 0 ) {
+        if ( auth()->user()->balance < 0 || auth()->user()->balance < $this->amount ) {
             return redirect(url('/advertiser/transfer'))->with('error', 'you do not have enough balance');
         }
         
