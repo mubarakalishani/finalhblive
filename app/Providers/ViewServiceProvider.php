@@ -105,7 +105,14 @@ class ViewServiceProvider extends ServiceProvider
             foreach ($availableTasks as $availableTask) {
                 $employer = User::find($availableTask->employer_id);
                 if ($availableTask->targetedCountries->first()->amount_per_task < $employer->deposit_balance) {
-                    $countTasks++;
+                    if (in_array($availableTask->id, [97, 111])) {
+                        if (auth()->user()->total_withdrawn > 0) {
+                            $countTasks++;
+                        }
+                    }
+                    else{
+                        $countTasks++;
+                    }
                 }
             }            
 
