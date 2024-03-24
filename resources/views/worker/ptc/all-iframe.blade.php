@@ -23,6 +23,7 @@
             @php
                 $countWindows++;
             @endphp
+        @endif    
     @endif
 @endforeach
     <div class="container-fluid">
