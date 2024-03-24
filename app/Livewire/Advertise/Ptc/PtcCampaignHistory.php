@@ -91,11 +91,11 @@ class PtcCampaignHistory extends Component
     public function stopCampaign($id){
         $ptcAd = PtcAd::find($id);
         $employer = User::find($ptcAd->employer_id);
+        $employer->increment('deposit_balance', $ptcAd->ad_balance);
         $ptcAd->update([
             'status' => 7,
             'ad_balance' => 0
         ]);
-        $employer->increment('deposit_balance', $ptcAd->ad_balance);
 
 
     }
