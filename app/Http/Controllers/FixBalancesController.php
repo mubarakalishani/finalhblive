@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 class FixBalancesController extends Controller
 {
     public function index(){
+        $this->fixDeposits();
         // $this->fixStatistics();
         // $users = $users = User::where('id', '>=', 15000)->get();
         // foreach ($users as $user) {

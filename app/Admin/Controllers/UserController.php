@@ -67,6 +67,7 @@ class UserController extends AdminController
         $grid->column('instant_withdrawable_balance', __('Instant withdrawable balance'))->sortable();
         $grid->column('total_earned', __('Total earned'))->sortable();
         $grid->column('total_withdrawn', __('Total Withdrawn'))->sortable();
+        $grid->column('total_deposited', __('Total Deposited'))->sortable();
         $grid->column('earned_from_referrals', __('Earned from referrals'))->sortable();
         $grid->column('earned_from_offers', __('Earned from offers'))->sortable();
         $grid->column('earned_from_tasks', __('Earned from tasks'))->sortable();
@@ -203,6 +204,7 @@ class UserController extends AdminController
         $show->field('country', __('Country'));
         $show->field('balance', __('Balance'));
         $show->field('deposit_balance', __('Deposit balance'));
+        $show->field('total_deposited', __('Total Deposited'));
         $show->field('bonus_balance', __('Bonus balance'));
         $show->field('diamond_level_balance', __('Diamond level balance'));
         $show->field('instant_withdrawable_balance', __('Instant withdrawable balance'));
