@@ -216,6 +216,18 @@ class TaskController extends AdminController
             // You can include other step fields as needed
         });
 
+
+        $show->targetedCountries('targetedCountries', function ($targetedCountries) {
+            // If you need to set the resource URL for steps
+            $targetedCountries->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/task-targeted-countries');
+        
+            $targetedCountries->id();
+            $targetedCountries->country()->sortable();
+            $targetedCountries->amount_per_task()->sortable();
+            
+            // You can include other step fields as needed
+        });
+
         $show->declineReason('declineReason', function ($declineReason) {
             // If you need to set the resource URL for steps
             $declineReason->setResource('/'.env("ADMIN_ROUTE_PREFIX", "admin").'/admin-task-decline-reasons');

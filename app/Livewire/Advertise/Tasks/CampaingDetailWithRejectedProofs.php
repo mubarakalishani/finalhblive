@@ -105,21 +105,20 @@ class CampaingDetailWithRejectedProofs extends Component
     public function approveAllSelected(){
         foreach ($this->batchSelectedProofs as $proofId) {
             $submittedTaskProof = SubmittedTaskProof::find($proofId);
-            $amount = $submittedTaskProof->amount;
-            $workerId = $submittedTaskProof->worker_id;
-            $worker = User::find($workerId);
-            $advertiseId = auth()->user()->id;
-            $advertiser = User::find($advertiseId);
-            
-            $worker->increment('balance', $amount);
-            $statistics = Statistic::latest()->firstOrCreate([]);
-            $statistics->increment('tasks_total_earned', $amount);
-            $statistics->increment('tasks_today_earned', $amount);
-            $statistics->increment('tasks_this_month', $amount);
-            
-            $submittedTaskProof->update([ 'status' => 1 ]);
-            session()->flash('message', 'all selected Tasks has been Approved');
-            $this->batchSelectedProofs = [];
+            if ($submittedTaskProof->status == 2) {
+                $amount = $submittedTaskProof->amount;
+                $workerId = $submittedTaskProof->worker_id;
+                $worker = User::find($workerId);
+                $worker->increment('balance', $amount);
+                $statistics = Statistic::latest()->firstOrCreate([]);
+                $statistics->increment('tasks_total_earned', $amount);
+                $statistics->increment('tasks_today_earned', $amount);
+                $statistics->increment('tasks_this_month', $amount);
+                
+                $submittedTaskProof->update([ 'status' => 1 ]);
+                session()->flash('message', 'all selected Tasks has been Approved');
+                $this->batchSelectedProofs = [];
+            }    
         }
         $this->selectedMultiple = 'no';
     }

@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
 class EveryMinuteController extends Controller
 {
     public function index(){
-        $pendingWithdrawals = WithdrawalHistory::where('status' , 0)->get();
+        $pendingWithdrawals = WithdrawalHistory::whereIn('status' , [0,4])->get();
         foreach ($pendingWithdrawals as $withdrawal) {
             if ( $withdrawal->user->balance < 0 ) {
                 $user = User::find($withdrawal->user->id);

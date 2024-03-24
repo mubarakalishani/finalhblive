@@ -59,23 +59,21 @@ class CampaingDetailWithRevisionAskedProofs extends Component
 
     public function approve($proofId , $tab)
     {
-        // dd($proofId);
-        // $this->tab = $tab;
         $submittedTaskProof = SubmittedTaskProof::find($proofId);
-        $amount = $submittedTaskProof->amount;
-        $workerId = $submittedTaskProof->worker_id;
-        $worker = User::find($workerId);
-        $advertiseId = auth()->user()->id;
-        $advertiser = User::find($advertiseId);
-        
-        $worker->addWorkerBalance($amount);
-        $statistics = Statistic::latest()->firstOrCreate([]);
-        $statistics->increment('tasks_total_earned', $amount);
-        $statistics->increment('tasks_today_earned', $amount);
-        $statistics->increment('tasks_this_month', $amount);
-        $submittedTaskProof->update([ 'status' => 1 ]);
+        if ($submittedTaskProof->status == 3) {
+            $amount = $submittedTaskProof->amount;
+            $workerId = $submittedTaskProof->worker_id;
+            $worker = User::find($workerId);
+            
+            $worker->addWorkerBalance($amount);
+            $statistics = Statistic::latest()->firstOrCreate([]);
+            $statistics->increment('tasks_total_earned', $amount);
+            $statistics->increment('tasks_today_earned', $amount);
+            $statistics->increment('tasks_this_month', $amount);
+            $submittedTaskProof->update([ 'status' => 1 ]);
 
-        session()->flash('message', 'Proof Approve Successfully!');
+            session()->flash('message', 'Proof Approve Successfully!');
+        }    
     }
 
     public function reject($proofId)

@@ -18,6 +18,7 @@ Route::group([
     $router->resource('offers-and-surveys-logs', OffersAndSurveysLogsController::class);
     $router->resource('tasks', TaskController::class);
     $router->resource('task-required-proofs', TaskRequiredProofs::class);
+    $router->resource('task-targeted-countries', TaskTargetedCountriesController::class);
     $router->resource('task-steps', TaskStepsController::class);
     $router->resource('offerwalls-settings', OfferwallSettingsController::class);
     $router->resource('settings', Settingscontroller::class);
