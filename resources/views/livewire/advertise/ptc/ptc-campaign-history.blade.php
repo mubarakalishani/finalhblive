@@ -89,9 +89,9 @@
                                         <i class="fa fa-play side-icons text-primary" aria-hidden="true"></i>
                                     @endif
                                 </a>
-                                <a wire:click="stopConfirmation('{{ $ad->id }}')">
+                                <a wire:click="stopConfirmation('{{ $ad->id }}')" data-bs-toggle="modal" data-bs-target="#confirmstop">
                                     @if ($ad->status != 5 && $ad->status != 6 && $ad->status != 7)
-                                        <i class="fa-solid fa-stop side-icons text-danger" data-bs-toggle="modal" data-bs-target="#confirmstop" aria-hidden="true"></i>
+                                        <i class="fa-solid fa-stop side-icons text-danger" aria-hidden="true"></i>
                                     @endif    
                                 </a>
                             </td>
