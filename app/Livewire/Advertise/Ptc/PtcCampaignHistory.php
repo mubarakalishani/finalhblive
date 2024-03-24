@@ -44,7 +44,14 @@ class PtcCampaignHistory extends Component
 
     public function updatedClicksToAdd(){
         $ad = PtcAd::find($this->adId);
-        $this->budgetToAdd = $this->clicksToAdd * $ad->reward_per_view;
+        if ($this->clicksToAdd > 0) {
+            $this->budgetToAdd = $this->clicksToAdd * $ad->reward_per_view;
+        }
+        else{
+            $this->clicksToAdd = 0;
+            $this->budgetToAdd = $this->clicksToAdd * $ad->reward_per_view;
+        }
+        
     }
 
     public function submitUpdatedBudget(){

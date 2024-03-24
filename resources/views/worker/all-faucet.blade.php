@@ -22,7 +22,7 @@
                   <div class="d-flex align-items-center">
                     <div>
                       <p class="mb-0 text-secondary">Claim Time</p>
-                      <span id="countdown-display">Ready</span>
+                      <h5 id="countdown-display">Ready</h5>
                       {{-- <p class="mb-0 font-13">+10% after 6 hours</p> --}}
                     </div>
                     <div class="widgets-icons-2 rounded-circle  ms-auto"><i class="fa fa-clock-o"></i>
