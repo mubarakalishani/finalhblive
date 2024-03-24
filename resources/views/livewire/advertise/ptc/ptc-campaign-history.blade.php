@@ -19,6 +19,7 @@
                         <option value="4">Completed</option>
                         <option value="5">Paused by Admin</option>
                         <option value="6">Stopped by Admin</option>
+                        <option value="7">Completed / Stopped by you</option>
                       </select>
                 </div>
             </div>
@@ -56,12 +57,14 @@
                                 <span class="badge rounded-pill text-bg-danger p-2">Declined</span>
                                 @elseif ($ad->status == 3)
                                 <span class="badge rounded-pill text-bg-secondary p-2">Paused</span>
-                                @elseif ($ad->status == 4)
+                                @elseif ($ad->status == 4 || $ad->status == 7)
                                 <span class="badge rounded-pill text-bg-info p-2">Completed</span>
                                 @elseif ($ad->status == 5)
                                 <span class="badge rounded-pill text-bg-dark p-2">Admin Paused</span>
                                 @elseif ($ad->status == 6)
-                                <span class="badge rounded-pill text-bg-danger p-2">Admin stopped</span>    
+                                <span class="badge rounded-pill text-bg-danger p-2">Admin stopped</span>
+                                @else
+                                <span class="badge rounded-pill text-bg-danger p-2">{{$ad->id}}</span> 
                                 @endif
                             </td>
                             <td class="table-cell-rated text-center">{{ $ad->views_completed }} / {{ $ad->views_needed }}

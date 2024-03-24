@@ -92,7 +92,8 @@ class PtcCampaignHistory extends Component
         $ptcAd = PtcAd::find($id);
         $employer = User::find($ptcAd->employer_id);
         $ptcAd->update([
-            'status' => 7
+            'status' => 7,
+            'ad_balance' => 0
         ]);
         $employer->increment('deposit_balance', $ptcAd->ad_balance);
 
