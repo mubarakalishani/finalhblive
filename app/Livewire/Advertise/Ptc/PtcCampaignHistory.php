@@ -88,20 +88,14 @@ class PtcCampaignHistory extends Component
         }
     }
 
-    public function stopConfirmation($id){
-        $this->editBudget = false;
-        $this->editClicks = false;
-        $this->adId = $id;
-    }
-
-    public function stopCampaign(){
-        $ptcAd = PtcAd::find($this->adId);
+    public function stopCampaign($id){
+        $ptcAd = PtcAd::find($id);
         $employer = User::find($ptcAd->employer_id);
         $ptcAd->update([
             'status' => 7
         ]);
         $employer->increment('deposit_balance', $ptcAd->ad_balance);
-        
+
 
     }
 

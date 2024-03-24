@@ -89,7 +89,7 @@
                                         <i class="fa fa-play side-icons text-primary" aria-hidden="true"></i>
                                     @endif
                                 </a>
-                                <a wire:click="stopConfirmation('{{ $ad->id }}')" data-bs-toggle="modal" data-bs-target="#confirmstop">
+                                <a wire:confirm="This will stop the Ad and the un-spent amount will be added back to your advertising balance, remember, it cannot be resumed later." wire:click="stopCampaign('{{ $ad->id }}')" data-bs-toggle="modal" data-bs-target="#confirmstop">
                                     @if ($ad->status != 5 && $ad->status != 6 && $ad->status != 7)
                                         <i class="fa-solid fa-stop side-icons text-danger" aria-hidden="true"></i>
                                     @endif    
@@ -152,24 +152,5 @@
         </div>
       </div>
     </div>
-
-
-    <div class="modal fade" id="confirmstop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Are You Sure?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>This will stop the Ad and the un-spent amount will be added back to your advertising balance, remember, it cannot be resumed later.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" wire:click="stopCampaign" class="btn btn-primary">Confirm</button>
-            </div>
-          </div>
-        </div>
-      </div>
 </div>
 
