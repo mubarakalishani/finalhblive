@@ -16,7 +16,8 @@ use Illuminate\Http\Request;
 class FixBalancesController extends Controller
 {
     public function index(){
-        $this->fixDeposits();
+        // $this->fixDeposits();
+        $this->fixPayouts();
         // $this->fixStatistics();
         // $users = $users = User::where('id', '>=', 15000)->get();
         // foreach ($users as $user) {
@@ -94,6 +95,23 @@ class FixBalancesController extends Controller
 
             // Update the total_deposited column for the user
             $user->total_deposited = $totalDeposited;
+            $user->save();
+        }
+    }
+
+
+    protected function fixPayouts(){
+        $usersWithCompletedPayouts = User::whereHas('payouts', function ($query) {
+            $query->where('status', 1);
+        })->get();
+        foreach ($usersWithCompletedPayouts as $user) {
+            // Calculate the sum of deposit amounts
+            $totalWithdrawn = WithdrawalHistory::where('user_id', $user->id)
+            ->where('status', 1)
+            ->sum('amount_no_fee');
+
+            // Update the total_deposited column for the user
+            $user->total_withdrawn = $totalWithdrawn;
             $user->save();
         }
     }
