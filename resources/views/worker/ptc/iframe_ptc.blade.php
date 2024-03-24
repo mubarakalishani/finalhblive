@@ -118,7 +118,7 @@
   function isHalfLoaded() {
     var iframe = document.getElementById('adFrame');
     if (iframe) {
-      var halfHeight = iframe.offsetHeight / 2;
+      var halfHeight = iframe.offsetHeight / 3;
       var scrollHeight = iframe.contentWindow.document.body.scrollHeight;
       return scrollHeight >= halfHeight;
     }

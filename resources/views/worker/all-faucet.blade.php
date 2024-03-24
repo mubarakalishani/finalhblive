@@ -139,35 +139,34 @@
         </script>
     @endif 
 
-
+    countdownValue
 
     <script>
-      var countdownValue = {{ $countdownValue }};
-
-      $(document).ready(function () {
-          var countdownValue = parseInt(countdownValue);        
-
-          function updateCountdown() {
-              // Display the current countdown value
-              $('#countdown-display').text(countdownValue);       
-
-              // Check if the countdown has reached 0
-              if (countdownValue <= 0) {
-                  // Refresh the page when the countdown hits 0
-                  location.reload();
-              } else {
-                  // Decrement the countdown value
-                  countdownValue--;       
-
-                  // Schedule the next update after 1 second (1000 milliseconds)
-                  setTimeout(updateCountdown, 1000);
-              }
-          }       
-
-          // Initial call to start the countdown
-          if(countdownValue > 0 ){
-            updateCountdown();
-          }
-      });
+      var Clock = {
+        totalSeconds: 0,
+        start: function (seconds) {
+          this.totalSeconds = parseInt(seconds);
+          var self = this;
+          this.interval = setInterval(function () {
+            document.getElementById('countdown-display').innerHTML = self.totalSeconds;
+            if (self.totalSeconds <= 0) {
+              clearInterval(self.interval);
+              document.getElementById('countdown-display').innerHTML = 'Ready';
+            } else {
+              self.totalSeconds -= 1;
+            }
+          }, 1000);
+        },
+      };
+    
+      var timer = Object.create(Clock);
+    
+      window.onload = function() {
+        seconds = {{ $countdownValue }};
+        if(seconds > 0)
+        {
+          timer.start(seconds);
+        }
+      }
     </script>
 @endsection
