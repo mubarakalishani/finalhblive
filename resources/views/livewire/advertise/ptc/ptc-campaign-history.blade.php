@@ -89,7 +89,7 @@
                                         <i class="fa fa-play side-icons text-primary" aria-hidden="true"></i>
                                     @endif
                                 </a>
-                                <a wire:confirm="This will stop the Ad and the un-spent amount will be added back to your advertising balance, remember, it cannot be resumed later." wire:click="stopCampaign('{{ $ad->id }}')" data-bs-toggle="modal" data-bs-target="#confirmstop">
+                                <a wire:confirm="This will stop the Ad and the un-spent amount will be added back to your advertising balance, remember, it cannot be resumed later." wire:click="stopCampaign('{{ $ad->id }}')">
                                     @if ($ad->status != 5 && $ad->status != 6 && $ad->status != 7)
                                         <i class="fa-solid fa-stop side-icons text-danger" aria-hidden="true"></i>
                                     @endif    
