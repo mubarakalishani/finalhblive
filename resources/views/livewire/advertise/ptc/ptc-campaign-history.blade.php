@@ -32,7 +32,7 @@
                             <th scope="col" class="white-space-pre text-center">Status</th>
                             <th scope="col" class="white-space-pre text-center">clicks</th>
                             <th scope="col" class="white-space-pre text-center">Spent/Remaining</th>
-                            <th scope="col" class="white-space-pre text-center">Pause/Resume</th>
+                            <th scope="col" class="white-space-pre text-center">Action</th>
                             <th scope="col" class="white-space-pre text-center">Duration</th>
                             <th scope="col" class="white-space-pre">Title</th>
                             <th scope="col" class="white-space-pre">description</th>
@@ -88,6 +88,11 @@
                                     @elseif($ad->status == 3)
                                         <i class="fa fa-play side-icons text-primary" aria-hidden="true"></i>
                                     @endif
+                                </a>
+                                <a wire:click="stopConfirmation('{{ $ad->id }}')">
+                                    @if ($ad->status != 5 && $ad->status != 6 && $ad->status != 7)
+                                        <i class="fa-solid fa-stop side-icons text-danger" data-bs-toggle="modal" data-bs-target="#confirmstop" aria-hidden="true"></i>
+                                    @endif    
                                 </a>
                             </td>
                             <td class="table-cell-settings p-0 text-center">
@@ -147,5 +152,24 @@
         </div>
       </div>
     </div>
+
+
+    <div class="modal fade" id="confirmstop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Are You Sure?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>This will stop the Ad and the un-spent amount will be added back to your advertising balance, remember, it cannot be resumed later.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" wire:click="stopCampaign" class="btn btn-primary">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 
