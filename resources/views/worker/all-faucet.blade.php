@@ -139,7 +139,6 @@
         </script>
     @endif 
 
-    countdownValue
 
     <script>
       var Clock = {
@@ -166,6 +165,9 @@
         if(seconds > 0)
         {
           timer.start(seconds);
+        }
+        else{
+          document.getElementById('countdown-display').innerHTML = 'Ready';
         }
       }
     </script>
