@@ -22,7 +22,7 @@
                   <div class="d-flex align-items-center">
                     <div>
                       <p class="mb-0 text-secondary">Claim Time</p>
-                      <span id="countdown-display">{{ $faucet_claim_time }} Minutes</span>
+                      <span id="countdown-display">Ready</span>
                       {{-- <p class="mb-0 font-13">+10% after 6 hours</p> --}}
                     </div>
                     <div class="widgets-icons-2 rounded-circle  ms-auto"><i class="fa fa-clock-o"></i>
@@ -147,7 +147,9 @@
           this.totalSeconds = parseInt(seconds);
           var self = this;
           this.interval = setInterval(function () {
-            document.getElementById('countdown-display').innerHTML = self.totalSeconds;
+            var minutes = Math.floor(self.totalSeconds / 60);
+            var remainingSeconds = self.totalSeconds % 60;
+            document.getElementById('countdown-display').innerHTML = minutes + 'm ' + remainingSeconds + 's';
             if (self.totalSeconds <= 0) {
               clearInterval(self.interval);
               document.getElementById('countdown-display').innerHTML = 'Ready';
@@ -171,4 +173,5 @@
         }
       }
     </script>
+    
 @endsection
