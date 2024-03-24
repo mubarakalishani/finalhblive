@@ -61,7 +61,6 @@ class UserController extends AdminController
                 return "<span class='badge bg-primary'>$level</span>";
               }
         });
-        $grid->column('utm_source', __('Utm source'))->sortable();
         $grid->column('bonus_balance', __('Bonus balance'))->sortable();
         $grid->column('diamond_level_balance', __('Diamond level balance'))->sortable();
         $grid->column('instant_withdrawable_balance', __('Instant withdrawable balance'))->sortable();
@@ -119,6 +118,7 @@ class UserController extends AdminController
               }
         
         });
+        $grid->column('utm_source', __('Utm source'))->sortable();
 
         // $grid->setActionClass(DropdownActions::class);
         
