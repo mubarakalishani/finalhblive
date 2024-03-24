@@ -28,6 +28,7 @@
                 <table class="table table-big table-hover table-middle">
                     <thead>
                         <tr class="table-row">
+                            <th scope="col" class="white-space-pre text-center">ID</th>
                             <th scope="col" class="white-space-pre text-center">Status</th>
                             <th scope="col" class="white-space-pre text-center">clicks</th>
                             <th scope="col" class="white-space-pre text-center">Spent/Remaining</th>
@@ -43,6 +44,9 @@
                         @foreach ($ptcAds as $ad)
                         
                         <tr class="table-row clickable">
+                            <td scope="row" class="table-cell-status text-center">
+                                <b>{{ $ad->id }}</b>
+                            </td>   
                             <td scope="row" class="table-cell-status text-center">
                                 @if ($ad->status == 0)
                                 <span class="badge rounded-pill text-bg-warning p-2">Pending Approval</span>
