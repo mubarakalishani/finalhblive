@@ -23,7 +23,6 @@ class PtcCampaignHistory extends Component
     public $editClicks = false;
     public $budgetToAdd = 0;
     public $clicksToAdd = 0;
-    public $campaignToStop;
 
     protected function rules(){
         return [
@@ -89,12 +88,6 @@ class PtcCampaignHistory extends Component
         }
     }
 
-    public function confirmStop($campaignId)
-    {
-        $this->campaignToStop = $campaignId;
-        // Open the confirmation modal here
-        $this->dispatch('confirm-stop-modal');
-    }
     public function render()
     {
         return view('livewire.advertise.ptc.ptc-campaign-history', [

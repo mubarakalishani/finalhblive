@@ -31,7 +31,7 @@
                             <th scope="col" class="white-space-pre text-center">Status</th>
                             <th scope="col" class="white-space-pre text-center">clicks</th>
                             <th scope="col" class="white-space-pre text-center">Spent/Remaining</th>
-                            <th scope="col" class="white-space-pre text-center">Action</th>
+                            <th scope="col" class="white-space-pre text-center">Pause/Resume</th>
                             <th scope="col" class="white-space-pre text-center">Duration</th>
                             <th scope="col" class="white-space-pre">Title</th>
                             <th scope="col" class="white-space-pre">description</th>
@@ -85,10 +85,9 @@
                                         <i class="fa fa-play side-icons text-primary" aria-hidden="true"></i>
                                     @endif
                                 </a>
-                                <i wire:click="confirmStop({{ $ad->id }})" class="fa-solid fa-stop side-icons text-danger" aria-hidden="true"></i>
                             </td>
                             <td class="table-cell-settings p-0 text-center">
-                                <span>{{ $ad->seconds }}</span>
+                                <span>{{ $ad->seconds }} seconds</span>
                             </td>
                             <td class="table-cell-name">
                                 {{-- <a href="/advertiser/ptc/campaign/{{ $ad->id }}">{{ $ad->title }}</a> --}}
@@ -126,7 +125,7 @@
     </div>
     <!-- My campaigns end -->
   
-    <!-- Balance Add Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -144,35 +143,5 @@
         </div>
       </div>
     </div>
-
-    <!-- Stop Warning Modal -->
-    <div class="modal fade" id="stopConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Are You Sure?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>this will stop this campaign, the un spent fund from the campaign will be added back to your advertising balance</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" wire:click="stopCampaign" class="btn btn-primary">Confirm</button>
-            </div>
-          </div>
-        </div>
-    </div>
-
-    <script>
-        Livewire.on('confirm-stop-modal', () => {
-            $('#stopConfirmationModal').modal('show');
-        });
-    
-        Livewire.on('close-confirm-modal', () => {
-            $('#stopConfirmationModal').modal('hide');
-        });
-    </script>
-    
 </div>
 
