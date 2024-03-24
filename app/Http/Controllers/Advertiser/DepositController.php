@@ -48,6 +48,7 @@ class DepositController extends Controller
                     'external_tx' => $transactionIdFaucetPay ,
                 ]);
                 $user->addAdvertiserBalance($amount1);
+                $user->increment('total_deposited', $amount1);
             }
             
             return response('OK', 200); // Respond with HTTP 200 OK to FaucetPay
@@ -189,6 +190,7 @@ class DepositController extends Controller
                 switch ($status) {
                     case 'completed':
                         $user->addAdvertiserBalance($event['data']['pricing']['settlement']['amount']);
+                        $user->increment('total_deposited', $event['data']['pricing']['settlement']['amount']);
                         break;
                     default:
                         $transaction->update(['status' => $status]);
@@ -258,6 +260,7 @@ public function handlePerfectMoneyWebhook(Request $request){
             'external_tx' => $externalTx ,
         ]);
         $user->addAdvertiserBalance($amount);
+        $user->increment('total_deposited', $amount);
     }
 
 

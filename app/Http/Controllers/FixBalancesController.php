@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deposit;
 use App\Models\FaucetClaim;
 use App\Models\OffersAndSurveysLog;
 use App\Models\PtcLog;
@@ -15,7 +16,7 @@ use Illuminate\Http\Request;
 class FixBalancesController extends Controller
 {
     public function index(){
-        $this->fixStatistics();
+        // $this->fixStatistics();
         // $users = $users = User::where('id', '>=', 15000)->get();
         // foreach ($users as $user) {
         //     $earnedFromPtc = 0;
@@ -78,6 +79,22 @@ class FixBalancesController extends Controller
     //         ]);
     //     }
         
+    }
+
+    protected function fixDeposits(){
+        $usersWithCompletedDeposits = User::whereHas('deposits', function ($query) {
+            $query->where('status', 'completed');
+        })->get();
+        foreach ($usersWithCompletedDeposits as $user) {
+            // Calculate the sum of deposit amounts
+            $totalDeposited = Deposit::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->sum('amount');
+
+            // Update the total_deposited column for the user
+            $user->total_deposited = $totalDeposited;
+            $user->save();
+        }
     }
 
     protected function fixStatistics(){
