@@ -141,12 +141,11 @@ class UserController extends AdminController
             $filter->equal('upline', 'Upline Id');
             $filter->like('unique_user_id', 'Unique User Id');
             $filter->like('email', 'email');
-            $filter->scope('IP', function ($query, $keyword) {
-              $query->where(function ($query) use ($keyword) {
-                  $query->where('signup_ip', 'LIKE', "%$keyword%")
-                        ->orWhere('last_ip', 'LIKE', "%$keyword%");
-              });
-            });
+            $filter->where(function ($query) {
+
+              $query->where('signup_ip', 'like', "%{$this->input}%")
+                  ->orWhere('last_ip', 'like', "%{$this->input}%");
+            }, 'IP Address');
           
           
           
