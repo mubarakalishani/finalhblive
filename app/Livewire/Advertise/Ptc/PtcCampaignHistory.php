@@ -96,6 +96,10 @@ class PtcCampaignHistory extends Component
             'status' => 7,
             'ad_balance' => 0
         ]);
+        Log::create([
+            'user_id' => auth()->user()->id,
+            'description' => 'stopped ptc ad # '.$ptcAd->id
+        ]);
 
 
     }
