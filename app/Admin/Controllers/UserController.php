@@ -141,12 +141,13 @@ class UserController extends AdminController
             $filter->equal('upline', 'Upline Id');
             $filter->like('unique_user_id', 'Unique User Id');
             $filter->like('email', 'email');
-            $filter->where('signup_ip_or_last_ip', 'IP')->filter(function ($query, $keyword) {
+            $filter->scope('IP', function ($query, $keyword) {
               $query->where(function ($query) use ($keyword) {
                   $query->where('signup_ip', 'LIKE', "%$keyword%")
                         ->orWhere('last_ip', 'LIKE', "%$keyword%");
               });
             });
+          
           
           
             $filter->in('status')->multipleSelect(['1' => 'Active', '0' => 'Inactive' , '2' => 'Suspended', '3' => 'Suspicious' ]);
