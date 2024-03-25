@@ -48,7 +48,7 @@ class CreateNewUser implements CreatesNewUsers
             $ipNotikExists = User::where('signup_ip', $click_ip)->orWhere('last_ip', $click_ip)->exists();
     
             if ($ipNotikExists) {
-                $remarks = 'ip address already found in either last_ip or signup_ip of any existing member';
+                $remarks = 'ip found in either last_ip or signup_ip';
             } else {
                 $remarks = 'normal';
             }
