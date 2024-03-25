@@ -39,9 +39,9 @@
                   <div class="col-sm-2 my-sm-0 mt-5 link-items">
                     <ul class="list-unstyled">
                       <h5>Socials</h5>
-                      <li><a href="/social?name=facebook">Facebook  <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="/social?name=twitter">Twitter <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-                      <li><a href="/social?name=telegram">Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social?name=facebook" target="_blank">Facebook  <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social?name=twitter" target="_blank">Twitter <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+                      <li><a href="/social?name=telegram" target="_blank">Telegram <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
                     </ul>
                   </div>
               </div>  
