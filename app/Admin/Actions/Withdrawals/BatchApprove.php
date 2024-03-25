@@ -23,17 +23,13 @@ class BatchApprove extends Action
             if($withdrawalRequest->status == 2){
                 $user = User::find($withdrawalRequest->user_id);
                 $user->decrement('balance', $withdrawalRequest->amount_no_fee);
-                $user->update([
-                    'total_withdrawn' => $withdrawalRequest->amount_no_fee
-                ]);
+                $user->increment('total_withdrawn', $withdrawalRequest->amount_no_fee);
                 $withdrawalRequest->update(['status' => 1]);
             }
             else {
                 $withdrawalRequest->update(['status' => 1]);
                 $user = User::find($withdrawalRequest->user_id);
-                $user->update([
-                    'total_withdrawn' => $withdrawalRequest->amount_no_fee
-                ]);
+                $user->increment('total_withdrawn', $withdrawalRequest->amount_no_fee);
             }
             
         }
