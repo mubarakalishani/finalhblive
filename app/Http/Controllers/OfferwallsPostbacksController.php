@@ -1697,6 +1697,9 @@ class OfferwallsPostbacksController extends Controller
             {
                 $finalStatus = 1;
             }
+            elseif($request->input('status') == 'SCREENOUT' || $request->input('status') == 'START_BONUS'){
+                $finalStatus = 1;
+            }
             elseif( $request->input('status') == 'PENDING' ){
                 return;
             }else{
