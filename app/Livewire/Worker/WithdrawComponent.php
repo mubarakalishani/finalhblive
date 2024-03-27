@@ -217,11 +217,11 @@ class WithdrawComponent extends Component
         $amountAfterFee = $this->amount - ($this->gateway->fixed_fee + ($this->gateway->fee_percentage * $this->amount) / 100 );
         if ($this->amount <= auth()->user()->balance && $this->gateway->status == 1 && $this->amount >= $this->gateway->min_payout) {
             //check if the user has already taken payout within allowed hrs
-            $gapBetweenEachWithdrawal = Setting::where('name', 'hrs_gap_between_payouts')->value('value');
-            $withdrawalCount = WithdrawalHistory::where('user_id', auth()->user()->id)->where('created_at', '>', now()->subHours($gapBetweenEachWithdrawal))->whereIn('status', [0,1])->count();
-            if ($withdrawalCount > 0) {
-                return redirect(url('/withdraw'))->with('error', 'you have already requested a withdrawal within last '.$gapBetweenEachWithdrawal.' wait '. $gapBetweenEachWithdrawal.' hours after your last withdrawal before requesting another withdrawal');
-            }
+            // $gapBetweenEachWithdrawal = Setting::where('name', 'hrs_gap_between_payouts')->value('value');
+            // $withdrawalCount = WithdrawalHistory::where('user_id', auth()->user()->id)->where('created_at', '>', now()->subHours($gapBetweenEachWithdrawal))->whereIn('status', [0,1])->count();
+            // if ($withdrawalCount > 0) {
+            //     return redirect(url('/withdraw'))->with('error', 'you have already requested a withdrawal within last '.$gapBetweenEachWithdrawal.' wait '. $gapBetweenEachWithdrawal.' hours after your last withdrawal before requesting another withdrawal');
+            // }
             WithdrawalHistory::create([
                 'user_id' => auth()->user()->id,
                 'method' => $this->gateway->name,

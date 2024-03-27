@@ -69,6 +69,7 @@
                                 <th scope="col" class="white-space-pre text-center">Address</th>
                                 <th scope="col" class="white-space-pre text-center">Submitted</th>
                                 <th scope="col" class="white-space-pre text-center">Last Update</th>
+                                <th scope="col" class="white-space-pre text-center">Remarks</th>
                             </tr>
                         </thead>
                         <tbody id="jobs-list">
@@ -105,6 +106,7 @@
                                     </td>
                                     <td class="table-cell-rated text-center">{{ $withdrawalHistory->created_at->diffForHumans() }}</td>
                                     <td class="table-cell-rated text-center">{{ $withdrawalHistory->updated_at->diffForHumans() }}</td>
+                                    <td class="table-cell-rated text-center">{{ $withdrawalHistory->description }}</td>
                                 </tr>
                             @endforeach    
                         </tbody>
