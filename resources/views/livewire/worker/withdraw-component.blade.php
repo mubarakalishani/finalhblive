@@ -77,13 +77,13 @@
                                 <tr class="table-row clickable">
                                     <td scope="row" class="text-center">
                                         <span class="badge rounded-pill py-2 px-2 
-                                            @if($withdrawalHistory->status==0) bg-warning 
+                                            @if($withdrawalHistory->status==0 || $withdrawalHistory->status==5) bg-warning 
                                             @elseif($withdrawalHistory->status==1) bg-success 
                                             @elseif($withdrawalHistory->status==2) bg-primary
                                             @elseif($withdrawalHistory->status==3) bg-danger
                                             @elseif($withdrawalHistory->status==4) bg-danger
                                             @endif">
-                                            @if($withdrawalHistory->status==0) Pending 
+                                            @if($withdrawalHistory->status==0 || $withdrawalHistory->status==5) Pending 
                                             @elseif($withdrawalHistory->status==1) Completed 
                                             @elseif($withdrawalHistory->status==2) Refunded 
                                             @elseif($withdrawalHistory->status==3) Cancelled
@@ -106,7 +106,13 @@
                                     </td>
                                     <td class="table-cell-rated text-center">{{ $withdrawalHistory->created_at->diffForHumans() }}</td>
                                     <td class="table-cell-rated text-center">{{ $withdrawalHistory->updated_at->diffForHumans() }}</td>
-                                    <td class="table-cell-rated text-center">{{ $withdrawalHistory->description }}</td>
+                                    <td class="table-cell-rated text-center">
+                                        @if (in_array($withdrawalHistory->status, [2, 3]))
+                                                {{ $withdrawalHistory->description }}
+                                        @else
+                                             
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach    
                         </tbody>
